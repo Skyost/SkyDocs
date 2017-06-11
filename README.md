@@ -21,7 +21,7 @@ You can configure everything you want : themes, pages, menus, ...
 
 ## Documentation
 
-Everything you need to know is available on [the website](https://skyost.github.io/SkyDocs).
+Everything you need to know is available on [the website](https://skyost.github.io/SkyDocs/).
 
 ## Download
 
