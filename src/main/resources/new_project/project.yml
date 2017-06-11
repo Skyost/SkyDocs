@@ -1,0 +1,6 @@
+project_name: My Documentation
+project_description: This is my documentation for my project.
+project_url: https://skyost.github.io/SkyDocs
+
+default_language: en
+lunr_search: true

@@ -1,0 +1,36 @@
+---
+language: en
+---
+- title: '<i class="fa fa-home" aria-hidden="true"></i> Home'
+  link: 'index.html'
+  weight: 0
+
+- title: 'Multi-level menu'
+  link: '#'
+  weight: 1
+  children:
+    - title: 'Level 1'
+      link: '#'
+      weight: 0
+    - title: 'Level 2'
+      link: '#'
+      weight: 1
+    - title: 'Level 3'
+      link: '#'
+      weight: 2
+
+- title: 'Another page'
+  link: 'page.html'
+  weight: 2
+
+- title: 'External link'
+  link: 'https://www.skyost.eu'
+  weight: 2
+
+- title: 'Language'
+  link: '#'
+  weight: 3
+  children:
+    - title: 'Français'
+      link: '../fr/'
+      weight: 0

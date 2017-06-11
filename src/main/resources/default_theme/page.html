@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="{{ page.getLanguage() }}">
+	
+	{{ includeFile("head.html") }}
+
+	<body>
+		{{ includeFile("header.html") }}
+		
+		<div id="content" class="container row">
+			<nav class="col-md-4 col-xs-12">
+				
+			</nav>
+			
+			<article class="col-md-8 col-xs-12">
+				
+				{{ page.getContent() }}
+				
+			</article>
+		</div>
+		
+		{{ includeFile("footer.html") }}
+		
+	</body>
+</html>
