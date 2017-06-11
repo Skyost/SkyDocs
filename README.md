@@ -12,9 +12,12 @@ You can configure everything you want : themes, pages, menus, ...
 * Lightweight
 * Cross-system (you need [Java](https://java.com/download))
 * Write your documentation in MarkDown
+* Use [twig](https://twig.sensiolabs.org/doc/2.x/) template engine
 * Host it anywhere : it's static !
 * Responsive and HTML5 valid theme provided
+* Generate a multi-language documentation
 * Fast building
+* A lot more !
 
 ## Documentation
 
