@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+	
+	<head>
+	<meta charset="utf-8"/>
+	<title>Creating your theme - SkyDocs</title>
+
+	<!-- Description -->
+	<meta name="description" content="SkyDocs is a lightweight static documentation builder with MarkDown."/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<meta name="generator" content="SkyDocs"/>
+	
+	<!-- OpenGraph -->
+	<meta property="og:type" content="website"/>
+	<meta property="og:title" content="Creating your theme - SkyDocs"/>
+	<meta property="og:site_name" content="SkyDocs"/>
+	<meta property="og:url" content="https://skyost.github.io/SkyDocs/en/creating-theme.html"/>
+	<meta property="og:description" content="SkyDocs is a lightweight static documentation builder with MarkDown."/>
+	<meta property="og:image" content="https://skyost.github.io/SkyDocs/assets/images/social.png"/>
+	
+	<!-- Twitter -->
+	<meta name="twitter:card" content="summary"/>
+	<meta name="twitter:title" content="Creating your theme - SkyDocs"/>
+	<meta name="twitter:site" content="SkyDocs"/>
+	<meta name="twitter:creator" content="@Skyost_"/>
+	<meta name="twitter:url" content="https://skyost.github.io/SkyDocs/en/creating-theme.html"/>
+	<meta name="twitter:description" content="SkyDocs is a lightweight static documentation builder with MarkDown."/>
+	<meta name="twitter:image" content="https://skyost.github.io/SkyDocs/assets/images/social.png"/>
+	
+	<!-- Styles -->
+	<meta name="theme-color" content="#292b2c"/>
+	
+	<link rel="icon" type="image/png" href="../assets/img/icon.png"/>
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/css/tether.min.css"/>
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"/>
+	
+	<link rel="stylesheet" type="text/css" href="../assets/css/page.css"/>
+</head>
+
+	<body>
+		<header>
+	<nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse bg-faded">
+		<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<a class="navbar-brand" href="index.html"><img src="../assets/img/icon.png" width="30" height="30" class="d-inline-block align-top" alt=""> SkyDocs</a>
+
+		<div class="collapse navbar-collapse" id="navbar">
+		
+			<ul>
+<li>
+<a href="index.html"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
+</li>
+<li>
+<a href="documentation.html"><i class="fa fa-book" aria-hidden="true"></i> Documentation</a>
+<ul>
+<li>
+<a href="documentation.html#downloading--installing">Downloading & installing</a>
+</li>
+<li>
+<a href="documentation.html#configuration">Configuration</a>
+</li>
+<li>
+<a href="documentation.html#adding-pages">Adding pages</a>
+</li>
+<li>
+<a href="documentation.html#build-your-documentation">Build your documentation</a>
+</li>
+<li>
+<a href="documentation.html#commands">Commands</a>
+</li>
+<li>
+<a href="creating-theme.html">Creating your theme</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="#"><i class="fa fa-question-circle" aria-hidden="true"></i> Help</a>
+<ul>
+<li>
+<a href="https://github.com/Skyost/SkyDocs/issues/new?title=Issue%20/%20Improvement&body=Here%20is%20my%20request%20:%20...%20(You%20can%20also%20contact%20me%20on%20https://www.skyost.eu).">Reporting bugs / Asking for features</a>
+</li>
+<li>
+<a href="about.html">About</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="#"><i class="fa fa-language" aria-hidden="true"></i> Language</a>
+<ul>
+<li>
+<a href="../fr/">Français</a>
+</li>
+</ul>
+</li>
+
+</ul>
+			
+			<form class="form-inline my-2 my-lg-0" action="../search.html" method="get">
+				<input name="keywords" class="form-control mr-sm-2" type="text" placeholder="...">
+				<button class="btn btn-success my-2 my-sm-0" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+			</form>
+		</div>
+	</nav>
+</header>
+		
+		<div id="content" class="container row">
+			<nav class="col-md-4 col-xs-12">
+				
+			</nav>
+			
+			<article class="col-md-8 col-xs-12">
+				
+				<h1 id="creating-your-theme">Creating your theme</h1>
+<p>You probably want to get rid of this ugly default template. Here's how to create your own template.</p>
+<h2 id="page-template">Page template</h2>
+<p>First, you need to have a created project. If you don't know how to create your project, please check <a href="documentation.html#creating-a-new-project">this page</a>.
+Then in your project's directory, create a folder named <em>theme</em> (if it is already created then delete it and re-create it).</p>
+<p>In the theme directory, you must have a file called <em>page.html</em>. This file's content will be applied on each page of your project (located in the contents directory, with the <em>.md</em> file extension).
+Remember : SkyDocs uses <a href="https://twig.sensiolabs.org/doc/2.x/">twig</a> to format your HTML content. So for instance, if <em>page.html</em> contains :</p>
+<pre><code>&lt;p&gt;Here's the content of my page called &quot;{{ page.getTitle() }}&quot; :&lt;/p&gt;
+{{ page.getContent() }}
+</code></pre>
+<p>Then, when you build your project, this will be placed on each content page. You have a lot of other available functions :</p>
+<table>
+<thead>
+<tr><th>Function</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>{{ project.getName() }}</code></td><td>Returns your project's name as configured in the <em>plugin.yml</em>.</td></tr>
+<tr><td><code>{{ project.getDescription() }}</code></td><td>Returns the description of your project as configured in the <em>plugin.yml</em>.</td></tr>
+<tr><td><code>{{ project.getURL() }}</code></td><td>Returns the URL address of your project as configured in the <em>plugin.yml</em>.</td></tr>
+<tr><td><code>{{ project.getDefaultLanguage() }}</code></td><td>Returns your project's default language as configured in the <em>plugin.yml</em>.</td></tr>
+<tr><td><code>{{ project.getPages() }}</code></td><td>Returns an iterable list of your project pages.</td></tr>
+<tr><td><code>{{ project.getMenuHTMLByLanguage(language) }}</code></td><td>Returns the HTML content of the menu corresponding to the specified <em>language</em>.</td></tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr><th>Function</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>{{ page.getTitle() }}</code></td><td>Gets the title of a page (configured in the MarkDown file header).</td></tr>
+<tr><td><code>{{ page.getLanguage() }}</code></td><td>Gets the language of a page (configured in the MarkDown file header).</td></tr>
+<tr><td><code>{{ page.getContent() }}</code></td><td>Gets the content of a page (once converted in HTML).</td></tr>
+<tr><td><code>{{ page.getRelativeURL() }}</code></td><td>Gets the relative URL of a page.</td></tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr><th>Function</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>{{ include_file(&quot;file.html&quot;) }}</code></td><td>Includes the file <em>file.html</em> located in the <em>theme</em> directory. For instance, <code>{{ include_file(&quot;test.html&quot;) }}</code> will add the content of <em>test.html</em>.</td></tr>
+<tr><td>Every key in <em>project.yml</em></td><td>All keys and values in the <em>project.yml</em> file can be used : you only have to put the corresponding key <code>{{ key }}</code>.<br>For instance, if you want your project name, use <code>{{ project_name }}</code>.</td></tr>
+</tbody>
+</table>
+<h2 id="assets-directory">Assets directory</h2>
+<p>If you want to add some CSS styles or images, you will have to create a directory named <em>assets</em> in the theme folder.
+Once created, put everything you want in it : JS Scripts, some CSS and images, etc...</p>
+<p>This directory will be copied in the <em>build</em> folder.</p>
+				
+			</article>
+		</div>
+		
+		<footer class="container">
+	<p class="text-muted"><i class="fa fa-file-text" aria-hidden="true"></i> Documentation theme created by <a href="https://www.skyost.eu">Skyost</a>. Powered by <a href="https://skyost.github.io/SkyDocs">SkyDocs</a>.</p>
+</footer>
+
+ 
+<!-- Javascript -->		  
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../assets/js/toc.min.js"></script>
+<script type="text/javascript" src="../assets/js/page.js"></script>
+		
+	</body>
+</html>

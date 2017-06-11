@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+	
+	<head>
+	<meta charset="utf-8"/>
+	<title>Documentation - SkyDocs</title>
+
+	<!-- Description -->
+	<meta name="description" content="SkyDocs is a lightweight static documentation builder with MarkDown."/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<meta name="generator" content="SkyDocs"/>
+	
+	<!-- OpenGraph -->
+	<meta property="og:type" content="website"/>
+	<meta property="og:title" content="Documentation - SkyDocs"/>
+	<meta property="og:site_name" content="SkyDocs"/>
+	<meta property="og:url" content="https://skyost.github.io/SkyDocs/en/documentation.html"/>
+	<meta property="og:description" content="SkyDocs is a lightweight static documentation builder with MarkDown."/>
+	<meta property="og:image" content="https://skyost.github.io/SkyDocs/assets/images/social.png"/>
+	
+	<!-- Twitter -->
+	<meta name="twitter:card" content="summary"/>
+	<meta name="twitter:title" content="Documentation - SkyDocs"/>
+	<meta name="twitter:site" content="SkyDocs"/>
+	<meta name="twitter:creator" content="@Skyost_"/>
+	<meta name="twitter:url" content="https://skyost.github.io/SkyDocs/en/documentation.html"/>
+	<meta name="twitter:description" content="SkyDocs is a lightweight static documentation builder with MarkDown."/>
+	<meta name="twitter:image" content="https://skyost.github.io/SkyDocs/assets/images/social.png"/>
+	
+	<!-- Styles -->
+	<meta name="theme-color" content="#292b2c"/>
+	
+	<link rel="icon" type="image/png" href="../assets/img/icon.png"/>
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/css/tether.min.css"/>
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"/>
+	
+	<link rel="stylesheet" type="text/css" href="../assets/css/page.css"/>
+</head>
+
+	<body>
+		<header>
+	<nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse bg-faded">
+		<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<a class="navbar-brand" href="index.html"><img src="../assets/img/icon.png" width="30" height="30" class="d-inline-block align-top" alt=""> SkyDocs</a>
+
+		<div class="collapse navbar-collapse" id="navbar">
+		
+			<ul>
+<li>
+<a href="index.html"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
+</li>
+<li>
+<a href="documentation.html"><i class="fa fa-book" aria-hidden="true"></i> Documentation</a>
+<ul>
+<li>
+<a href="documentation.html#downloading--installing">Downloading & installing</a>
+</li>
+<li>
+<a href="documentation.html#configuration">Configuration</a>
+</li>
+<li>
+<a href="documentation.html#adding-pages">Adding pages</a>
+</li>
+<li>
+<a href="documentation.html#build-your-documentation">Build your documentation</a>
+</li>
+<li>
+<a href="documentation.html#commands">Commands</a>
+</li>
+<li>
+<a href="creating-theme.html">Creating your theme</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="#"><i class="fa fa-question-circle" aria-hidden="true"></i> Help</a>
+<ul>
+<li>
+<a href="https://github.com/Skyost/SkyDocs/issues/new?title=Issue%20/%20Improvement&body=Here%20is%20my%20request%20:%20...%20(You%20can%20also%20contact%20me%20on%20https://www.skyost.eu).">Reporting bugs / Asking for features</a>
+</li>
+<li>
+<a href="about.html">About</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="#"><i class="fa fa-language" aria-hidden="true"></i> Language</a>
+<ul>
+<li>
+<a href="../fr/">Français</a>
+</li>
+</ul>
+</li>
+
+</ul>
+			
+			<form class="form-inline my-2 my-lg-0" action="../search.html" method="get">
+				<input name="keywords" class="form-control mr-sm-2" type="text" placeholder="...">
+				<button class="btn btn-success my-2 my-sm-0" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+			</form>
+		</div>
+	</nav>
+</header>
+		
+		<div id="content" class="container row">
+			<nav class="col-md-4 col-xs-12">
+				
+			</nav>
+			
+			<article class="col-md-8 col-xs-12">
+				
+				<h1 id="documentation">Documentation</h1>
+<p>This documentation has been created for <strong>SkyDocs v0.1 Beta</strong>. Don't forget to update it (there is a guide below) !</p>
+<h2 id="downloading--installing">Downloading &amp; installing</h2>
+<p>Here are the steps to download and install the software.</p>
+<h3 id="downloading">Downloading</h3>
+<p>First, you need to have Java installed. If you don't have it, then you can download it <a href="https://java.com/download">here</a>.</p>
+<p>Then you can download the latest version of SkyDocs <a href="https://github.com/Skyost/SkyDocs/releases/latest">here</a>. Unzip the file where you want and that's it !</p>
+<h3 id="creating-a-new-project">Creating a new project</h3>
+<p>To <strong>create a new project</strong>, go to the SkyDocs directory and run the command <code>java -jar SkyDocs.jar new [directory]</code>.
+This will create a brand new project in the specified directory. If you don't specifiy a directory, the JAR's location will be used instead.</p>
+<p>You can also <strong>manually create a new project</strong> : first create a directory and create a file named <em>project.yml</em> and configure it as you want (below are the available options),
+then create a <em>menu.yml</em> file (check below to see how to configure it). You also need to create a directory named <em>content</em> (this is where you put your pages, images, ...).
+That's it !</p>
+<h2 id="configuration">Configuration</h2>
+<p>Once created, you have to configure your new project. Here's how to do it.</p>
+<p>First, open the file <em>project.yml</em>, it contains your project data under an <a href="https://fr.wikipedia.org/wiki/YAML">Yaml syntax</a>.
+Here are the different keys with their corresponding description :</p>
+<table>
+<thead>
+<tr><th>Key</th><th>Type</th><th>Optional</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td>project_name</td><td>string</td><td>no</td><td>Your documentation title.</td></tr>
+<tr><td>project_description</td><td>string</td><td>no</td><td>Your documentation description.</td></tr>
+<tr><td>project_url</td><td>string</td><td>no</td><td>Your documentation hosted URL address.</td></tr>
+<tr><td>default_language</td><td>string</td><td>no</td><td>Your documentation default language.</td></tr>
+<tr><td>lunr_search</td><td>boolean</td><td>yes</td><td>If you set this value to <em>true</em>, SkyDocs will include a <em>search.html</em> page which takes a <em>GET</em> parameter named <em>keywords</em>.<br>You have to send your keywords to this page, and <a href="https://lunrjs.com/">lunr</a> will process it and will show you a list of accurate pages.</td></tr>
+</tbody>
+</table>
+<p>Next, open the file <em>menu.yml</em>. It contains some menu entries :</p>
+<table>
+<thead>
+<tr><th>Key</th><th>Type</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td>title</td><td>string</td><td>Title of the entry.</td></tr>
+<tr><td>link</td><td>string</td><td>Link attached to the menu.</td></tr>
+<tr><td>weight</td><td>integer</td><td>A page with a lower weight will be put before a page with a higher weight.</td></tr>
+<tr><td>children</td><td>list of menu entries</td><td>Contains the sub-menus of this menu entry.</td></tr>
+</tbody>
+</table>
+<h2 id="adding-pages">Adding pages</h2>
+<p>If you want to add pages, images, videos, etc... head to the <em>content</em> directory.
+It is recommended to create a subdirectory per language (so for example if your website has two languages : <em>English</em> and <em>French</em>, create two directories <em>en</em> and <em>fr</em>).</p>
+<p>Now, say that we want to create an <em>english</em> page named <em>Hello</em> with some content, for instance :</p>
+<pre><code>---
+title: Hello
+language: en
+---
+
+# Hello
+
+Nice website uh ?
+</code></pre>
+<p>The first lines are the header, you can only put two things here : the title (<em>title</em>) and the language of the page (<em>language</em>).</p>
+<p>In a menu, you can only put a language.</p>
+<h2 id="build-your-documentation">Build your documentation</h2>
+<p>When you have finished to configure your documentation, you are ready to build it !</p>
+<p>To automatically <strong>build</strong> the documentation, run the file <code>build.bat</code> (or <code>build.sh</code>). To <strong>serve</strong> it on localhost, run the file <code>serve.bat</code> (or <code>serve.sh</code>).
+Those files are created when you create a new project via the command <code>java -jar SkyDocs.jar new [directory]</code>.</p>
+<p>You can also manually <strong>build your documentation</strong> with the command : <code>java -jar SkyDocs.jar build [directory]</code> (if you omit the directory, SkyDocs will try to build
+the project contained in the JAR directory).</p>
+<p>To manually <strong>serve your documentation</strong> on localhost, run this command : <code>java -jar SkyDocs.jar serve [directory] [port]</code> (as always, if you omit the directory,
+SkyDocs will try to build the project contained in the JAR directory). The default port is 4444.</p>
+<h2 id="commands">Commands</h2>
+<p>The table below lists the available commands in SkyDocs :</p>
+<table>
+<thead>
+<tr><th>Syntax</th><th>Default values</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>java -jar SkyDocs.jar new [directory]</code></td><td><strong>directory :</strong> JAR directory</td><td>Creates a new documentation in the specified directory.</td></tr>
+<tr><td><code>java -jar SkyDocs.jar build [directory]</code></td><td><strong>directory :</strong> JAR directory</td><td>Builds the documentation located in the specified directory.</td></tr>
+<tr><td><code>java -jar SkyDocs.jar serve [directory] [port]</code></td><td><strong>directory :</strong> JAR directory<br><strong>port :</strong> 4444</td><td>Builds the documentation located in the specified directory and serve it on localhost with the specified port.</td></tr>
+<tr><td><code>java -jar SkyDocs.jar update</code></td><td></td><td>Checks for updates.</td></tr>
+<tr><td><code>java -jar SkyDocs.jar help [command]</code></td><td><strong>command :</strong> all</td><td>Shows the available commands with their description.</td></tr>
+</tbody>
+</table>
+				
+			</article>
+		</div>
+		
+		<footer class="container">
+	<p class="text-muted"><i class="fa fa-file-text" aria-hidden="true"></i> Documentation theme created by <a href="https://www.skyost.eu">Skyost</a>. Powered by <a href="https://skyost.github.io/SkyDocs">SkyDocs</a>.</p>
+</footer>
+
+ 
+<!-- Javascript -->		  
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../assets/js/toc.min.js"></script>
+<script type="text/javascript" src="../assets/js/page.js"></script>
+		
+	</body>
+</html>
