@@ -4,7 +4,7 @@ package fr.skyost.skydocs.commands;
  * Represents a command.
  */
 
-public abstract class Command {
+public abstract class Command implements Runnable {
 	
 	/**
 	 * Arguments sent to this command.
@@ -71,7 +71,8 @@ public abstract class Command {
 	/**
 	 * Run the command.
 	 */
-		
+	
+	@Override
 	public void run() {
 		if(exitOnFinish) {
 			System.exit(0);

@@ -2,6 +2,7 @@ package fr.skyost.skydocs.utils;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.HashMap;
 
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
@@ -19,12 +20,32 @@ import fr.skyost.skydocs.Constants;
 
 public class IncludeFileFunction extends SimpleJtwigFunction {
 	
-	private final File themeDirectory;
-	private final JtwigModel model;
+	/**
+	 * The current cache.
+	 */
+	
+	private static final HashMap<String, String> CACHE = new HashMap<String, String>();
+	
+	/**
+	 * The directory (where you look up for files).
+	 */
+	
+	private final File directory;
+	
+	/**
+	 * The current jtwig model.
+	 */
+	
+	private JtwigModel model;
+	
+	/**
+	 * Functions to use for parsing files.
+	 */
+	
 	private final JtwigFunction[] functions;
 	
-	public IncludeFileFunction(final File themeDirectory, final JtwigModel model, final JtwigFunction... functions) {
-		this.themeDirectory = themeDirectory;
+	public IncludeFileFunction(final File directory, final JtwigModel model, final JtwigFunction... functions) {
+		this.directory = directory;
 		this.model = model;
 		this.functions = functions;
 	}
@@ -40,18 +61,74 @@ public class IncludeFileFunction extends SimpleJtwigFunction {
 			return "You must specify a file in " + Constants.FUNCTION_INCLUDE_FILE + ".";
 		}
 		final String fileName = functionRequest.getArguments().get(0).toString();
+		if(CACHE.containsKey(fileName)) {
+			return CACHE.get(fileName);
+		}
 		try {
-			final File file = new File(themeDirectory, fileName);
+			final File file = new File(directory.getPath() + File.separator + fileName);
 			if(!file.exists() || !file.isFile()) {
-				return "Incorrect path given : " + themeDirectory.getPath() + File.separator + fileName;
+				return "Incorrect path given : " + directory.getPath() + File.separator + fileName;
 			}
 			final EnvironmentConfiguration configuration = EnvironmentConfigurationBuilder.configuration().functions().add(this).add(Arrays.asList(functions)).and().build();
-			return JtwigTemplate.fileTemplate(file, configuration).render(model);
+			final String content = JtwigTemplate.fileTemplate(file, configuration).render(model);
+			CACHE.put(fileName, content);
+			return content;
 		}
 		catch(final Exception ex) {
 			ex.printStackTrace();
-			return "Unable to parse " + themeDirectory.getPath() + File.separator + fileName + " (" + ex.getClass().getName() + ")";
+			return "Unable to parse " + directory.getPath() + File.separator + fileName + " (" + ex.getClass().getName() + ")";
 		}
+	}
+	
+	/**
+	 * Gets the current model.
+	 * 
+	 * @return The current model.
+	 */
+	
+	public final JtwigModel getModel() {
+		return model;
+	}
+	
+	/**
+	 * Sets the current model.
+	 * 
+	 * @param model The new model.
+	 */
+	
+	public final void setModel(final JtwigModel model) {
+		this.model = model;
+	}
+	
+	/**
+	 * Gets the cached content for the specified file name.
+	 * 
+	 * @param fileName The file name.
+	 * 
+	 * @return The cached content.
+	 */
+	
+	public final String getCacheContent(final String fileName) {
+		return CACHE.get(fileName);
+	}
+	
+	/**
+	 * Puts some content in the cache for the specified file name.
+	 * 
+	 * @param fileName The file name.
+	 * @param content The content.
+	 */
+	
+	public final void putCacheContent(final String fileName, final String content) {
+		CACHE.put(fileName, content);
+	}
+	
+	/**
+	 * Clears the current cache.
+	 */
+	
+	public final void clearCache() {
+		CACHE.clear();
 	}
 	
 }

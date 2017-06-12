@@ -26,7 +26,6 @@ import fr.skyost.skydocs.DocsPage;
 import fr.skyost.skydocs.DocsProject;
 import fr.skyost.skydocs.DocsTemplate;
 import fr.skyost.skydocs.utils.IncludeFileFunction;
-import fr.skyost.skydocs.utils.RangeFunction;
 import fr.skyost.skydocs.utils.Utils;
 
 /**
@@ -46,15 +45,22 @@ public class BuildCommand extends Command {
 		try {
 			final String[] args = this.getArguments();
 			final File directory = args.length > 0 && args[0].length() > 0 ? new File(args[0]) : Utils.getParentFolder();
+			
 			System.out.print("Loading project from directory \"" + directory.getPath() + "\"...");
 			final DocsProject project = DocsProject.loadFromDirectory(directory);
-			System.out.println(" OK !");
-			
 			setCurrentBuildDirectory(project);
 			if(buildDirectory.exists()) {
 				Utils.deleteDirectory(buildDirectory);
 			}
 			buildDirectory.mkdirs();
+			
+			final File themeDirectory = project.getThemeDirectory();
+			if(!themeDirectory.exists() || !themeDirectory.isDirectory()) {
+				themeDirectory.mkdir();
+				Utils.extract(Constants.RESOURCE_DEFAULT_THEME_PATH, Constants.RESOURCE_DEFAULT_THEME_DIRECTORY, themeDirectory);
+			}
+			final DocsTemplate template = new DocsTemplate(project.getProjectVariables(), project);
+			System.out.println(" OK !");
 			
 			System.out.print("Copying and converting files...");
 			
@@ -62,20 +68,12 @@ public class BuildCommand extends Command {
 			model.with(Constants.VARIABLE_PROJECT, project);
 			model.with(Constants.VARIABLE_PAGE, DocsPage.createBlankParsablePage());
 			
-			final RangeFunction rangeFunction = new RangeFunction();
-			final EnvironmentConfiguration configuration = EnvironmentConfigurationBuilder.configuration().functions().add(new IncludeFileFunction(project.getThemeDirectory(), model, rangeFunction)).add(rangeFunction).and().build();
+			final EnvironmentConfiguration configuration = EnvironmentConfigurationBuilder.configuration().functions().add(new IncludeFileFunction(project.getThemeDirectory(), model, DocsTemplate.RANGE_FUNCTION)).add(DocsTemplate.RANGE_FUNCTION).and().build();
 			
 			final List<Extension> extensions = Arrays.asList(TablesExtension.create(), StrikethroughExtension.create(), HeadingAnchorExtension.create());
 			final Parser parser = Parser.builder().extensions(extensions).build();
 			final HtmlRenderer renderer = HtmlRenderer.builder().extensions(extensions).build();
 			
-			final File themeDirectory = project.getThemeDirectory();
-			if(!themeDirectory.exists() || !themeDirectory.isDirectory()) {
-				themeDirectory.mkdir();
-				Utils.extract(Constants.RESOURCE_DEFAULT_THEME_PATH, Constants.RESOURCE_DEFAULT_THEME_DIRECTORY, themeDirectory);
-			}
-			
-			final DocsTemplate template = new DocsTemplate(project.getProjectVariables(), project);
 			final HashSet<File> copied = new HashSet<File>();
 			
 			final boolean lunr = project.getProjectVariables().containsKey(Constants.KEY_PROJECT_LUNR_SEARCH) && Boolean.valueOf(project.getProjectVariables().get(Constants.KEY_PROJECT_LUNR_SEARCH).toString());
@@ -125,6 +123,8 @@ public class BuildCommand extends Command {
 				Files.write(searchFile.toPath(), JtwigTemplate.fileTemplate(searchFile, configuration).render(model).getBytes(StandardCharsets.UTF_8));
 				template.applyTemplate(project, searchFile);
 			}
+			
+			template.getCurrentIncludeFileFunction().clearCache();
 			
 			final File contentDirectory = Utils.createFileIfNotExist(project.getContentDirectory());
 			for(final File content : contentDirectory.listFiles()) {

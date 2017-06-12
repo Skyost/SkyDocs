@@ -196,7 +196,7 @@ public class DocsPage {
 	
 	public static final DocsPage createFromFile(final DocsProject project, final File file) {
 		final String[] parts = Utils.separateFileHeader(file);
-		String title = file.getName().replace(".md", "");
+		String title = file.getName().replace(".md", "").replace(".html", ""); // TODO: Handle .HTML & .MD
 		String language = project.getDefaultLanguage();
 		if(parts[0] != null) {
 			final Map<String, Object> headers = Utils.decodeFileHeader(parts[0]);
