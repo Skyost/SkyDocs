@@ -14,6 +14,9 @@ public class SkyDocs {
 		if(args.length == 0) {
 			args = new String[]{Constants.COMMAND_HELP};
 		}
+		if(args[0].startsWith("-")) {
+			args[0] = args[0].substring(1);
+		}
 		switch(args[0].toLowerCase()) {
 		case Constants.COMMAND_NEW:
 			new NewCommand(Arrays.copyOfRange(args, 1, args.length)).run();
@@ -32,7 +35,7 @@ public class SkyDocs {
 			new UpdateCommand().run();
 			break;
 		default:
-			new HelpCommand().run();
+			new HelpCommand(Arrays.copyOfRange(args, 1, args.length)).run();
 			break;
 		}
 	}
