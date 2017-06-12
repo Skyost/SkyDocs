@@ -3,7 +3,10 @@
 		<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
-		<a class="navbar-brand" href="index.html"><img src="../assets/img/icon.png" width="30" height="30" class="d-inline-block align-top" alt=""> {{ project.getName() }}</a>
+		
+		{% set dirNumbers = range(2, ((page.getPageRelativeURL() | split('/')) | length)) %}
+		
+		<a class="navbar-brand" href="index.html"><img src="{% for i in dirNumbers %}../{% endfor %}assets/img/icon.png" width="30" height="30" class="d-inline-block align-top" alt="{{ project.getName() }}"> {{ project.getName() }}</a>
 
 		<div class="collapse navbar-collapse" id="navbar">
 		
