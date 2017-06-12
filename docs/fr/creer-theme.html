@@ -30,6 +30,8 @@
 	<!-- Styles -->
 	<meta name="theme-color" content="#292b2c"/>
 	
+	
+	
 	<link rel="icon" type="image/png" href="../assets/img/icon.png"/>
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/css/tether.min.css"/>
@@ -118,7 +120,7 @@
 <p>Tout d'abord, vous devez avoir créé un projet. Si ceci n'est pas déjà fait, <a href="documentation.html#creer-un-nouveau-projet">cette page</a> vous guidera pas à pas.
 Maintenant, rendez-vous dans le répertoire de votre projet et créez un dossier appelé <em>theme</em> (si il est déjà créé, supprimez-le et recréez-le).</p>
 <p>Dans le dossier du theme, vous devez posséder un fichier appelé <em>page.html</em>. Le contenu de ce fichier sera appliqué sur chaque page de votre projet (situées dans le dossier <em>content</em> et possédant l'extension de fichier <em>.md</em>).
-Souvenez-vous : SkyDocs utilise <a href="https://twig.sensiolabs.org/doc/2.x/">twig</a> pour formatter votre contenu HTML. Donc par exemple, si <em>page.html</em> contient :</p>
+Souvenez-vous : SkyDocs utilise <a href="http://jtwig.org/documentation/reference/functions">jtwig</a> pour formatter votre contenu HTML. Donc par exemple, si <em>page.html</em> contient :</p>
 <pre><code>&lt;p&gt;Voici le contenu de ma page nommée &quot;{{ page.getTitle() }}&quot; :&lt;/p&gt;
 {{ page.getContent() }}
 </code></pre>

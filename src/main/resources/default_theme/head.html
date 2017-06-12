@@ -27,10 +27,12 @@
 	<!-- Styles -->
 	<meta name="theme-color" content="#292b2c"/>
 	
-	<link rel="icon" type="image/png" href="../assets/img/icon.png"/>
+	{% set dirNumbers = range(2, ((page.getPageRelativeURL() | split('/')) | length)) %}
+	
+	<link rel="icon" type="image/png" href="{% for i in dirNumbers %}../{% endfor %}assets/img/icon.png"/>
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/css/tether.min.css"/>
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"/>
 	
-	<link rel="stylesheet" type="text/css" href="../assets/css/page.css"/>
+	<link rel="stylesheet" type="text/css" href="{% for i in dirNumbers %}../{% endfor %}assets/css/page.css"/>
 </head>

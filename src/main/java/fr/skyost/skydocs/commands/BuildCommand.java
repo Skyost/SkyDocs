@@ -16,6 +16,8 @@ import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
+import org.jtwig.environment.EnvironmentConfiguration;
+import org.jtwig.environment.EnvironmentConfigurationBuilder;
 
 import com.google.common.base.Ascii;
 
@@ -23,6 +25,8 @@ import fr.skyost.skydocs.Constants;
 import fr.skyost.skydocs.DocsPage;
 import fr.skyost.skydocs.DocsProject;
 import fr.skyost.skydocs.DocsTemplate;
+import fr.skyost.skydocs.utils.IncludeFileFunction;
+import fr.skyost.skydocs.utils.RangeFunction;
 import fr.skyost.skydocs.utils.Utils;
 
 /**
@@ -58,6 +62,9 @@ public class BuildCommand extends Command {
 			model.with(Constants.VARIABLE_PROJECT, project);
 			model.with(Constants.VARIABLE_PAGE, DocsPage.createBlankParsablePage());
 			
+			final RangeFunction rangeFunction = new RangeFunction();
+			final EnvironmentConfiguration configuration = EnvironmentConfigurationBuilder.configuration().functions().add(new IncludeFileFunction(project.getThemeDirectory(), model, rangeFunction)).add(rangeFunction).and().build();
+			
 			final List<Extension> extensions = Arrays.asList(TablesExtension.create(), StrikethroughExtension.create(), HeadingAnchorExtension.create());
 			final Parser parser = Parser.builder().extensions(extensions).build();
 			final HtmlRenderer renderer = HtmlRenderer.builder().extensions(extensions).build();
@@ -87,7 +94,7 @@ public class BuildCommand extends Command {
 				
 				final String[] parts = Utils.separateFileHeader(file);
 				final String header = parts[0] != null ? Constants.HEADER_MARK + Utils.LINE_SEPARATOR + parts[0] + Utils.LINE_SEPARATOR + Constants.HEADER_MARK + Utils.LINE_SEPARATOR : "";
-				final String content = renderer.render(parser.parse(JtwigTemplate.inlineTemplate(parts[1]).render(model)));
+				final String content = renderer.render(parser.parse(JtwigTemplate.inlineTemplate(parts[1], configuration).render(model)));
 				
 				if(lunr) {
 					String contentNoHTML = Utils.stripHTML(content);
@@ -115,7 +122,7 @@ public class BuildCommand extends Command {
 				Utils.extract(Constants.RESOURCE_SEARCH_PAGE_PATH, Constants.RESOURCE_SEARCH_PAGE_FILE, buildDirectory);
 				model.with(Constants.VARIABLE_PAGE, DocsPage.createFromFile(project, searchFile));
 				
-				Files.write(searchFile.toPath(), JtwigTemplate.fileTemplate(searchFile).render(model).getBytes(StandardCharsets.UTF_8));
+				Files.write(searchFile.toPath(), JtwigTemplate.fileTemplate(searchFile, configuration).render(model).getBytes(StandardCharsets.UTF_8));
 				template.applyTemplate(project, searchFile);
 			}
 			

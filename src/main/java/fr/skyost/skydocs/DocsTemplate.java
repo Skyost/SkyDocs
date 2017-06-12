@@ -11,10 +11,9 @@ import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 import org.jtwig.environment.EnvironmentConfiguration;
 import org.jtwig.environment.EnvironmentConfigurationBuilder;
-import org.jtwig.functions.FunctionRequest;
-import org.jtwig.functions.SimpleJtwigFunction;
-
 import fr.skyost.skydocs.exceptions.InvalidTemplateException;
+import fr.skyost.skydocs.utils.IncludeFileFunction;
+import fr.skyost.skydocs.utils.RangeFunction;
 
 /**
  * Represents a theme / template.
@@ -39,6 +38,12 @@ public class DocsTemplate {
 	 */
 	
 	private String template;
+	
+	/**
+	 * The range function.
+	 */
+	
+	private final RangeFunction rangeFunction = new RangeFunction();
 	
 	/**
 	 * Creates a new DocsTemplate instance.
@@ -140,48 +145,9 @@ public class DocsTemplate {
 		variables.put(Constants.VARIABLE_PAGE, page);
 		
 		final JtwigModel model = JtwigModel.newModel(variables);
-		final EnvironmentConfiguration configuration = EnvironmentConfigurationBuilder.configuration().functions().add(new IncludeFileFunction(model)).and().build();
+		final EnvironmentConfiguration configuration = EnvironmentConfigurationBuilder.configuration().functions().add(new IncludeFileFunction(themeDirectory, model, rangeFunction)).add(rangeFunction).and().build();
 		
 		Files.write(file.toPath(), JtwigTemplate.inlineTemplate(template, configuration).render(model).getBytes(StandardCharsets.UTF_8));
-	}
-	
-	/**
-	 * The includeFile("file.html") function.
-	 */
-	
-	private class IncludeFileFunction extends SimpleJtwigFunction {
-		
-		private final JtwigModel model;
-		
-		public IncludeFileFunction(final JtwigModel model) {
-			this.model = model;
-		}
-
-		@Override
-		public String name() {
-			return Constants.FUNCTION_INCLUDE_FILE;
-		}
-		
-		@Override
-		public final Object execute(final FunctionRequest functionRequest) {
-			if(functionRequest.getNumberOfArguments() == 0) {
-				return "You must specify a file in " + Constants.FUNCTION_INCLUDE_FILE + ".";
-			}
-			final String fileName = functionRequest.getArguments().get(0).toString();
-			try {
-				final File file = new File(themeDirectory, fileName);
-				if(!file.exists() || !file.isFile()) {
-					return "Incorrect path given : " + themeDirectory.getPath() + File.separator + fileName;
-				}
-				final EnvironmentConfiguration configuration = EnvironmentConfigurationBuilder.configuration().functions().add(this).and().build();
-				return JtwigTemplate.fileTemplate(file, configuration).render(model);
-			}
-			catch(final Exception ex) {
-				ex.printStackTrace();
-				return "Unable to parse " + themeDirectory.getPath() + File.separator + fileName + " (" + ex.getClass().getName() + ")";
-			}
-		}
-		
 	}
 	
 }

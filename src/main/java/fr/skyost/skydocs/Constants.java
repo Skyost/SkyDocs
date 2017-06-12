@@ -301,6 +301,12 @@ public class Constants {
 	public static final String FUNCTION_INCLUDE_FILE = "includeFile";
 	
 	/**
+	 * The range function.
+	 */
+	
+	public static final String FUNCTION_RANGE = "range";
+	
+	/**
 	 * The project variable.
 	 */
 	

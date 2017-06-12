@@ -19,9 +19,27 @@ import org.yaml.snakeyaml.Yaml;
 import fr.skyost.skydocs.Constants;
 import fr.skyost.skydocs.SkyDocs;
 
+/**
+ * Contains a lot of useful functions.
+ */
+
 public class Utils {
 	
+	/**
+	 * System independent line separator.
+	 */
+	
 	public static final String LINE_SEPARATOR = System.lineSeparator();
+	
+	/**
+	 * Creates a file or a directory if it does not exist.
+	 * 
+	 * @param file The file or directory.
+	 * 
+	 * @return The file.
+	 * 
+	 * @throws IOException If an error occurs while trying to create the file.
+	 */
 	
 	public static final File createFileIfNotExist(final File file) throws IOException {
 		if(!file.exists()) {
@@ -42,6 +60,12 @@ public class Utils {
 		catch(final Exception ex) {}
 		return null;
 	}
+	
+	/**
+	 * Gets the JAR file.
+	 * 
+	 * @return The JAR file.
+	 */
 	
 	public static final File getJARFile() {
 		try {
@@ -67,6 +91,14 @@ public class Utils {
 		return jar.getParentFile();
 	}
 	
+	/**
+	 * Reads a file and separate header from content.
+	 * 
+	 * @param file The part.
+	 * 
+	 * @return A String array, index 0 is the header and index 1 is the content.
+	 */
+	
 	public static final String[] separateFileHeader(final File file) {
 		try {
 			final List<String> lines = Files.readAllLines(file.toPath(), StandardCharsets.UTF_8);
@@ -86,13 +118,22 @@ public class Utils {
 			
 			return new String[]{
 					Utils.join(LINE_SEPARATOR, lines.subList(1, headerLimit)),
-					Utils.join(LINE_SEPARATOR, lines.subList(headerLimit + 1, lines.size()))};
+					Utils.join(LINE_SEPARATOR, lines.subList(headerLimit + 1, lines.size()))
+			};
 		}
 		catch(final Exception ex) {
 			ex.printStackTrace();
 		}
 		return null;
 	}
+	
+	/**
+	 * Decodes a file's header.
+	 * 
+	 * @param header The header.
+	 * 
+	 * @return A map representing the YAML content key : value.
+	 */
 	
 	@SuppressWarnings("unchecked")
 	public static final Map<String, Object> decodeFileHeader(final String header) {
@@ -102,6 +143,15 @@ public class Utils {
 		final Yaml yaml = new Yaml();
 		return (Map<String, Object>)yaml.load(header);
 	}
+	
+	/**
+	 * Copies a directory.
+	 * 
+	 * @param directory The directory.
+	 * @param destination The destination.
+	 * 
+	 * @throws IOException If an error occurs while trying to create the directory.
+	 */
 	
 	public static final void copyDirectory(final File directory, final File destination) throws IOException {
 		if(directory.isFile()) {
@@ -113,6 +163,12 @@ public class Utils {
 			copyDirectory(file, new File(destination, file.getName()));
 		}
 	}
+	
+	/**
+	 * Deletes a directory.
+	 * 
+	 * @param directory The directory.
+	 */
 	
 	public static final void deleteDirectory(final File directory) {
 		if(directory.isFile()) {
@@ -179,8 +235,16 @@ public class Utils {
 		}
 	}
 	
-	public static final String stripHTML(final String s) {
-		return s.replaceAll("\\<.*?\\>", "").replace("\n", "").replace("\r", "");
+	/**
+	 * Strips HTML from a String.
+	 * 
+	 * @param string The String.
+	 * 
+	 * @return The String without HTML.
+	 */
+	
+	public static final String stripHTML(final String string) {
+		return string.replaceAll("\\<.*?\\>", "").replace("\n", "").replace("\r", "");
 	}
 	
 	/**
