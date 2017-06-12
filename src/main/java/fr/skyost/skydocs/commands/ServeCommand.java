@@ -19,6 +19,10 @@ import fr.skyost.skydocs.utils.Utils;
 
 public class ServeCommand extends Command {
 	
+	/**
+	 * The project's build directory.
+	 */
+	
 	private File buildDirectory;
 	
 	public ServeCommand(final String... args) {

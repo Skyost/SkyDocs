@@ -34,6 +34,22 @@ import fr.skyost.skydocs.utils.Utils;
 
 public class BuildCommand extends Command {
 	
+	/**
+	 * First time point.
+	 */
+	
+	private long firstTime = 0L;
+	
+	/**
+	 * Second time point.
+	 */
+	
+	private long secondTime = 0L;
+	
+	/**
+	 * The project's build directory.
+	 */
+	
 	private File buildDirectory;
 	
 	public BuildCommand(final String... args) {
@@ -47,6 +63,8 @@ public class BuildCommand extends Command {
 			final File directory = args.length > 0 && args[0].length() > 0 ? new File(args[0]) : Utils.getParentFolder();
 			
 			System.out.print("Loading project from directory \"" + directory.getPath() + "\"...");
+			firstTime();
+			
 			final DocsProject project = DocsProject.loadFromDirectory(directory);
 			setCurrentBuildDirectory(project);
 			if(buildDirectory.exists()) {
@@ -60,9 +78,12 @@ public class BuildCommand extends Command {
 				Utils.extract(Constants.RESOURCE_DEFAULT_THEME_PATH, Constants.RESOURCE_DEFAULT_THEME_DIRECTORY, themeDirectory);
 			}
 			final DocsTemplate template = new DocsTemplate(project.getProjectVariables(), project);
-			System.out.println(" OK !");
+			
+			secondTime();
+			System.out.println(" Done in " + timeElapsed() + " seconds !");
 			
 			System.out.print("Copying and converting files...");
+			firstTime();
 			
 			final JtwigModel model = JtwigModel.newModel(project.getProjectVariables());
 			model.with(Constants.VARIABLE_PROJECT, project);
@@ -133,13 +154,19 @@ public class BuildCommand extends Command {
 			Utils.extract(Constants.RESOURCE_REDIRECT_LANGUAGE_PATH, Constants.RESOURCE_REDIRECT_LANGUAGE_FILE, buildDirectory);
 			
 			Files.write(new File(buildDirectory, Constants.RESOURCE_REDIRECT_LANGUAGE_FILE).toPath(), JtwigTemplate.fileTemplate(new File(buildDirectory, Constants.RESOURCE_REDIRECT_LANGUAGE_FILE)).render(JtwigModel.newModel().with(Constants.VARIABLE_REDIRECTION_URL, project.getDefaultLanguage() + "/")).getBytes(StandardCharsets.UTF_8));
-			System.out.println(" OK !");
+			
+			secondTime();
+			System.out.println(" Done in " + timeElapsed() + " seconds !");
 			
 			final File assetsDirectory = new File(themeDirectory, Constants.FILE_ASSETS_DIRECTORY);
 			if(assetsDirectory.exists() && assetsDirectory.isDirectory()) {
 				System.out.print("Copying assets directory...");
+				firstTime();
+				
 				Utils.copyDirectory(assetsDirectory, new File(buildDirectory, Constants.FILE_ASSETS_DIRECTORY));
-				System.out.println(" OK !");
+				
+				secondTime();
+				System.out.println(" Done in " + timeElapsed() + " seconds !");
 			}
 			
 			System.out.println("Done ! You just have to put the content of \"" + buildDirectory.getPath() + "\" on your web server.");
@@ -148,6 +175,30 @@ public class BuildCommand extends Command {
 			ex.printStackTrace();
 		}
 		super.run();
+	}
+	
+	/**
+	 * Registers the first time point.
+	 */
+	
+	public final void firstTime() {
+		firstTime = System.currentTimeMillis();
+	}
+	
+	/**
+	 * Registers the second time point.
+	 */
+	
+	public final void secondTime() {
+		secondTime = System.currentTimeMillis();
+	}
+	
+	/**
+	 * Returns the second elapsed between the two time points.
+	 */
+	
+	public final float timeElapsed() {
+		return (float)((secondTime - firstTime) / 1000f);
 	}
 	
 	/**

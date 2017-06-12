@@ -1,6 +1,8 @@
 package fr.skyost.skydocs.utils;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -61,18 +63,18 @@ public class IncludeFileFunction extends SimpleJtwigFunction {
 			return "You must specify a file in " + Constants.FUNCTION_INCLUDE_FILE + ".";
 		}
 		final String fileName = functionRequest.getArguments().get(0).toString();
-		if(CACHE.containsKey(fileName)) {
-			return CACHE.get(fileName);
-		}
 		try {
+			final EnvironmentConfiguration configuration = EnvironmentConfigurationBuilder.configuration().functions().add(this).add(Arrays.asList(functions)).and().build();
+			if(CACHE.containsKey(fileName)) {
+				return JtwigTemplate.inlineTemplate(CACHE.get(fileName), configuration).render(model);
+			}
 			final File file = new File(directory.getPath() + File.separator + fileName);
 			if(!file.exists() || !file.isFile()) {
 				return "Incorrect path given : " + directory.getPath() + File.separator + fileName;
 			}
-			final EnvironmentConfiguration configuration = EnvironmentConfigurationBuilder.configuration().functions().add(this).add(Arrays.asList(functions)).and().build();
-			final String content = JtwigTemplate.fileTemplate(file, configuration).render(model);
+			final String content = new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
 			CACHE.put(fileName, content);
-			return content;
+			return JtwigTemplate.inlineTemplate(content, configuration).render(model);
 		}
 		catch(final Exception ex) {
 			ex.printStackTrace();
