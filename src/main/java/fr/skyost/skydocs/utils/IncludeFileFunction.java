@@ -133,7 +133,7 @@ public class IncludeFileFunction extends SimpleJtwigFunction {
 	
 	public final String renderIncludeFile(String toRender) {
 		final EnvironmentConfiguration configuration = EnvironmentConfigurationBuilder.configuration().functions().add(this).add(Arrays.asList(functions)).and().build();
-		final Matcher matcher = Pattern.compile("\\{\\{[ ]?" + Constants.FUNCTION_INCLUDE_FILE + "\\(\".*?\"\\)[ ]?\\}\\}").matcher(toRender);
+		final Matcher matcher = Pattern.compile("\\{\\{[ ]{0,}" + Constants.FUNCTION_INCLUDE_FILE + "\\(\".*?\"\\)[ ]{0,}\\}\\}").matcher(toRender);
 		while(matcher.find()) {
 			final String matching = matcher.group();
 			toRender = toRender.replace(matching, JtwigTemplate.inlineTemplate(matching, configuration).render(model));

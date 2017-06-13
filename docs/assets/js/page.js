@@ -36,7 +36,7 @@ $(document).ready(function() {
 			$('#content nav ul').css('position', '');
 			return;
 		}
-		$('#content nav ul').css('position', isScrolledIntoView($('#navbar')) ? '' : 'fixed').css('top', '31px');
+		$('#content nav ul').css('position', isElementInViewport($('#navbar')) ? '' : 'fixed').css('top', '31px');
 	});
 	
 	// ANCHORS LINKS :
@@ -52,12 +52,19 @@ $(document).ready(function() {
 	});
 });
 
-function isScrolledIntoView(elem) {
-	var docViewTop = $(window).scrollTop();
-	var docViewBottom = docViewTop + $(window).height();
+function isElementInViewport (el) {
 
-	var elemTop = elem.offset().top;
-	var elemBottom = elemTop + elem.height();
+    //special bonus for those using jQuery
+	if (typeof jQuery === "function" && el instanceof jQuery) {
+		el = el[0];
+	}
 
-	return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
+	var rect = el.getBoundingClientRect();
+
+	return (
+		rect.top >= 0 &&
+		rect.left >= 0 &&
+		rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) && /*or $(window).height() */
+		rect.right <= (window.innerWidth || document.documentElement.clientWidth) /*or $(window).width() */
+    );
 }

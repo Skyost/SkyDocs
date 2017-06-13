@@ -48,6 +48,11 @@ pre {
 	color: #2c3e50;
 }
 
+#content h1 {
+	border-bottom: 1px solid #eceeef;
+	padding-bottom: 10px;
+}
+
 #content nav ul {
 	list-style-type: none;
 	padding-left: 16px;
