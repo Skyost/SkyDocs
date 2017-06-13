@@ -34,6 +34,7 @@ import fr.skyost.skydocs.utils.Utils;
 
 public class BuildCommand extends Command {
 	
+	
 	/**
 	 * First time point.
 	 */
@@ -87,7 +88,6 @@ public class BuildCommand extends Command {
 			
 			final JtwigModel model = JtwigModel.newModel(project.getProjectVariables());
 			model.with(Constants.VARIABLE_PROJECT, project);
-			model.with(Constants.VARIABLE_PAGE, DocsPage.createBlankParsablePage());
 			
 			final EnvironmentConfiguration configuration = EnvironmentConfigurationBuilder.configuration().functions().add(new IncludeFileFunction(project.getThemeDirectory(), model, DocsTemplate.RANGE_FUNCTION)).add(DocsTemplate.RANGE_FUNCTION).and().build();
 			
@@ -111,6 +111,8 @@ public class BuildCommand extends Command {
 					destination.getParentFile().mkdirs();
 				}
 				
+				model.with(Constants.VARIABLE_PAGE, page);
+				
 				final String[] parts = Utils.separateFileHeader(file);
 				final String header = parts[0] != null ? Constants.HEADER_MARK + Utils.LINE_SEPARATOR + parts[0] + Utils.LINE_SEPARATOR + Constants.HEADER_MARK + Utils.LINE_SEPARATOR : "";
 				final String content = renderer.render(parser.parse(JtwigTemplate.inlineTemplate(parts[1], configuration).render(model)));
@@ -121,11 +123,7 @@ public class BuildCommand extends Command {
 						contentNoHTML = Ascii.truncate(contentNoHTML, 140, "...");
 					}
 					final String title = parts[0] == null && Utils.decodeFileHeader(parts[0]).containsKey(Constants.KEY_HEADER_TITLE) ? file.getName().replace(".html", "") : Utils.decodeFileHeader(parts[0]).get(Constants.KEY_HEADER_TITLE).toString();
-					lunrContent.append("'" + title.toLowerCase().replace(".", "-").replace("'", "\\'") + "': {"
-							+ "title: '" + Utils.stripHTML(title).replace("'", "\\'") + "', "
-							+ "content: '" + contentNoHTML.replace("'", "\\'") + "', "
-							+ "url: '" + page.getPageRelativeURL().substring(1) + "'"
-							+ "}, ");
+					lunrContent.append("'" + title.toLowerCase().replace(".", "-").replace("'", "\\'") + "': {" + "title: '" + Utils.stripHTML(title).replace("'", "\\'") + "', " + "content: '" + contentNoHTML.replace("'", "\\'") + "', " + "url: '" + page.getPageRelativeURL().substring(1) + "'" + "}, ");
 				}
 				
 				Files.write(destination.toPath(), (header + content).getBytes(StandardCharsets.UTF_8));
@@ -144,8 +142,6 @@ public class BuildCommand extends Command {
 				Files.write(searchFile.toPath(), JtwigTemplate.fileTemplate(searchFile, configuration).render(model).getBytes(StandardCharsets.UTF_8));
 				template.applyTemplate(project, searchFile);
 			}
-			
-			template.getCurrentIncludeFileFunction().clearCache();
 			
 			final File contentDirectory = Utils.createFileIfNotExist(project.getContentDirectory());
 			for(final File content : contentDirectory.listFiles()) {

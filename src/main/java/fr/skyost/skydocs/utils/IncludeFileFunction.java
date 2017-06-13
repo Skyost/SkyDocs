@@ -4,7 +4,8 @@ import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
@@ -23,12 +24,6 @@ import fr.skyost.skydocs.Constants;
 public class IncludeFileFunction extends SimpleJtwigFunction {
 	
 	/**
-	 * The current cache.
-	 */
-	
-	private static final HashMap<String, String> CACHE = new HashMap<String, String>();
-	
-	/**
 	 * The directory (where you look up for files).
 	 */
 	
@@ -41,15 +36,43 @@ public class IncludeFileFunction extends SimpleJtwigFunction {
 	private JtwigModel model;
 	
 	/**
+	 * If the function should entirely render the file.
+	 */
+	
+	private final boolean render;
+	
+	/**
 	 * Functions to use for parsing files.
 	 */
 	
 	private final JtwigFunction[] functions;
 	
+	/**
+	 * Creates a new IncludeFileFunction instance.
+	 * 
+	 * @param directory Where to find files.
+	 * @param model The jtwig model.
+	 * @param functions The functions (used to render).
+	 */
+	
 	public IncludeFileFunction(final File directory, final JtwigModel model, final JtwigFunction... functions) {
+		this(directory, model, true, functions);
+	}
+	
+	/**
+	 * Creates a new IncludeFileFunction instance.
+	 * 
+	 * @param directory Where to find files.
+	 * @param model The jtwig model.
+	 * @param render If the file should be entirely rendered.
+	 * @param functions The functions (used to render).
+	 */
+	
+	public IncludeFileFunction(final File directory, final JtwigModel model, final boolean render, final JtwigFunction... functions) {
 		this.directory = directory;
 		this.model = model;
-		this.functions = functions;
+		this.render = render;
+		this.functions = functions == null ? new JtwigFunction[0] : functions;
 	}
 
 	@Override
@@ -64,17 +87,15 @@ public class IncludeFileFunction extends SimpleJtwigFunction {
 		}
 		final String fileName = functionRequest.getArguments().get(0).toString();
 		try {
-			final EnvironmentConfiguration configuration = EnvironmentConfigurationBuilder.configuration().functions().add(this).add(Arrays.asList(functions)).and().build();
-			if(CACHE.containsKey(fileName)) {
-				return JtwigTemplate.inlineTemplate(CACHE.get(fileName), configuration).render(model);
-			}
 			final File file = new File(directory.getPath() + File.separator + fileName);
 			if(!file.exists() || !file.isFile()) {
 				return "Incorrect path given : " + directory.getPath() + File.separator + fileName;
 			}
-			final String content = new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
-			CACHE.put(fileName, content);
-			return JtwigTemplate.inlineTemplate(content, configuration).render(model);
+			if(!render) {
+				return renderIncludeFile(new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8));
+			}
+			final EnvironmentConfiguration configuration = EnvironmentConfigurationBuilder.configuration().functions().add(this).add(Arrays.asList(functions)).and().build();
+			return JtwigTemplate.fileTemplate(file, configuration).render(model);
 		}
 		catch(final Exception ex) {
 			ex.printStackTrace();
@@ -103,34 +124,21 @@ public class IncludeFileFunction extends SimpleJtwigFunction {
 	}
 	
 	/**
-	 * Gets the cached content for the specified file name.
+	 * Render a String but processing only include file functions.
 	 * 
-	 * @param fileName The file name.
+	 * @param toRender String to render.
 	 * 
-	 * @return The cached content.
+	 * @return Rendered String.
 	 */
 	
-	public final String getCacheContent(final String fileName) {
-		return CACHE.get(fileName);
-	}
-	
-	/**
-	 * Puts some content in the cache for the specified file name.
-	 * 
-	 * @param fileName The file name.
-	 * @param content The content.
-	 */
-	
-	public final void putCacheContent(final String fileName, final String content) {
-		CACHE.put(fileName, content);
-	}
-	
-	/**
-	 * Clears the current cache.
-	 */
-	
-	public final void clearCache() {
-		CACHE.clear();
+	public final String renderIncludeFile(String toRender) {
+		final EnvironmentConfiguration configuration = EnvironmentConfigurationBuilder.configuration().functions().add(this).add(Arrays.asList(functions)).and().build();
+		final Matcher matcher = Pattern.compile("\\{\\{[ ]?" + Constants.FUNCTION_INCLUDE_FILE + "\\(\".*?\"\\)[ ]?\\}\\}").matcher(toRender);
+		while(matcher.find()) {
+			final String matching = matcher.group();
+			toRender = toRender.replace(matching, JtwigTemplate.inlineTemplate(matching, configuration).render(model));
+		}
+		return toRender;
 	}
 	
 }

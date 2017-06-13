@@ -46,12 +46,6 @@ public class DocsTemplate {
 	public static final RangeFunction RANGE_FUNCTION = new RangeFunction();
 	
 	/**
-	 * The include file function (stored here to cache folders).
-	 */
-	
-	private final IncludeFileFunction includeFileFunction;
-	
-	/**
 	 * Creates a new DocsTemplate instance.
 	 * 
 	 * @param variables The variables to put by default in the template.
@@ -65,8 +59,8 @@ public class DocsTemplate {
 		if(variables != null) {
 			this.variables.putAll(variables);
 		}
+		this.variables.put(Constants.VARIABLE_PROJECT, project);
 		this.themeDirectory = project.getThemeDirectory();
-		this.includeFileFunction = new IncludeFileFunction(themeDirectory, null, RANGE_FUNCTION);
 		loadFromTemplateDirectory(project);
 	}
 	
@@ -91,16 +85,6 @@ public class DocsTemplate {
 	}
 	
 	/**
-	 * Returns the template's include file function.
-	 * 
-	 * @return The current include file function.
-	 */
-	
-	public final IncludeFileFunction getCurrentIncludeFileFunction() {
-		return includeFileFunction;
-	}
-	
-	/**
 	 * Loads this template data from a project's theme directory.
 	 * 
 	 * @param project The project.
@@ -115,13 +99,9 @@ public class DocsTemplate {
 			throw new InvalidTemplateException("\"" + Constants.FILE_THEME_PAGE_FILE + "\" not found.");
 		}
 		
-		/*final JtwigModel model = JtwigModel.newModel(project.getProjectVariables());
-		model.with(Constants.VARIABLE_PROJECT, project);
-		model.with(Constants.VARIABLE_PAGE, DocsPage.createBlankParsablePage());
-		final EnvironmentConfiguration configuration = EnvironmentConfigurationBuilder.configuration().functions().add(new IncludeFileFunction(themeDirectory, model, RANGE_FUNCTION)).add(RANGE_FUNCTION).and().build();
-		
-		template = JtwigTemplate.fileTemplate(pageTemplate, configuration).render(model);*/
-		template = new String(Files.readAllBytes(pageTemplate.toPath()), StandardCharsets.UTF_8);
+		final JtwigModel model = JtwigModel.newModel(variables);
+		final IncludeFileFunction includeFile = new IncludeFileFunction(themeDirectory, model, false);
+		template = includeFile.renderIncludeFile(new String(Files.readAllBytes(pageTemplate.toPath()), StandardCharsets.UTF_8));
 	}
 	
 	/**
@@ -157,13 +137,10 @@ public class DocsTemplate {
 		if(otherVariables != null) {
 			variables.putAll(otherVariables);
 		}
-		
-		variables.put(Constants.VARIABLE_PROJECT, project);
 		variables.put(Constants.VARIABLE_PAGE, page);
 		
 		final JtwigModel model = JtwigModel.newModel(variables);
-		includeFileFunction.setModel(model);
-		final EnvironmentConfiguration configuration = EnvironmentConfigurationBuilder.configuration().functions().add(includeFileFunction).add(RANGE_FUNCTION).and().build();
+		final EnvironmentConfiguration configuration = EnvironmentConfigurationBuilder.configuration().functions().add(new IncludeFileFunction(themeDirectory, model, RANGE_FUNCTION)).add(RANGE_FUNCTION).and().build();
 		
 		Files.write(file.toPath(), JtwigTemplate.inlineTemplate(template, configuration).render(model).getBytes(StandardCharsets.UTF_8));
 	}
