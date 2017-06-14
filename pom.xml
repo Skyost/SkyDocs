@@ -9,7 +9,7 @@
  <name>SkyDocs</name>
  <description>SkyDocs is a lightweight static documentation builder with MarkDown.</description>
  <build>
-  <sourceDirectory>src</sourceDirectory>
+  <sourceDirectory>src/main/java</sourceDirectory>
   <resources>
    <resource>
     <targetPath>main/resources</targetPath>
