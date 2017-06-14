@@ -61,7 +61,7 @@ public class BuildCommand extends Command {
 	public final void run() {
 		try {
 			final String[] args = this.getArguments();
-			final File directory = args.length > 0 && args[0].length() > 0 ? new File(args[0]) : Utils.getParentFolder();
+			final File directory = new File(args.length > 0 && args[0].length() > 0 ? args[0] : System.getProperty("user.dir"));
 			
 			System.out.print("Loading project from directory \"" + directory.getPath() + "\"...");
 			firstTime();

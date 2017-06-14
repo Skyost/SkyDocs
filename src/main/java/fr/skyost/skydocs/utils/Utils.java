@@ -200,16 +200,15 @@ public class Utils {
 			
 			while(enumEntries.hasMoreElements()) {
 				final JarEntry file = (JarEntry)enumEntries.nextElement();
-				if(!file.getName().endsWith(toExtract)) {
+				if(file.isDirectory() || !file.getName().contains(path + toExtract)) {
 					continue;
 				}
-				final File directory = new File(destination, file.getName());
-				if(file.isDirectory()) {
-					directory.mkdirs();
-					continue;
+				final File destFile = new File(destination.getPath() + File.separator + file.getName().replace(path, "").replace(toExtract, ""));
+				if(!destFile.getParentFile().exists()) {
+					destFile.getParentFile().mkdirs();
 				}
 				final InputStream is = jar.getInputStream(file);
-				final FileOutputStream fos = new FileOutputStream(directory);
+				final FileOutputStream fos = new FileOutputStream(destFile);
 				while(is.available() > 0) {
 					fos.write(is.read());
 				}
