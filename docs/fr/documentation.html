@@ -126,10 +126,15 @@
 <p>Maintenant vous pouvez télécharger la dernière version de SkyDocs <a href="https://github.com/Skyost/SkyDocs/releases/latest">ici</a>. Décompressez le fichier où vous le souhaitez et c'est bon !</p>
 <h3 id="créer-un-nouveau-projet">Créer un nouveau projet</h3>
 <p>Pour <strong>créer un nouveau projet</strong>, allez dans le dossier de SkyDocs et exécutez la commande <code>java -jar SkyDocs.jar new [directory]</code>.
-Ceci va créer un nouveau projet dans le répertoire spécifié. Si vous ne spécifiez pas de répertoire, le dossier du JAR sera utilisé à la place.</p>
+Ceci va créer un nouveau projet dans le répertoire spécifié. Si vous ne spécifiez pas de répertoire, le dossier courant sera utilisé à la place.</p>
 <p>Vous pouvez également <strong>créer un projet manuellement</strong> : premièrement créez un dossier et créez un fichier <em>project.yml</em> que vous configurerez comme vous le souhaitez (les options sont disponibles ci-dessous),
 puis créez un fichier <em>menu.yml</em> (allez voir ci-dessous pour voir comment le configurer). Vous aurez également besoin de créer un répertoire <em>content</em> (c'est ici que vous mettrez vos pages, images, ...).
 C'est tout !</p>
+<div class="video-responsive">
+	<div class="embed-responsive embed-responsive-16by9">
+		<iframe width="560" height="315" src="https://www.youtube.com/embed/MY32FOe8bcs?showinfo=0" allowfullscreen></iframe>
+	</div>
+</div>
 <h2 id="configuration">Configuration</h2>
 <p>Une fois créé, vous avez besoin de configurer votre projet. Voici comment faire.</p>
 <p>Premièrement, ouvrez le fichier <em>project.yml</em>, il contient toutes les informations de votre projet sous syntaxe <a href="https://fr.wikipedia.org/wiki/YAML">Yaml</a>.
@@ -178,9 +183,9 @@ Nice website uh ?
 <p>Pour générer <strong>générer</strong> automatiquement la documentation, exécutez le fichier <code>build.bat</code> (ou <code>build.sh</code>). Pour la <strong>servir</strong> sur localhost, exécutez le fichier <code>serve.bat</code> (ou <code>serve.sh</code>).
 Ces fichiers sont créés lorsque vous créez une documentation avec la commande <code>java -jar SkyDocs.jar new [directory]</code>.</p>
 <p>Vous pouvez également manuellement <strong>construire votre documentation</strong> avec la commande : <code>java -jar SkyDocs.jar build [directory]</code> (si vous ne spécifiez pas le répertoire, SkyDocs va essayer de générer
-le projet contenu dans le dossier du JAR).</p>
+le projet contenu dans le dossier courant).</p>
 <p>Pour <strong>servir manuellement votre documentation</strong> sur localhost, exécutez cette commande : <code>java -jar SkyDocs.jar serve [directory] [port]</code> (si vous ne spécifiez pas le répertoire,
-SkyDocs va essayer de générer le projet contenu dans le dossier du JAR). La port par défaut est 4444.</p>
+SkyDocs va essayer de générer le projet contenu dans le dossier courant). La port par défaut est 4444.</p>
 <h2 id="commandes">Commandes</h2>
 <p>Le tableau ci-dessous liste les commandes disponibles dans SkyDocs :</p>
 <table>
@@ -188,9 +193,9 @@ SkyDocs va essayer de générer le projet contenu dans le dossier du JAR). La po
 <tr><th>Syntaxe</th><th>Valeurs par défaut</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr><td><code>java -jar SkyDocs.jar new [directory]</code></td><td><strong>directory :</strong> dossier du JAR</td><td>Créé une nouvelle documentation dans le dossier spécifié.</td></tr>
-<tr><td><code>java -jar SkyDocs.jar build [directory]</code></td><td><strong>directory :</strong> dossier du JAR</td><td>Génère la documentation contenue dans le dossier spécifié.</td></tr>
-<tr><td><code>java -jar SkyDocs.jar serve [directory] [port]</code></td><td><strong>directory :</strong> dossier du JAR<br><strong>port :</strong> 4444</td><td>Génère la documentation contenue dans le dossier spécifié et la sert sur localhost avec le port spécifié.</td></tr>
+<tr><td><code>java -jar SkyDocs.jar new [directory]</code></td><td><strong>directory :</strong> dossier courant</td><td>Créé une nouvelle documentation dans le dossier spécifié.</td></tr>
+<tr><td><code>java -jar SkyDocs.jar build [directory]</code></td><td><strong>directory :</strong> dossier courant</td><td>Génère la documentation contenue dans le dossier spécifié.</td></tr>
+<tr><td><code>java -jar SkyDocs.jar serve [directory] [port]</code></td><td><strong>directory :</strong> dossier courant<br><strong>port :</strong> 4444</td><td>Génère la documentation contenue dans le dossier spécifié et la sert sur localhost avec le port spécifié.</td></tr>
 <tr><td><code>java -jar SkyDocs.jar update</code></td><td></td><td>Vérifie si des mises à jours sont disponibles.</td></tr>
 <tr><td><code>java -jar SkyDocs.jar help [command]</code></td><td><strong>command :</strong> toutes</td><td>Affiche une liste des commandes disponibles avec leur description.</td></tr>
 </tbody>

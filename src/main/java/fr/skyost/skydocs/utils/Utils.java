@@ -203,7 +203,10 @@ public class Utils {
 				if(file.isDirectory() || !file.getName().contains(path + toExtract)) {
 					continue;
 				}
-				final File destFile = new File(destination.getPath() + File.separator + file.getName().replace(path, "").replace(toExtract, ""));
+				File destFile = new File(destination.getPath() + File.separator + file.getName().replace(path, "").replace(toExtract, ""));
+				if(destFile.isDirectory()) {
+					destFile = new File(destFile.getPath() + File.separator + toExtract);
+				}
 				if(!destFile.getParentFile().exists()) {
 					destFile.getParentFile().mkdirs();
 				}

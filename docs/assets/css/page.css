@@ -18,6 +18,17 @@ pre {
 	padding: 8px;
 }
 
+.video-responsive {
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	width: 70%;
+	height: auto;
+	margin-bottom: 10px;
+}
+
+.video-responsive .iframe {
+	border-width: 0px;
+}
+
 #content {
 	margin-top: 40px;
 	padding-bottom: 80px;
@@ -119,6 +130,10 @@ footer p {
 }
 
 @media(max-width: 767px) {
+	
+	.video-responsive {
+		width: 90%;
+	}
 	
 	#content {
 		padding-bottom: 140px;

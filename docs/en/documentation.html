@@ -126,10 +126,15 @@
 <p>Then you can download the latest version of SkyDocs <a href="https://github.com/Skyost/SkyDocs/releases/latest">here</a>. Unzip the file where you want and that's it !</p>
 <h3 id="creating-a-new-project">Creating a new project</h3>
 <p>To <strong>create a new project</strong>, go to the SkyDocs directory and run the command <code>java -jar SkyDocs.jar new [directory]</code>.
-This will create a brand new project in the specified directory. If you don't specifiy a directory, the JAR's location will be used instead.</p>
+This will create a brand new project in the specified directory. If you don't specifiy a directory, the current location will be used instead.</p>
 <p>You can also <strong>manually create a new project</strong> : first create a directory and create a file named <em>project.yml</em> and configure it as you want (below are the available options),
 then create a <em>menu.yml</em> file (check below to see how to configure it). You also need to create a directory named <em>content</em> (this is where you put your pages, images, ...).
 That's it !</p>
+<div class="video-responsive">
+	<div class="embed-responsive embed-responsive-16by9">
+		<iframe width="560" height="315" src="https://www.youtube.com/embed/MY32FOe8bcs?showinfo=0" allowfullscreen></iframe>
+	</div>
+</div>
 <h2 id="configuration">Configuration</h2>
 <p>Once created, you have to configure your new project. Here's how to do it.</p>
 <p>First, open the file <em>project.yml</em>, it contains your project data under an <a href="https://fr.wikipedia.org/wiki/YAML">Yaml syntax</a>.
@@ -178,9 +183,9 @@ Nice website uh ?
 <p>To automatically <strong>build</strong> the documentation, run the file <code>build.bat</code> (or <code>build.sh</code>). To <strong>serve</strong> it on localhost, run the file <code>serve.bat</code> (or <code>serve.sh</code>).
 Those files are created when you create a new project via the command <code>java -jar SkyDocs.jar new [directory]</code>.</p>
 <p>You can also manually <strong>build your documentation</strong> with the command : <code>java -jar SkyDocs.jar build [directory]</code> (if you omit the directory, SkyDocs will try to build
-the project contained in the JAR directory).</p>
+the project contained in the current directory).</p>
 <p>To manually <strong>serve your documentation</strong> on localhost, run this command : <code>java -jar SkyDocs.jar serve [directory] [port]</code> (as always, if you omit the directory,
-SkyDocs will try to build the project contained in the JAR directory). The default port is 4444.</p>
+SkyDocs will try to build the project contained in the current directory). The default port is 4444.</p>
 <h2 id="commands">Commands</h2>
 <p>The table below lists the available commands in SkyDocs :</p>
 <table>
@@ -188,9 +193,9 @@ SkyDocs will try to build the project contained in the JAR directory). The defau
 <tr><th>Syntax</th><th>Default values</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr><td><code>java -jar SkyDocs.jar new [directory]</code></td><td><strong>directory :</strong> JAR directory</td><td>Creates a new documentation in the specified directory.</td></tr>
-<tr><td><code>java -jar SkyDocs.jar build [directory]</code></td><td><strong>directory :</strong> JAR directory</td><td>Builds the documentation located in the specified directory.</td></tr>
-<tr><td><code>java -jar SkyDocs.jar serve [directory] [port]</code></td><td><strong>directory :</strong> JAR directory<br><strong>port :</strong> 4444</td><td>Builds the documentation located in the specified directory and serve it on localhost with the specified port.</td></tr>
+<tr><td><code>java -jar SkyDocs.jar new [directory]</code></td><td><strong>directory :</strong> current directory</td><td>Creates a new documentation in the specified directory.</td></tr>
+<tr><td><code>java -jar SkyDocs.jar build [directory]</code></td><td><strong>directory :</strong> current directory</td><td>Builds the documentation located in the specified directory.</td></tr>
+<tr><td><code>java -jar SkyDocs.jar serve [directory] [port]</code></td><td><strong>directory :</strong> current directory<br><strong>port :</strong> 4444</td><td>Builds the documentation located in the specified directory and serve it on localhost with the specified port.</td></tr>
 <tr><td><code>java -jar SkyDocs.jar update</code></td><td></td><td>Checks for updates.</td></tr>
 <tr><td><code>java -jar SkyDocs.jar help [command]</code></td><td><strong>command :</strong> all</td><td>Shows the available commands with their description.</td></tr>
 </tbody>

@@ -36,7 +36,7 @@ $(document).ready(function() {
 			$('#content nav ul').css('position', '');
 			return;
 		}
-		$('#content nav ul').css('position', isElementInViewport($('#navbar')) ? '' : 'fixed').css('top', '31px');
+		$('#content nav ul').css('position', isElementInViewport($('header')) ? '' : 'fixed').css('top', '31px');
 	});
 	
 	// ANCHORS LINKS :
@@ -52,19 +52,15 @@ $(document).ready(function() {
 	});
 });
 
-function isElementInViewport (el) {
-
-    //special bonus for those using jQuery
+function isElementInViewport(el) {
 	if (typeof jQuery === "function" && el instanceof jQuery) {
 		el = el[0];
 	}
-
 	var rect = el.getBoundingClientRect();
-
 	return (
 		rect.top >= 0 &&
 		rect.left >= 0 &&
-		rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) && /*or $(window).height() */
-		rect.right <= (window.innerWidth || document.documentElement.clientWidth) /*or $(window).width() */
+		rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+		rect.right <= (window.innerWidth || document.documentElement.clientWidth)
     );
 }
