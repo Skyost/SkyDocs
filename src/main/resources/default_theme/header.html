@@ -4,9 +4,7 @@
 			<span class="navbar-toggler-icon"></span>
 		</button>
 		
-		{% set dirNumbers = range(2, ((page.getPageRelativeURL() | split('/')) | length)) %}
-		
-		<a class="navbar-brand" href="index.html"><img src="{% for i in dirNumbers %}../{% endfor %}assets/img/icon.png" width="30" height="30" class="d-inline-block align-top" alt="{{ project.getName() }}"> {{ project.getName() }}</a>
+		<a class="navbar-brand" href="index.html"><img src="{{ block('path') }}assets/img/icon.png" width="30" height="30" class="d-inline-block align-top" alt="{{ project.getName() }}"> {{ project.getName() }}</a>
 
 		<div class="collapse navbar-collapse" id="navbar">
 		
