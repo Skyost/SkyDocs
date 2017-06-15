@@ -276,7 +276,7 @@ public class Utils {
 			return strings[0];
 		}
 		else if(strings.length == 0) {
-			return new String();
+			return "";
 		}
 		final StringBuilder builder = new StringBuilder();
 		for(final String string : strings) {

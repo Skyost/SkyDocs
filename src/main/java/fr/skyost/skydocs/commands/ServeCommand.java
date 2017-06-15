@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 import fi.iki.elonen.NanoHTTPD;
@@ -37,7 +38,7 @@ public class ServeCommand extends Command {
 			final InternalServer server = new InternalServer(port);
 			
 			boolean firstBuild = true;
-			final Scanner scanner = new Scanner(System.in);
+			final Scanner scanner = new Scanner(System.in, StandardCharsets.UTF_8.name());
 			String line = "";
 			while(line.equals("")) {
 				System.out.println("Running build command...");
@@ -62,6 +63,7 @@ public class ServeCommand extends Command {
 			server.stop();
 		}
 		catch(final Exception ex) {
+			System.out.println();
 			ex.printStackTrace();
 		}
 		super.run();

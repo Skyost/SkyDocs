@@ -204,7 +204,7 @@ public class DocsMenu {
 			
 		    @Override
 		    public final int compare(final DocsMenuEntry page1, final DocsMenuEntry page2) {
-		        return Integer.valueOf(page1.getWeight()).compareTo(page2.getWeight());
+		        return Integer.compare(page1.getWeight(), page2.getWeight());
 		    }
 		    
 		});
@@ -421,7 +421,7 @@ public class DocsMenu {
 			if(!yamlObject.containsKey(Constants.KEY_MENU_WEIGHT)) {
 				throw new InvalidMenuEntryException("Missing key \"" + Constants.KEY_MENU_WEIGHT + "\".");
 			}
-			page.setWeight(Integer.valueOf(yamlObject.get(Constants.KEY_MENU_WEIGHT).toString()));
+			page.setWeight(Integer.parseInt(yamlObject.get(Constants.KEY_MENU_WEIGHT).toString()));
 			
 			if(yamlObject.containsKey(Constants.KEY_MENU_CHILDREN)) {
 				final List<?> children = (List<?>)yamlObject.get(Constants.KEY_MENU_CHILDREN);

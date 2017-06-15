@@ -236,7 +236,7 @@ public class DocsProject {
 	 * @param page Page to remove.
 	 */
 	
-	public final void removePage(final DocsMenu page) {
+	public final void removePage(final DocsPage page) {
 		pages.remove(page);
 	}
 	
@@ -412,9 +412,14 @@ public class DocsProject {
 	
 	/**
 	 * Loads pages from this project's directory.
+	 * 
+	 * @throws LoadException If the specified file is not a directory.
 	 */
 	
-	private final void loadPages(final File directory) {
+	private final void loadPages(final File directory) throws LoadException {
+		if(!directory.isDirectory()) {
+			throw new LoadException("The file \"" + directory + "\" is not a directory.");
+		}
 		for(final File child : directory.listFiles()) {
 			if(child.isDirectory()) {
 				loadPages(child);

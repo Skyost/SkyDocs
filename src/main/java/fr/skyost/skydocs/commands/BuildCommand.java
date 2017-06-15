@@ -168,6 +168,7 @@ public class BuildCommand extends Command {
 			System.out.println("Done ! You just have to put the content of \"" + buildDirectory.getPath() + "\" on your web server.");
 		}
 		catch(final Exception ex) {
+			System.out.println();
 			ex.printStackTrace();
 		}
 		super.run();

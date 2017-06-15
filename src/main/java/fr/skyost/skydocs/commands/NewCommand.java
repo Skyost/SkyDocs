@@ -33,6 +33,7 @@ public class NewCommand extends Command {
 			System.out.println(" Done !");
 		}
 		catch(final Exception ex) {
+			System.out.println();
 			ex.printStackTrace();
 		}
 		super.run();
