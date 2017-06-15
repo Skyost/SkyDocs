@@ -31,6 +31,12 @@ public class Constants {
 	public static final String APP_AUTHORS = "Skyost";
 	
 	/**
+	 * App's website.
+	 */
+	
+	public static final String APP_WEBSITE = "https://skyost.github.io/SkyDocs/";
+	
+	/**
 	 * ========
 	 * COMMANDS
 	 * ========

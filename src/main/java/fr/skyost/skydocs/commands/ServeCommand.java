@@ -82,17 +82,30 @@ public class ServeCommand extends Command {
 		@Override
 		public final Response serve(final IHTTPSession session) {
 			try {
-				File file = new File(buildDirectory.getPath() + session.getUri().replace("/", File.separator));
+				final String currentUri = session.getUri();
+				File file = new File(buildDirectory.getPath() + currentUri.replace("/", File.separator));
 				if(file.isDirectory()) {
+					if(!currentUri.endsWith("/")) {
+						final Response response = newFixedLengthResponse(Response.Status.REDIRECT, MIME_HTML, "Redirecting you...");
+						response.addHeader("Location", currentUri + "/");
+						return response;
+					}
 					file = new File(file, "index.html");
 					if(!file.exists()) {
-						final StringBuilder builder = new StringBuilder("<html><body><ul>");
-						final File parent = file.getParentFile();
-						builder.append("<li><a href=\"" + parent.getPath().replace(buildDirectory.getPath(), "").replace(parent.getName(), "") + "\">..</a></li>");
-						for(final File child : parent.listFiles()) {
-							builder.append("<li><a href=\"" + child.getPath().replace(buildDirectory.getPath(), "") + "\">" + child.getName() + "</a></li>");
+						final StringBuilder builder = new StringBuilder("<!DOCTYPE html><html>");
+						builder.append("<head><title>" + currentUri + "</title></head>");
+						builder.append("<body><h1>" + currentUri + "</h1><hr/><ul>");
+						builder.append("<li><a href=\"../\">..</a></li>");
+						for(final File child : file.getParentFile().listFiles()) {
+							String path = child.getPath().replace(buildDirectory.getPath(), "").replace(File.separator, "/");
+							if(child.isDirectory()) {
+								path += "/";
+							}
+							builder.append("<li><a href=\"" + path + "\">" + child.getName() + "</a></li>");
 						}
-						builder.append("</ul></body></html>");
+						builder.append("</ul><hr/>");
+						builder.append("<p style=\"text-align:right;\"><a href=\"" + Constants.APP_WEBSITE + "\">" + Constants.APP_NAME + " " + Constants.APP_VERSION + "</a></p>");
+						builder.append("</body></html>");
 						return newFixedLengthResponse(Response.Status.UNAUTHORIZED, NanoHTTPD.MIME_HTML, builder.toString());
 					}
 				}
