@@ -34,7 +34,7 @@ public class DocsTemplate {
 	private final HashMap<String, Object> variables = new HashMap<String, Object>();
 	
 	/**
-	 * Cached parsed page.html.
+	 * Cached partially parsed page.html.
 	 */
 	
 	private String template;

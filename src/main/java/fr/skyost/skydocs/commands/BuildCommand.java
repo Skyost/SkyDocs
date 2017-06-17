@@ -78,7 +78,7 @@ public class BuildCommand extends Command {
 				themeDirectory.mkdir();
 				Utils.extract(Constants.RESOURCE_DEFAULT_THEME_PATH, Constants.RESOURCE_DEFAULT_THEME_DIRECTORY, themeDirectory);
 			}
-			final DocsTemplate template = new DocsTemplate(project.getProjectVariables(), project);
+			final DocsTemplate template = new DocsTemplate(null, project);
 			
 			secondTime();
 			System.out.println(" Done in " + timeElapsed() + " seconds !");
@@ -122,7 +122,7 @@ public class BuildCommand extends Command {
 					if(contentNoHTML.length() >= 140) {
 						contentNoHTML = Ascii.truncate(contentNoHTML, 140, "...");
 					}
-					final String title = parts[0] == null && Utils.decodeFileHeader(parts[0]).containsKey(Constants.KEY_HEADER_TITLE) ? file.getName().replace(".html", "") : Utils.decodeFileHeader(parts[0]).get(Constants.KEY_HEADER_TITLE).toString();
+					final String title = parts[0] == null && Utils.decodeFileHeader(parts[0]).containsKey(Constants.KEY_HEADER_TITLE) ? file.getName().replaceAll(".(?i)html", "") : Utils.decodeFileHeader(parts[0]).get(Constants.KEY_HEADER_TITLE).toString();
 					lunrContent.append("'" + title.toLowerCase().replace(".", "-").replace("'", "\\'") + "': {" + "title: '" + Utils.stripHTML(title).replace("'", "\\'") + "', " + "content: '" + contentNoHTML.replace("'", "\\'") + "', " + "url: '" + page.getPageRelativeURL().substring(1) + "'" + "}, ");
 				}
 				

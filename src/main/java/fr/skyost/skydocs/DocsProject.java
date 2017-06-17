@@ -77,7 +77,7 @@ public class DocsProject {
 	 */
 	
 	public DocsProject(final String name) {
-		this(name, name, "https://skyost.github.io/SkyDocs", Locale.ENGLISH.getLanguage(), Utils.getParentFolder(), null, null, null);
+		this(name, name, Constants.APP_WEBSITE, Locale.ENGLISH.getLanguage(), Utils.getParentFolder(), null, null, null);
 	}
 	
 	/**
@@ -328,13 +328,18 @@ public class DocsProject {
 	}
 	
 	/**
-	 * Puts other project variables to this project.
+	 * Gets the field (put by the user in the menu.yml).
 	 * 
-	 * @param projectVariables Other project variables.
+	 * @param key The key.
+	 * 
+	 * @return If found, the corresponding value.
 	 */
 	
-	public final void putProjectVariables(final Map<String, Object> projectVariables) {
-		this.projectVariables.putAll(projectVariables);
+	public final Object getField(final String key) {
+		if(!projectVariables.containsKey(key)) {
+			return "The menu data does not contains the specified key \"" + key + "\".";
+		}
+		return projectVariables.get(key);
 	}
 	
 	/**
@@ -403,7 +408,7 @@ public class DocsProject {
 			}
 			setDefaultLanguage(data.get(Constants.KEY_PROJECT_LANGUAGE).toString());
 			
-			putProjectVariables(data);
+			getProjectVariables().putAll(data);
 		}
 		catch(final Exception ex) {
 			throw new InvalidProjectDataException(ex);
@@ -425,7 +430,8 @@ public class DocsProject {
 				loadPages(child);
 				continue;
 			}
-			if(child.getName().endsWith(".md")) {
+			final int lastIndex = child.getName().lastIndexOf(".");
+			if(lastIndex != -1 && child.getName().substring(lastIndex).equalsIgnoreCase(".md")) {
 				addPages(DocsPage.createFromFile(this, child));
 			}
 		}
