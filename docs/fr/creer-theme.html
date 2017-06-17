@@ -101,13 +101,6 @@
 </ul>
 			
 			
-				<form class="form-inline my-2 my-lg-0" action="../search.html" method="get">
-					<input name="keywords" class="form-control mr-sm-2" type="search" placeholder="...">
-					<span class="input-group-btn">
-						<button class="btn btn-success my-2 my-sm-0" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
-					</span>
-				</form>
-			
 		</div>
 	</nav>
 </header>
@@ -141,6 +134,7 @@ Souvenez-vous : SkyDocs utilise <a href="http://jtwig.org/documentation/referenc
 <tr><td><code>{{ project.getDefaultLanguage() }}</code></td><td>Retourne la language par défaut de votre projet comme configuré dans <em>plugin.yml</em>.</td></tr>
 <tr><td><code>{{ project.getPages() }}</code></td><td>Retourne une liste itérable des pages de votre projet.</td></tr>
 <tr><td><code>{{ project.getMenuHTMLByLanguage(language) }}</code></td><td>Retourne le contenu HTML du menu correspondant au <em>language</em> (langue) spécifiée.</td></tr>
+<tr><td><code>{{ project.getField(key) }}</code></td><td>Retourne la valeur contenue dans <em>project.yml</em> correspondante à la <em>key</em> (clé) spécifiée (par exemple si vous souhaitez le nom du projet, utilisez <code>{{ project.getField(&quot;project_name&quot;) }}</code>).</td></tr>
 </tbody>
 </table>
 <table>
@@ -152,6 +146,7 @@ Souvenez-vous : SkyDocs utilise <a href="http://jtwig.org/documentation/referenc
 <tr><td><code>{{ page.getLanguage() }}</code></td><td>Retourne la lange de la page (configuré dans l'en-tête du fichier MarkDown).</td></tr>
 <tr><td><code>{{ page.getContent() }}</code></td><td>Retourne le contenu de la page (une fois converti en HTML).</td></tr>
 <tr><td><code>{{ page.getRelativeURL() }}</code></td><td>Retourne l'URL de la page.</td></tr>
+<tr><td><code>{{ page.getField(key) }}</code></td><td>Retourne la valeur contenue dans l'en-tête correspondante à la <em>key</em> (clé) spécifiée (par exemple si vous souhaitez la langue de la page, utilisez  <code>{{ page.getField(&quot;language&quot;) }}</code>).</td></tr>
 </tbody>
 </table>
 <table>
@@ -160,7 +155,6 @@ Souvenez-vous : SkyDocs utilise <a href="http://jtwig.org/documentation/referenc
 </thead>
 <tbody>
 <tr><td><code>{{ include_file(&quot;file.html&quot;) }}</code></td><td>Inclut le fichier <em>file.html</em> situé dans le dossier <em>theme</em>. Par exemple, <code>{{ include_file(&quot;test.html&quot;) }}</code> va ajouter le contenu du fichier <em>test.html</em>.</td></tr>
-<tr><td>Chaque clé dans <em>project.yml</em></td><td>Toutes les clés et valeurs du fichier <em>project.yml</em> peuvent être utilisées : vous avez seulement besoin de mettre la clé correspondante <code>{{ key }}</code>.<br>Par exemple, si vous souhaitez avoir le nom du projet, utilisez <code>{{ project_name }}</code>.</td></tr>
 </tbody>
 </table>
 <h2 id="répertoire-assets">Répertoire assets</h2>

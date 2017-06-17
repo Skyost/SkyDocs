@@ -101,13 +101,6 @@
 </ul>
 			
 			
-				<form class="form-inline my-2 my-lg-0" action="../search.html" method="get">
-					<input name="keywords" class="form-control mr-sm-2" type="search" placeholder="...">
-					<span class="input-group-btn">
-						<button class="btn btn-success my-2 my-sm-0" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
-					</span>
-				</form>
-			
 		</div>
 	</nav>
 </header>
@@ -135,12 +128,13 @@ Remember : SkyDocs uses <a href="http://jtwig.org/documentation/reference/functi
 <tr><th>Function</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr><td><code>{{ project.getName() }}</code></td><td>Returns your project's name as configured in the <em>plugin.yml</em>.</td></tr>
-<tr><td><code>{{ project.getDescription() }}</code></td><td>Returns the description of your project as configured in the <em>plugin.yml</em>.</td></tr>
-<tr><td><code>{{ project.getURL() }}</code></td><td>Returns the URL address of your project as configured in the <em>plugin.yml</em>.</td></tr>
-<tr><td><code>{{ project.getDefaultLanguage() }}</code></td><td>Returns your project's default language as configured in the <em>plugin.yml</em>.</td></tr>
+<tr><td><code>{{ project.getName() }}</code></td><td>Returns your project's name as configured in the <em>project.yml</em>.</td></tr>
+<tr><td><code>{{ project.getDescription() }}</code></td><td>Returns the description of your project as configured in the <em>project.yml</em>.</td></tr>
+<tr><td><code>{{ project.getURL() }}</code></td><td>Returns the URL address of your project as configured in the <em>project.yml</em>.</td></tr>
+<tr><td><code>{{ project.getDefaultLanguage() }}</code></td><td>Returns your project's default language as configured in the <em>project.yml</em>.</td></tr>
 <tr><td><code>{{ project.getPages() }}</code></td><td>Returns an iterable list of your project pages.</td></tr>
 <tr><td><code>{{ project.getMenuHTMLByLanguage(language) }}</code></td><td>Returns the HTML content of the menu corresponding to the specified <em>language</em>.</td></tr>
+<tr><td><code>{{ project.getField(key) }}</code></td><td>Returns the field located in <em>project.yml</em> corresponding to the <em>key</em> (for example if you want the project's name, use <code>{{ project.getField(&quot;project_name&quot;) }}</code>).</td></tr>
 </tbody>
 </table>
 <table>
@@ -152,6 +146,7 @@ Remember : SkyDocs uses <a href="http://jtwig.org/documentation/reference/functi
 <tr><td><code>{{ page.getLanguage() }}</code></td><td>Gets the language of a page (configured in the MarkDown file header).</td></tr>
 <tr><td><code>{{ page.getContent() }}</code></td><td>Gets the content of a page (once converted in HTML).</td></tr>
 <tr><td><code>{{ page.getRelativeURL() }}</code></td><td>Gets the relative URL of a page.</td></tr>
+<tr><td><code>{{ page.getField(key) }}</code></td><td>Gets the field located in the header corresponding to the <em>key</em> (for example if you want the page's language, use <code>{{ page.getField(&quot;language&quot;) }}</code>).</td></tr>
 </tbody>
 </table>
 <table>
@@ -160,7 +155,6 @@ Remember : SkyDocs uses <a href="http://jtwig.org/documentation/reference/functi
 </thead>
 <tbody>
 <tr><td><code>{{ include_file(&quot;file.html&quot;) }}</code></td><td>Includes the file <em>file.html</em> located in the <em>theme</em> directory. For instance, <code>{{ include_file(&quot;test.html&quot;) }}</code> will add the content of <em>test.html</em>.</td></tr>
-<tr><td>Every key in <em>project.yml</em></td><td>All keys and values in the <em>project.yml</em> file can be used : you only have to put the corresponding key <code>{{ key }}</code>.<br>For instance, if you want your project name, use <code>{{ project_name }}</code>.</td></tr>
 </tbody>
 </table>
 <h2 id="assets-directory">Assets directory</h2>
