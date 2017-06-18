@@ -383,23 +383,46 @@ public class DocsProject {
 	}
 	
 	/**
-	 * Loads pages from this project's directory.
+	 * Loads pages from the specified directory.
+	 * 
+	 * @param directory The directory.
 	 * 
 	 * @throws LoadException If the specified file is not a directory.
 	 */
 	
 	private final void loadPages(final File directory) throws LoadException {
+		loadPages(directory, new HashSet<String>());
+	}
+	
+	/**
+	 * Loads pages from the specified directory.
+	 * 
+	 * @param directory The directory.
+	 * @param destinations Already added pages destinations.
+	 * 
+	 * @throws LoadException If the specified file is not a directory.
+	 */
+	
+	private final void loadPages(final File directory, final HashSet<String> destinations) throws LoadException {
 		if(!directory.isDirectory()) {
 			throw new LoadException("The file \"" + directory + "\" is not a directory.");
 		}
 		for(final File child : directory.listFiles()) {
 			if(child.isDirectory()) {
-				loadPages(child);
+				loadPages(child, destinations);
 				continue;
 			}
 			final int lastIndex = child.getName().lastIndexOf(".");
 			if(lastIndex != -1 && child.getName().substring(lastIndex).equalsIgnoreCase(".md")) {
-				addPages(DocsPage.createFromFile(this, child));
+				final DocsPage page = DocsPage.createFromFile(this, child);
+				final String path = page.getBuildDestinationPath(this);
+				if(destinations.contains(path)) {
+					System.out.println();
+					System.out.println("The file \"" + child.getPath() + "\" has a file with the same name in its build directory \"" + path + "\". Therefore it will not be copied.");
+					continue;
+				}
+				destinations.add(path);
+				addPages(page);
 			}
 		}
 	}

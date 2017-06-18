@@ -103,6 +103,7 @@ public class BuildCommand extends Command {
 			
 			for(final DocsPage page : project.getPages()) {
 				final File file = page.getFile();
+				copied.add(file);
 				if(!file.exists() || !file.isFile()) {
 					continue;
 				}
@@ -130,7 +131,6 @@ public class BuildCommand extends Command {
 				
 				Files.write(destination.toPath(), (header + content).getBytes(StandardCharsets.UTF_8));
 				template.applyTemplate(project, destination);
-				copied.add(file);
 			}
 			
 			if(lunr && lunrContent.length() != 0) {
@@ -231,20 +231,15 @@ public class BuildCommand extends Command {
 	 */
 	
 	public final void copy(final HashSet<File> copied, final File file, final File destination) throws IOException {
+		if(copied.contains(file) || (file.isFile() && file.getName().toLowerCase().endsWith(".md"))) {
+			return;
+		}
 		if(file.isFile()) {
-			if(destination.exists()) {
-				System.out.println();
-				System.out.println("The file \"" + file.getPath() + "\" already exist in the build folder \"" + destination.getPath() + "\". Therefore, the file has not been copied.");
-				return;
-			}
 			Files.copy(file.toPath(), destination.toPath());
 			return;
 		}
 		destination.mkdirs();
 		for(final File child : file.listFiles()) {
-			if(copied.contains(child) || (child.isFile() && child.getName().toLowerCase().endsWith(".md"))) {
-				continue;
-			}
 			copy(copied, child, new File(destination.getPath() + File.separator + file.getName()));
 		}
 	}

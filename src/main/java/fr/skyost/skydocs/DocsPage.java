@@ -177,6 +177,12 @@ public class DocsPage {
 		return Utils.separateFileHeader(getFile())[1];
 	}
 	
+	public final String getBuildDestinationPath(final DocsProject project) {
+		return project.getBuildDirectory().getPath()
+				+ (path.split(Pattern.quote(File.separator))[1].equals(getLanguage()) ? "" : File.separator + getLanguage())
+				+ path.substring(0, path.lastIndexOf(".")) + ".html";
+	}
+	
 	/**
 	 * Gets the build destination of this page.
 	 * 
@@ -184,9 +190,7 @@ public class DocsPage {
 	 */
 	
 	public final File getBuildDestination(final DocsProject project) {
-		return new File(project.getBuildDirectory().getPath()
-				+ (path.split(Pattern.quote(File.separator))[1].equals(getLanguage()) ? "" : getLanguage() + File.separator)
-				+ path.substring(0, path.lastIndexOf(".")) + ".html");
+		return new File(getBuildDestinationPath(project));
 	}
 	
 	/**
