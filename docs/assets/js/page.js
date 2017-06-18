@@ -39,9 +39,17 @@ $(document).ready(function() {
 		$('#content nav ul').css('position', isElementInViewport($('header')) ? '' : 'fixed').css('top', '31px');
 	});
 	
-	// ANCHORS LINKS :
+	// ANCHORS LINKS AND PRINT LINKS :
 	$('#content h1, #content h2, #content h3, #content h4').each(function() {
-		$(this).html($(this).html() + '<a href="#' + $(this).attr('id') + '" class="anchor"><i class="fa fa-link" aria-hidden="true"></i></a>');
+		$(this).html($(this).html() + '<a href="#' + $(this).attr('id') + '" class="anchor no-print"><i class="fa fa-link" aria-hidden="true"></i></a>');
+	});
+	
+	$('#content h1').each(function() {
+		$(this).html($(this).html() + '<span class="print no-print"></span>');
+	});
+	
+	$('.print').click(function() {
+		$('article').print();
 	});
 	
 	// OTHERS :
