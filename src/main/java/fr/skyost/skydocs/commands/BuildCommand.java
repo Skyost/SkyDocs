@@ -232,6 +232,11 @@ public class BuildCommand extends Command {
 	
 	public final void copy(final HashSet<File> copied, final File file, final File destination) throws IOException {
 		if(file.isFile()) {
+			if(destination.exists()) {
+				System.out.println();
+				System.out.println("The file \"" + file.getPath() + "\" already exist in the build folder \"" + destination.getPath() + "\". Therefore, the file has not been copied.");
+				return;
+			}
 			Files.copy(file.toPath(), destination.toPath());
 			return;
 		}

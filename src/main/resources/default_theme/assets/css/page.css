@@ -65,7 +65,6 @@ pre {
 }
 
 #content h1 .print {
-	content: '';
 	cursor: pointer;
 	height: 24px;
 	width: 24px;
