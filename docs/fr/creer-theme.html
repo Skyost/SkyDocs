@@ -139,6 +139,7 @@ Souvenez-vous : SkyDocs utilise <a href="http://jtwig.org/documentation/referenc
 <tr><td><code>{{ project.getDescription() }}</code></td><td>Retourne la description de votre projet comme configuré dans <em>plugin.yml</em>.</td></tr>
 <tr><td><code>{{ project.getURL() }}</code></td><td>Retourne l'adresse URL de votre projet comme configuré dans <em>plugin.yml</em>.</td></tr>
 <tr><td><code>{{ project.getDefaultLanguage() }}</code></td><td>Retourne la language par défaut de votre projet comme configuré dans <em>plugin.yml</em>.</td></tr>
+<tr><td><code>{{ project.getLunrSeach()() }}</code></td><td>Retourne si oui ou non la recherche lunr doit être activée comme configuré dans <em>plugin.yml</em>.</td></tr>
 <tr><td><code>{{ project.getPages() }}</code></td><td>Retourne une liste itérable des pages de votre projet.</td></tr>
 <tr><td><code>{{ project.getMenuHTMLByLanguage(language) }}</code></td><td>Retourne le contenu HTML du menu correspondant au <em>language</em> (langue) spécifiée.</td></tr>
 <tr><td><code>{{ project.getField(key) }}</code></td><td>Retourne la valeur contenue dans <em>project.yml</em> correspondante à la <em>key</em> (clé) spécifiée (par exemple si vous souhaitez le nom du projet, utilisez <code>{{ project.getField(&quot;project_name&quot;) }}</code>).</td></tr>

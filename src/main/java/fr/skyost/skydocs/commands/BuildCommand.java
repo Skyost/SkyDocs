@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import org.commonmark.Extension;
 import org.commonmark.ext.gfm.strikethrough.StrikethroughExtension;
@@ -122,7 +123,8 @@ public class BuildCommand extends Command {
 					if(contentNoHTML.length() >= 140) {
 						contentNoHTML = Ascii.truncate(contentNoHTML, 140, "...");
 					}
-					final String title = parts[0] == null && Utils.decodeFileHeader(parts[0]).containsKey(Constants.KEY_HEADER_TITLE) ? file.getName().replaceAll(".(?i)html", "") : Utils.decodeFileHeader(parts[0]).get(Constants.KEY_HEADER_TITLE).toString();
+					final Map<String, Object> decodedHeader = Utils.decodeFileHeader(parts[0]);
+					final String title = decodedHeader != null && decodedHeader.containsKey(Constants.KEY_HEADER_TITLE) ? file.getName().replaceAll(".(?i)html", "") : decodedHeader.get(Constants.KEY_HEADER_TITLE).toString();
 					lunrContent.append("'" + title.toLowerCase().replace(".", "-").replace("'", "\\'") + "': {" + "title: '" + Utils.stripHTML(title).replace("'", "\\'") + "', " + "content: '" + contentNoHTML.replace("'", "\\'") + "', " + "url: '" + page.getPageRelativeURL().substring(1) + "'" + "}, ");
 				}
 				
