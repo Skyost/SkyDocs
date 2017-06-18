@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -21,30 +20,6 @@ import fr.skyost.skydocs.utils.Utils;
  */
 
 public class DocsProject {
-	
-	/**
-	 * The name of this project.
-	 */
-	
-	private String name;
-	
-	/**
-	 * The description of this project.
-	 */
-	
-	private String description;
-	
-	/**
-	 * The URL of this project.
-	 */
-	
-	private String url;
-	
-	/**
-	 * The default language of this project.
-	 */
-	
-	private String defaultLanguage;
 	
 	/**
 	 * The directory path of this project.
@@ -74,10 +49,27 @@ public class DocsProject {
 	 * Creates a new DocsProject instance.
 	 * 
 	 * @param name The name of the project.
+	 * 
+	 * @throws InvalidProjectDataException 
 	 */
 	
-	public DocsProject(final String name) {
-		this(name, name, Constants.APP_WEBSITE, Locale.ENGLISH.getLanguage(), Utils.getParentFolder(), null, null, null);
+	public DocsProject(final Map<String, Object> projectVariables) throws InvalidProjectDataException {
+		this(projectVariables, new File(System.getProperty("user.dir")), null, null);
+		if(projectVariables == null) {
+			throw new InvalidProjectDataException("Invalid project data.");
+		}
+		if(!projectVariables.containsKey(Constants.KEY_PROJECT_NAME)) {
+			throw new InvalidProjectDataException("Missing key \"" + Constants.KEY_PROJECT_NAME + "\".");
+		}
+		if(!projectVariables.containsKey(Constants.KEY_PROJECT_DESCRIPTION)) {
+			throw new InvalidProjectDataException("Missing key \"" + Constants.KEY_PROJECT_DESCRIPTION + "\".");
+		}
+		if(!projectVariables.containsKey(Constants.KEY_PROJECT_URL)) {
+			throw new InvalidProjectDataException("Missing key \"" + Constants.KEY_PROJECT_URL + "\".");
+		}
+		if(!projectVariables.containsKey(Constants.KEY_PROJECT_LANGUAGE)) {
+			throw new InvalidProjectDataException("Missing key \"" + Constants.KEY_PROJECT_LANGUAGE + "\".");
+		}
 	}
 	
 	/**
@@ -91,13 +83,11 @@ public class DocsProject {
 	 * @param pages Pages of this project.
 	 * @param menus Menus of this project.
 	 * @param projectVariables Other variables to add to the project.
+	 * 
+	 * @throws InvalidProjectDataException 
 	 */
 	
-	private DocsProject(final String name, final String description, final String url, final String defaultLanguage, final File directory, final Set<DocsPage> pages, final Set<DocsMenu> menus, final Map<String, Object> projectVariables) {
-		this.name = name;
-		this.description = description;
-		this.url = url;
-		this.defaultLanguage = defaultLanguage;
+	private DocsProject(final Map<String, Object> projectVariables, final File directory, final Set<DocsPage> pages, final Set<DocsMenu> menus) throws InvalidProjectDataException {
 		this.directoryPath = directory.getPath();
 		if(pages != null) {
 			this.pages.addAll(pages);
@@ -117,7 +107,7 @@ public class DocsProject {
 	 */
 	
 	public final String getName() {
-		return name;
+		return projectVariables.get(Constants.KEY_PROJECT_NAME).toString();
 	}
 	
 	/**
@@ -127,27 +117,7 @@ public class DocsProject {
 	 */
 	
 	public final void setName(final String name) {
-		this.name = name;
-	}
-	
-	/**
-	 * Gets the default language of this project.
-	 * 
-	 * @return The default language of this project.
-	 */
-	
-	public final String getDefaultLanguage() {
-		return defaultLanguage;
-	}
-	
-	/**
-	 * Sets the default language of this project.
-	 * 
-	 * @param defaultLanguage The new default language of this project.
-	 */
-	
-	public final void setDefaultLanguage(final String defaultLanguage) {
-		this.defaultLanguage = defaultLanguage;
+		projectVariables.put(Constants.KEY_PROJECT_NAME, name);
 	}
 	
 	/**
@@ -157,7 +127,7 @@ public class DocsProject {
 	 */
 	
 	public final String getDescription() {
-		return description;
+		return projectVariables.get(Constants.KEY_PROJECT_DESCRIPTION).toString();
 	}
 	
 	/**
@@ -167,7 +137,7 @@ public class DocsProject {
 	 */
 	
 	public final void setDescription(final String description) {
-		this.description = description;
+		projectVariables.put(Constants.KEY_PROJECT_DESCRIPTION, description);
 	}
 	
 	/**
@@ -177,7 +147,7 @@ public class DocsProject {
 	 */
 	
 	public final String getURL() {
-		return url;
+		return projectVariables.get(Constants.KEY_PROJECT_URL).toString();
 	}
 	
 	/**
@@ -187,7 +157,47 @@ public class DocsProject {
 	 */
 	
 	public final void setURL(final String url) {
-		this.url = url;
+		projectVariables.put(Constants.KEY_PROJECT_URL, url);
+	}
+	
+	/**
+	 * Gets the default language of this project.
+	 * 
+	 * @return The default language of this project.
+	 */
+	
+	public final String getDefaultLanguage() {
+		return projectVariables.get(Constants.KEY_PROJECT_LANGUAGE).toString();
+	}
+	
+	/**
+	 * Sets the default language of this project.
+	 * 
+	 * @param defaultLanguage The new default language of this project.
+	 */
+	
+	public final void setDefaultLanguage(final String defaultLanguage) {
+		projectVariables.put(Constants.KEY_PROJECT_LANGUAGE, defaultLanguage);
+	}
+	
+	/**
+	 * Gets if lunr search should be enabled for this project.
+	 * 
+	 * @return If lunr search should be enabled for this project.
+	 */
+	
+	public final boolean getLunrSearch() {
+		return projectVariables.containsKey(Constants.KEY_PROJECT_LUNR_SEARCH) && Boolean.valueOf(projectVariables.get(Constants.KEY_PROJECT_LUNR_SEARCH).toString());
+	}
+	
+	/**
+	 * Sets the lunr search variable of this project.
+	 * 
+	 * @param defaultLanguage The search variable of this project.
+	 */
+	
+	public final void setLunrSearch(final boolean lunrSearch) {
+		projectVariables.put(Constants.KEY_PROJECT_LUNR_SEARCH, lunrSearch);
 	}
 	
 	/**
@@ -373,49 +383,6 @@ public class DocsProject {
 	}
 	
 	/**
-	 * Creates a new project from a file containing YAML menu data.
-	 * 
-	 * @param projectData The file containing project data.
-	 * 
-	 * @return The parsed project.
-	 * 
-	 * @throws InvalidProjectDataException If an error occurred while parsing the file.
-	 */
-	
-	public final void loadDataFromProjectYML(final File projectData) throws InvalidProjectDataException {
-		try {
-			final Yaml yaml = new Yaml();
-			@SuppressWarnings("unchecked")
-			final HashMap<String, Object> data = (HashMap<String, Object>)yaml.load(new FileInputStream(projectData));
-			
-			if(!data.containsKey(Constants.KEY_PROJECT_NAME)) {
-				throw new InvalidProjectDataException("Missing key \"" + Constants.KEY_PROJECT_NAME + "\".");
-			}
-			setName(data.get(Constants.KEY_PROJECT_NAME).toString());
-			
-			if(!data.containsKey(Constants.KEY_PROJECT_DESCRIPTION)) {
-				throw new InvalidProjectDataException("Missing key \"" + Constants.KEY_PROJECT_DESCRIPTION + "\".");
-			}
-			setDescription(data.get(Constants.KEY_PROJECT_DESCRIPTION).toString());
-			
-			if(!data.containsKey(Constants.KEY_PROJECT_URL)) {
-				throw new InvalidProjectDataException("Missing key \"" + Constants.KEY_PROJECT_URL + "\".");
-			}
-			setURL(data.get(Constants.KEY_PROJECT_URL).toString());
-			
-			if(!data.containsKey(Constants.KEY_PROJECT_LANGUAGE)) {
-				throw new InvalidProjectDataException("Missing key \"" + Constants.KEY_PROJECT_LANGUAGE + "\".");
-			}
-			setDefaultLanguage(data.get(Constants.KEY_PROJECT_LANGUAGE).toString());
-			
-			getProjectVariables().putAll(data);
-		}
-		catch(final Exception ex) {
-			throw new InvalidProjectDataException(ex);
-		}
-	}
-	
-	/**
 	 * Loads pages from this project's directory.
 	 * 
 	 * @throws LoadException If the specified file is not a directory.
@@ -456,14 +423,13 @@ public class DocsProject {
 				throw new LoadException("The file \"" + directory + "\" is not a directory.");
 			}
 			
-			final DocsProject project = new DocsProject(null);
-			project.setDirectory(directory);
-			
 			final File projectData = new File(directory, Constants.FILE_PROJECT_DATA);
 			if(!projectData.exists() || !projectData.isFile()) {
 				throw new LoadException(Constants.FILE_PROJECT_DATA + " not found !");
 			}
-			project.loadDataFromProjectYML(projectData);
+			
+			final DocsProject project = DocsProject.createFromFile(projectData);
+			project.setDirectory(directory);
 			
 			for(final File child : directory.listFiles()) {
 				final String name = child.getName().toLowerCase();
@@ -488,6 +454,28 @@ public class DocsProject {
 		}
 		catch(final Exception ex) {
 			throw new LoadException(ex);
+		}
+	}
+	
+	/**
+	 * Creates a DocsProject instance from a file.
+	 * 
+	 * @param file The page's content.
+	 * 
+	 * @return The DocsProject instance.
+	 * @throws InvalidProjectDataException If the YAML file is invalid.
+	 */
+	
+	private static final DocsProject createFromFile(final File file) throws InvalidProjectDataException {
+		try {
+			final Yaml yaml = new Yaml();
+			@SuppressWarnings("unchecked")
+			final HashMap<String, Object> data = (HashMap<String, Object>)yaml.load(new FileInputStream(file));
+			
+			return new DocsProject(data);
+		}
+		catch(final Exception ex) {
+			throw new InvalidProjectDataException(ex);
 		}
 	}
 			

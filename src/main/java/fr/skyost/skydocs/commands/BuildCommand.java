@@ -97,7 +97,7 @@ public class BuildCommand extends Command {
 			
 			final HashSet<File> copied = new HashSet<File>();
 			
-			final boolean lunr = project.getProjectVariables().containsKey(Constants.KEY_PROJECT_LUNR_SEARCH) && Boolean.valueOf(project.getProjectVariables().get(Constants.KEY_PROJECT_LUNR_SEARCH).toString());
+			final boolean lunr = project.getLunrSearch();
 			final StringBuilder lunrContent = new StringBuilder();
 			
 			for(final DocsPage page : project.getPages()) {

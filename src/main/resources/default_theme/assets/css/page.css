@@ -1,5 +1,9 @@
 /* GENERAL STYLES */
 
+::selection {
+	background-color: #ffef9d;
+}
+
 html {
 	height: 100%;
 	box-sizing: border-box;
