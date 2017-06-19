@@ -48,9 +48,9 @@ public class DocsProject {
 	/**
 	 * Creates a new DocsProject instance.
 	 * 
-	 * @param name The name of the project.
+	 * @param projectVariables The prject.yml variables.
 	 * 
-	 * @throws InvalidProjectDataException 
+	 * @throws InvalidProjectDataException If the projectVariables supplied are invalid.
 	 */
 	
 	public DocsProject(final Map<String, Object> projectVariables) throws InvalidProjectDataException {
@@ -75,16 +75,12 @@ public class DocsProject {
 	/**
 	 * Creates a new DocsProject instance.
 	 * 
-	 * @param name The name of the project.
-	 * @param description The description of the project.
-	 * @param url The url of this project.
-	 * @param defaultLanguage The default language of this project.
-	 * @param directory The directory of this project.
+	 * @param projectVariables The project.yml variables.
+	 * @param directory The project's dirctory.
 	 * @param pages Pages of this project.
 	 * @param menus Menus of this project.
-	 * @param projectVariables Other variables to add to the project.
 	 * 
-	 * @throws InvalidProjectDataException 
+	 * @throws InvalidProjectDataException If the projectVariables supplied are invalid.
 	 */
 	
 	private DocsProject(final Map<String, Object> projectVariables, final File directory, final Set<DocsPage> pages, final Set<DocsMenu> menus) throws InvalidProjectDataException {
@@ -347,7 +343,7 @@ public class DocsProject {
 	
 	public final Object getField(final String key) {
 		if(!projectVariables.containsKey(key)) {
-			return "The menu data does not contains the specified key \"" + key + "\".";
+			return "The project.yml file does not contains the specified key \"" + key + "\".";
 		}
 		return projectVariables.get(key);
 	}

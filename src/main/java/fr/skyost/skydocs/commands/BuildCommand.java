@@ -229,13 +229,14 @@ public class BuildCommand extends Command {
 	 * @param destination The destination.
 	 */
 	
-	public final void copy(final HashSet<File> copied, final File file, final File destination) throws IOException {
+	public final void copy(final HashSet<File> copied, final File file, File destination) throws IOException {
 		if(copied.contains(file) || (file.isFile() && file.getName().toLowerCase().endsWith(".md"))) {
 			return;
 		}
 		if(file.isFile()) {
 			try {
-				Files.copy(file.toPath(), new File(destination, file.getName()).toPath());
+				destination = new File(destination, file.getName());
+				Files.copy(file.toPath(), destination.toPath());
 			}
 			catch(final FileAlreadyExistsException ex) {
 				System.out.println();

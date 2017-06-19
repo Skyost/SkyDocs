@@ -27,8 +27,8 @@ public class NewCommand extends Command {
 			System.out.print("Creating a new project in the directory \"" + directory + "\"... ");
 			Utils.extract(Constants.RESOURCE_NEW_PROJECT_PATH, Constants.RESOURCE_NEW_PROJECT_DIRECTORY, directory);
 			for(final String extension : new String[]{"bat", "sh", "command"}) {
-				createFile(new File(directory, "build." + extension), "java -jar \"%s\" build \"%s\"");
-				createFile(new File(directory, "serve." + extension), "java -jar \"%s\" serve \"%s\"");
+				createFile(new File(directory, "build." + extension), "java -jar \"%s\" build");
+				createFile(new File(directory, "serve." + extension), "java -jar \"%s\" serve");
 			}
 			System.out.println("Done !");
 		}
@@ -40,7 +40,7 @@ public class NewCommand extends Command {
 	}
 	
 	/**
-	 * Creates a file with two String.format(...) parameters : first is the JAR file path, second is the specified file directory path.
+	 * Creates a file, content will be formatted with JAR's file location.
 	 * 
 	 * @param file The file.
 	 * @param content Content of the file.
@@ -49,7 +49,7 @@ public class NewCommand extends Command {
 	 */
 	
 	private final void createFile(final File file, final String content) throws IOException {
-		Files.write(file.toPath(), String.format(content, Utils.getJARFile().getPath(), file.getParentFile().getPath()).getBytes(StandardCharsets.UTF_8));
+		Files.write(file.toPath(), String.format(content, Utils.getJARFile().getPath()).getBytes(StandardCharsets.UTF_8));
 	}
 	
 }
