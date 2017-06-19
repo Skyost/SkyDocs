@@ -126,7 +126,7 @@ public class BuildCommand extends Command {
 						contentNoHTML = Ascii.truncate(contentNoHTML, 140, "...");
 					}
 					final Map<String, Object> decodedHeader = Utils.decodeFileHeader(parts[0]);
-					final String title = decodedHeader != null && decodedHeader.containsKey(Constants.KEY_HEADER_TITLE) ? file.getName().replaceAll(".(?i)html", "") : decodedHeader.get(Constants.KEY_HEADER_TITLE).toString();
+					final String title = decodedHeader != null && decodedHeader.containsKey(Constants.KEY_HEADER_TITLE) ? decodedHeader.get(Constants.KEY_HEADER_TITLE).toString() : file.getName().replaceAll(".(?i)md", "");
 					lunrContent.append("'" + title.toLowerCase().replace(".", "-").replace("'", "\\'") + "': {" + "title: '" + Utils.stripHTML(title).replace("'", "\\'") + "', " + "content: '" + contentNoHTML.replace("'", "\\'") + "', " + "url: '" + page.getPageRelativeURL().substring(1) + "'" + "}, ");
 				}
 				
