@@ -24,13 +24,13 @@ public class NewCommand extends Command {
 			final String[] args = this.getArguments();
 			final File directory = new File(args.length > 0 && args[0].length() > 0 ? args[0] : System.getProperty("user.dir"));
 			
-			System.out.print("Creating a new project in the directory \"" + directory + "\"...");
+			System.out.print("Creating a new project in the directory \"" + directory + "\"... ");
 			Utils.extract(Constants.RESOURCE_NEW_PROJECT_PATH, Constants.RESOURCE_NEW_PROJECT_DIRECTORY, directory);
 			for(final String extension : new String[]{"bat", "sh", "command"}) {
 				createFile(new File(directory, "build." + extension), "java -jar \"%s\" build \"%s\"");
 				createFile(new File(directory, "serve." + extension), "java -jar \"%s\" serve \"%s\"");
 			}
-			System.out.println(" Done !");
+			System.out.println("Done !");
 		}
 		catch(final Exception ex) {
 			System.out.println();

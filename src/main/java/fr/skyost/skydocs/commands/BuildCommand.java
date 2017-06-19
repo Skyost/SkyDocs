@@ -3,6 +3,7 @@ package fr.skyost.skydocs.commands;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -64,7 +65,7 @@ public class BuildCommand extends Command {
 			final String[] args = this.getArguments();
 			final File directory = new File(args.length > 0 && args[0].length() > 0 ? args[0] : System.getProperty("user.dir"));
 			
-			System.out.print("Loading project from directory \"" + directory.getPath() + "\"...");
+			System.out.print("Loading project from directory \"" + directory.getPath() + "\"... ");
 			firstTime();
 			
 			final DocsProject project = DocsProject.loadFromDirectory(directory);
@@ -82,9 +83,9 @@ public class BuildCommand extends Command {
 			final DocsTemplate template = new DocsTemplate(null, project);
 			
 			secondTime();
-			System.out.println(" Done in " + timeElapsed() + " seconds !");
+			System.out.println("Done in " + timeElapsed() + " seconds !");
 			
-			System.out.print("Copying and converting files...");
+			System.out.print("Copying and converting files... ");
 			firstTime();
 			
 			final JtwigModel model = JtwigModel.newModel(project.getProjectVariables());
@@ -154,17 +155,17 @@ public class BuildCommand extends Command {
 			Files.write(new File(buildDirectory, Constants.RESOURCE_REDIRECT_LANGUAGE_FILE).toPath(), JtwigTemplate.fileTemplate(new File(buildDirectory, Constants.RESOURCE_REDIRECT_LANGUAGE_FILE)).render(JtwigModel.newModel().with(Constants.VARIABLE_REDIRECTION_URL, project.getDefaultLanguage() + "/")).getBytes(StandardCharsets.UTF_8));
 			
 			secondTime();
-			System.out.println(" Done in " + timeElapsed() + " seconds !");
+			System.out.println("Done in " + timeElapsed() + " seconds !");
 			
 			final File assetsDirectory = new File(themeDirectory, Constants.FILE_ASSETS_DIRECTORY);
 			if(assetsDirectory.exists() && assetsDirectory.isDirectory()) {
-				System.out.print("Copying assets directory...");
+				System.out.print("Copying assets directory... ");
 				firstTime();
 				
 				Utils.copyDirectory(assetsDirectory, new File(buildDirectory, Constants.FILE_ASSETS_DIRECTORY));
 				
 				secondTime();
-				System.out.println(" Done in " + timeElapsed() + " seconds !");
+				System.out.println("Done in " + timeElapsed() + " seconds !");
 			}
 			
 			System.out.println("Done ! You just have to put the content of \"" + buildDirectory.getPath() + "\" on your web server.");
@@ -226,8 +227,6 @@ public class BuildCommand extends Command {
 	 * @param copied If a file to copy is already in this list, it will not be copied another time.
 	 * @param file The file to copy.
 	 * @param destination The destination.
-	 * 
-	 * @throws IOException If an exception occurs while copying the file.
 	 */
 	
 	public final void copy(final HashSet<File> copied, final File file, final File destination) throws IOException {
@@ -235,7 +234,13 @@ public class BuildCommand extends Command {
 			return;
 		}
 		if(file.isFile()) {
-			Files.copy(file.toPath(), destination.toPath());
+			try {
+				Files.copy(file.toPath(), new File(destination, file.getName()).toPath());
+			}
+			catch(final FileAlreadyExistsException ex) {
+				System.out.println();
+				System.out.println("The file \"" + file.getPath() + "\" will not be copied because it already exists : \"" + destination.getPath() + "\".");
+			}
 			return;
 		}
 		destination.mkdirs();
