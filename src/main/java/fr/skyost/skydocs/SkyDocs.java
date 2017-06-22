@@ -7,6 +7,7 @@ import fr.skyost.skydocs.commands.HelpCommand;
 import fr.skyost.skydocs.commands.NewCommand;
 import fr.skyost.skydocs.commands.ServeCommand;
 import fr.skyost.skydocs.commands.UpdateCommand;
+import fr.skyost.skydocs.exceptions.LoadException;
 
 public class SkyDocs {
 	
@@ -22,9 +23,16 @@ public class SkyDocs {
 			new NewCommand(Arrays.copyOfRange(args, 1, args.length)).run();
 			break;
 		case Constants.COMMAND_BUILD:
-			final BuildCommand buildCommand = new BuildCommand(Arrays.copyOfRange(args, 1, args.length));
-			buildCommand.setExitOnFinish(true);
-			buildCommand.run();
+			try {
+				final BuildCommand buildCommand = new BuildCommand(Arrays.copyOfRange(args, 1, args.length));
+				buildCommand.setExitOnFinish(true);
+				buildCommand.run();
+			}
+			catch(final LoadException ex) {
+				System.out.println();
+				System.out.println("Cannot load the project in the specified directory !");
+				ex.printStackTrace();
+			}
 			break;
 		case Constants.COMMAND_SERVE:
 			final ServeCommand serveCommand = new ServeCommand(Arrays.copyOfRange(args, 1, args.length));

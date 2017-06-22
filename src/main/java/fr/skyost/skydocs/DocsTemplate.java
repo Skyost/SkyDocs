@@ -11,6 +11,7 @@ import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 import org.jtwig.environment.EnvironmentConfiguration;
 import org.jtwig.environment.EnvironmentConfigurationBuilder;
+
 import fr.skyost.skydocs.exceptions.InvalidTemplateException;
 import fr.skyost.skydocs.utils.IncludeFileFunction;
 import fr.skyost.skydocs.utils.RangeFunction;
@@ -101,7 +102,7 @@ public class DocsTemplate {
 		
 		final JtwigModel model = JtwigModel.newModel(variables);
 		final IncludeFileFunction includeFile = new IncludeFileFunction(themeDirectory, model, false);
-		template = includeFile.renderIncludeFile(new String(Files.readAllBytes(pageTemplate.toPath()), StandardCharsets.UTF_8));
+		template = includeFile.renderIncludeFile(pageTemplate);
 	}
 	
 	/**
@@ -140,7 +141,8 @@ public class DocsTemplate {
 		variables.put(Constants.VARIABLE_PAGE, page);
 		
 		final JtwigModel model = JtwigModel.newModel(variables);
-		final EnvironmentConfiguration configuration = EnvironmentConfigurationBuilder.configuration().functions().add(new IncludeFileFunction(themeDirectory, model, RANGE_FUNCTION)).add(RANGE_FUNCTION).and().build();
+		final IncludeFileFunction includeFile = new IncludeFileFunction(themeDirectory, model, RANGE_FUNCTION);
+		final EnvironmentConfiguration configuration = EnvironmentConfigurationBuilder.configuration().functions().add(includeFile).add(RANGE_FUNCTION).and().build();
 		
 		Files.write(file.toPath(), JtwigTemplate.inlineTemplate(template, configuration).render(model).getBytes(StandardCharsets.UTF_8));
 	}

@@ -337,6 +337,30 @@ public class Constants {
 	public static final String VARIABLE_LUNR_DATA = "lunrData";
 	
 	/**
+	 * ==============
+	 * SERVE COMMMAND
+	 * ==============
+	 */
+	
+	/**
+	 * This will be the interval between two files check.
+	 */
+	
+	public static final long SERVE_FILE_POLLING_INTERVAL = 2 * 1000l;
+	
+	/**
+	 * Modifying one of this file or folder will results in a re-build.
+	 */
+	
+	public static final String[] SERVE_REBUILD_PREFIX = new String[]{FILE_CONTENT_DIRECTORY, FILE_THEME_DIRECTORY, FILE_MENU_PREFIX, FILE_PROJECT_DATA};
+	
+	/**
+	 * Going to http://localhost:port/SERVE_LASTBUILD_URL will print the last build date in milliseconds.
+	 */
+	
+	public static final String SERVE_LASTBUILD_URL = "lastbuild";
+	
+	/**
 	 * ======
 	 * OTHERS
 	 * ======

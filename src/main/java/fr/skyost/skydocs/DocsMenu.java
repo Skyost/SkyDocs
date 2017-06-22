@@ -14,6 +14,7 @@ import org.yaml.snakeyaml.Yaml;
 import fr.skyost.skydocs.exceptions.InvalidMenuDataException;
 import fr.skyost.skydocs.exceptions.InvalidMenuEntryException;
 import fr.skyost.skydocs.utils.Utils;
+import fr.skyost.skydocs.utils.Utils.AutoLineBreakStringBuilder;
 
 /**
  * Represents a menu.
@@ -141,11 +142,10 @@ public class DocsMenu {
 	 */
 	
 	public final String toHTML() {
-		final StringBuilder builder = new StringBuilder();
-		builder.append("<ul>" + Utils.LINE_SEPARATOR);
+		final AutoLineBreakStringBuilder builder = new AutoLineBreakStringBuilder("<ul>");
 		orderMenuEntries(getEntries());
 		for(final DocsMenuEntry page : getEntries()) {
-			builder.append(page.toHTML() + Utils.LINE_SEPARATOR);
+			builder.append(page.toHTML());
 		}
 		builder.append(Utils.LINE_SEPARATOR + "</ul>");
 		return builder.toString();
@@ -377,18 +377,15 @@ public class DocsMenu {
 		 */
 		
 		public final String toHTML() {
-			final StringBuilder builder = new StringBuilder();
-			builder.append("<li>" + Utils.LINE_SEPARATOR);
-			builder.append("<a href=\"" + getLink() + "\">");
-			builder.append(getTitle());
-			builder.append("</a>" + Utils.LINE_SEPARATOR);
+			final AutoLineBreakStringBuilder builder = new AutoLineBreakStringBuilder("<li>");
+			builder.append("<a href=\"" + getLink() + "\">" + getTitle() + "</a>");
 			if(children.size() > 0) {
-				builder.append("<ul>" + Utils.LINE_SEPARATOR);
+				builder.append("<ul>");
 				orderMenuEntries(children);
 				for(final DocsMenuEntry child : children) {
-					builder.append(child.toHTML() + Utils.LINE_SEPARATOR);
+					builder.append(child.toHTML());
 				}
-				builder.append("</ul>" + Utils.LINE_SEPARATOR);
+				builder.append("</ul>");
 			}
 			builder.append("</li>");
 			return builder.toString();

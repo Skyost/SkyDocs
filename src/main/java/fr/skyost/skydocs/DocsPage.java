@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
+
 import fr.skyost.skydocs.utils.Utils;
 
 /**
@@ -203,14 +206,9 @@ public class DocsPage {
 	 */
 	
 	public static final DocsPage createFromFile(final DocsProject project, final File file) {
-		final String[] parts = Utils.separateFileHeader(file);
-		String title = file.getName().replaceAll(".(?i)html", "").replaceAll(".(?i)md", "");
-		String language = project.getDefaultLanguage();
-		if(parts[0] != null) {
-			final Map<String, Object> headers = Utils.decodeFileHeader(parts[0]);
-			title = headers.containsKey(Constants.KEY_HEADER_TITLE) ? headers.get(Constants.KEY_HEADER_TITLE).toString() : title;
-			language = headers.containsKey(Constants.KEY_HEADER_LANGUAGE) ? headers.get(Constants.KEY_HEADER_LANGUAGE).toString() : language;
-		}
+		final Map<String, Object> headers = Utils.decodeFileHeader(Utils.separateFileHeader(file)[0]);
+		String title = headers != null && headers.containsKey(Constants.KEY_HEADER_TITLE) ? headers.get(Constants.KEY_HEADER_TITLE).toString() : StringUtils.capitalize(FilenameUtils.removeExtension(file.getName()));
+		String language = headers != null && headers.containsKey(Constants.KEY_HEADER_LANGUAGE) ? headers.get(Constants.KEY_HEADER_LANGUAGE).toString() : project.getDefaultLanguage();
 		return new DocsPage(project, title, language, file);
 	}
 	

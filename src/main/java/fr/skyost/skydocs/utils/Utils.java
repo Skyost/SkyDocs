@@ -286,4 +286,32 @@ public class Utils {
 		return builder.toString();
 	}
 	
+	/**
+	 * Just a StringBuilder simulator that adds a line break between each append(...).
+	 */
+	
+	public static final class AutoLineBreakStringBuilder {
+		
+		private final StringBuilder builder = new StringBuilder();
+		
+		public AutoLineBreakStringBuilder() {}
+		
+		public AutoLineBreakStringBuilder(final String string) {
+			append(string);
+		}
+		
+		public final void append(final String string) {
+			builder.append(string + LINE_SEPARATOR);
+		}
+		
+		public final void reset() {
+			builder.setLength(0);
+		}
+		
+		public final String toString() {
+			return builder.toString();
+		}
+		
+	}
+	
 }

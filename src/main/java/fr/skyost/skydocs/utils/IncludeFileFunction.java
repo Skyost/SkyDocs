@@ -1,6 +1,7 @@
 package fr.skyost.skydocs.utils;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Arrays;
@@ -22,6 +23,12 @@ import fr.skyost.skydocs.Constants;
  */
 
 public class IncludeFileFunction extends SimpleJtwigFunction {
+	
+	/**
+	 * The pattern that will be rendered when <i>render</i> is set to false.
+	 */
+	
+	private static final Pattern PARTIAL_RENDER_PATTERN = Pattern.compile("\\{\\{[ ]{0,}" + Constants.FUNCTION_INCLUDE_FILE + "\\(\".*?\"\\)[ ]{0,}\\}\\}");
 	
 	/**
 	 * The directory (where you look up for files).
@@ -65,6 +72,7 @@ public class IncludeFileFunction extends SimpleJtwigFunction {
 	 * @param directory Where to find files.
 	 * @param model The jtwig model.
 	 * @param render If the file should be entirely rendered.
+	 * @param constructDependencyMap If the includeFile function should construct a dependency map of files or no.
 	 * @param functions The functions (used to render).
 	 */
 	
@@ -89,10 +97,10 @@ public class IncludeFileFunction extends SimpleJtwigFunction {
 		try {
 			final File file = new File(directory.getPath() + File.separator + fileName);
 			if(!file.exists() || !file.isFile()) {
-				return "Incorrect path given : " + directory.getPath() + File.separator + fileName;
+				return "Incorrect path given : " + directory.getPath() + fileName;
 			}
 			if(!render) {
-				return renderIncludeFile(new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8));
+				return renderIncludeFile(file);
 			}
 			final EnvironmentConfiguration configuration = EnvironmentConfigurationBuilder.configuration().functions().add(this).add(Arrays.asList(functions)).and().build();
 			return JtwigTemplate.fileTemplate(file, configuration).render(model);
@@ -126,6 +134,20 @@ public class IncludeFileFunction extends SimpleJtwigFunction {
 	/**
 	 * Render a String but processing only include file functions.
 	 * 
+	 * @param file File to render.
+	 * 
+	 * @return Rendered String.
+	 * 
+	 * @throws IOException If an exception occurs while reading the file.
+	 */
+	
+	public final String renderIncludeFile(final File file) throws IOException {
+		return renderIncludeFile(new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8));
+	}
+	
+	/**
+	 * Render a String but processing only include file functions.
+	 * 
 	 * @param toRender String to render.
 	 * 
 	 * @return Rendered String.
@@ -133,7 +155,7 @@ public class IncludeFileFunction extends SimpleJtwigFunction {
 	
 	public final String renderIncludeFile(String toRender) {
 		final EnvironmentConfiguration configuration = EnvironmentConfigurationBuilder.configuration().functions().add(this).add(Arrays.asList(functions)).and().build();
-		final Matcher matcher = Pattern.compile("\\{\\{[ ]{0,}" + Constants.FUNCTION_INCLUDE_FILE + "\\(\".*?\"\\)[ ]{0,}\\}\\}").matcher(toRender);
+		final Matcher matcher = PARTIAL_RENDER_PATTERN.matcher(toRender);
 		while(matcher.find()) {
 			final String matching = matcher.group();
 			toRender = toRender.replace(matching, JtwigTemplate.inlineTemplate(matching, configuration).render(model));

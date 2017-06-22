@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.io.FilenameUtils;
 import org.yaml.snakeyaml.Yaml;
 
 import fr.skyost.skydocs.DocsMenu.DocsMenuEntry;
@@ -408,8 +409,7 @@ public class DocsProject {
 				loadPages(child, destinations);
 				continue;
 			}
-			final int lastIndex = child.getName().lastIndexOf(".");
-			if(lastIndex != -1 && child.getName().substring(lastIndex).equalsIgnoreCase(".md")) {
+			if(FilenameUtils.getExtension(child.getName()).equalsIgnoreCase("md")) {
 				final DocsPage page = DocsPage.createFromFile(this, child);
 				final String path = page.getBuildDestinationPath(this);
 				if(destinations.contains(path)) {

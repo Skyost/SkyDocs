@@ -10,6 +10,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.commonmark.Extension;
 import org.commonmark.ext.gfm.strikethrough.StrikethroughExtension;
 import org.commonmark.ext.gfm.tables.TablesExtension;
@@ -27,6 +29,7 @@ import fr.skyost.skydocs.Constants;
 import fr.skyost.skydocs.DocsPage;
 import fr.skyost.skydocs.DocsProject;
 import fr.skyost.skydocs.DocsTemplate;
+import fr.skyost.skydocs.exceptions.LoadException;
 import fr.skyost.skydocs.utils.IncludeFileFunction;
 import fr.skyost.skydocs.utils.Utils;
 
@@ -36,6 +39,11 @@ import fr.skyost.skydocs.utils.Utils;
 
 public class BuildCommand extends Command {
 	
+	/**
+	 * The project's directory path.
+	 */
+	
+	private final String directoryPath;
 	
 	/**
 	 * First time point.
@@ -51,25 +59,31 @@ public class BuildCommand extends Command {
 	
 	/**
 	 * The project's build directory.
+	 * 
+	 * @throws LoadException If the project can't be loaded from the specified directory.
 	 */
 	
 	private File buildDirectory;
 	
-	public BuildCommand(final String... args) {
+	/**
+	 * The current project.
+	 */
+	
+	private DocsProject project;
+	
+	public BuildCommand(final String... args) throws LoadException {
 		super(args);
+		
+		directoryPath = args.length > 0 && args[0].length() > 0 ? args[0] : System.getProperty("user.dir");
+		reloadProject();
 	}
 	
 	@Override
 	public final void run() {
 		try {
-			final String[] args = this.getArguments();
-			final File directory = new File(args.length > 0 && args[0].length() > 0 ? args[0] : System.getProperty("user.dir"));
-			
-			System.out.print("Loading project from directory \"" + directory.getPath() + "\"... ");
+			System.out.print("Creating build directory and loading theme... ");
 			firstTime();
 			
-			final DocsProject project = DocsProject.loadFromDirectory(directory);
-			setCurrentBuildDirectory(project);
 			if(buildDirectory.exists()) {
 				Utils.deleteDirectory(buildDirectory);
 			}
@@ -83,7 +97,7 @@ public class BuildCommand extends Command {
 			final DocsTemplate template = new DocsTemplate(null, project);
 			
 			secondTime();
-			System.out.println("Done in " + timeElapsed() + " seconds !");
+			printTimeElapsed();
 			
 			System.out.print("Copying and converting files... ");
 			firstTime();
@@ -91,7 +105,8 @@ public class BuildCommand extends Command {
 			final JtwigModel model = JtwigModel.newModel(project.getProjectVariables());
 			model.with(Constants.VARIABLE_PROJECT, project);
 			
-			final EnvironmentConfiguration configuration = EnvironmentConfigurationBuilder.configuration().functions().add(new IncludeFileFunction(project.getThemeDirectory(), model, DocsTemplate.RANGE_FUNCTION)).add(DocsTemplate.RANGE_FUNCTION).and().build();
+			final IncludeFileFunction includeFile = new IncludeFileFunction(project.getContentDirectory(), model, DocsTemplate.RANGE_FUNCTION);
+			final EnvironmentConfiguration configuration = EnvironmentConfigurationBuilder.configuration().functions().add(includeFile).add(DocsTemplate.RANGE_FUNCTION).and().build();
 			
 			final List<Extension> extensions = Arrays.asList(TablesExtension.create(), StrikethroughExtension.create(), HeadingAnchorExtension.create());
 			final Parser parser = Parser.builder().extensions(extensions).build();
@@ -126,7 +141,7 @@ public class BuildCommand extends Command {
 						contentNoHTML = Ascii.truncate(contentNoHTML, 140, "...");
 					}
 					final Map<String, Object> decodedHeader = Utils.decodeFileHeader(parts[0]);
-					final String title = decodedHeader != null && decodedHeader.containsKey(Constants.KEY_HEADER_TITLE) ? decodedHeader.get(Constants.KEY_HEADER_TITLE).toString() : file.getName().replaceAll(".(?i)md", "");
+					final String title = decodedHeader != null && decodedHeader.containsKey(Constants.KEY_HEADER_TITLE) ? decodedHeader.get(Constants.KEY_HEADER_TITLE).toString() : StringUtils.capitalize(FilenameUtils.removeExtension(file.getName()));
 					lunrContent.append("'" + title.toLowerCase().replace(".", "-").replace("'", "\\'") + "': {" + "title: '" + Utils.stripHTML(title).replace("'", "\\'") + "', " + "content: '" + contentNoHTML.replace("'", "\\'") + "', " + "url: '" + page.getPageRelativeURL().substring(1) + "'" + "}, ");
 				}
 				
@@ -155,7 +170,7 @@ public class BuildCommand extends Command {
 			Files.write(new File(buildDirectory, Constants.RESOURCE_REDIRECT_LANGUAGE_FILE).toPath(), JtwigTemplate.fileTemplate(new File(buildDirectory, Constants.RESOURCE_REDIRECT_LANGUAGE_FILE)).render(JtwigModel.newModel().with(Constants.VARIABLE_REDIRECTION_URL, project.getDefaultLanguage() + "/")).getBytes(StandardCharsets.UTF_8));
 			
 			secondTime();
-			System.out.println("Done in " + timeElapsed() + " seconds !");
+			printTimeElapsed();
 			
 			final File assetsDirectory = new File(themeDirectory, Constants.FILE_ASSETS_DIRECTORY);
 			if(assetsDirectory.exists() && assetsDirectory.isDirectory()) {
@@ -165,7 +180,7 @@ public class BuildCommand extends Command {
 				Utils.copyDirectory(assetsDirectory, new File(buildDirectory, Constants.FILE_ASSETS_DIRECTORY));
 				
 				secondTime();
-				System.out.println("Done in " + timeElapsed() + " seconds !");
+				printTimeElapsed();
 			}
 			
 			System.out.println("Done ! You just have to put the content of \"" + buildDirectory.getPath() + "\" on your web server.");
@@ -194,11 +209,48 @@ public class BuildCommand extends Command {
 	}
 	
 	/**
-	 * Returns the second elapsed between the two time points.
+	 * Prints "Done in x seconds !" with x being the time between the first and the second point.
 	 */
 	
-	public final float timeElapsed() {
-		return (float)((secondTime - firstTime) / 1000f);
+	public final void printTimeElapsed() {
+		System.out.println("Done in " + ((float)((secondTime - firstTime) / 1000f)) + " seconds !");
+	}
+	
+	/**
+	 * Reloads the project (pages, menus, ...).
+	 * 
+	 * @throws LoadException If the project can't be (re)loaded.
+	 */
+	
+	public final void reloadProject() throws LoadException {
+		System.out.print("Loading project from directory \"" + directoryPath + "\"... ");
+		firstTime();
+		
+		project = DocsProject.loadFromDirectory(new File(directoryPath));
+		setCurrentBuildDirectory(project);
+		
+		secondTime();
+		printTimeElapsed();
+	}
+	
+	/**
+	 * Gets the current project.
+	 * 
+	 * @return The current project.
+	 */
+	
+	public final DocsProject getProject() {
+		return project;
+	}
+	
+	/**
+	 * Sets the current project.
+	 * 
+	 * @return project The new project.
+	 */
+	
+	public final void setProject(final DocsProject project) {
+		this.project = project;
 	}
 	
 	/**
@@ -230,12 +282,15 @@ public class BuildCommand extends Command {
 	 */
 	
 	public final void copy(final HashSet<File> copied, final File file, File destination) throws IOException {
-		if(copied.contains(file) || (file.isFile() && file.getName().toLowerCase().endsWith(".md"))) {
+		if(copied.contains(file) || (file.isFile() && FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("md"))) {
 			return;
 		}
 		if(file.isFile()) {
 			try {
 				destination = new File(destination, file.getName());
+				if(!destination.getParentFile().exists()) {
+					destination.getParentFile().mkdirs();
+				}
 				Files.copy(file.toPath(), destination.toPath());
 			}
 			catch(final FileAlreadyExistsException ex) {
