@@ -59,7 +59,7 @@ public class RangeFunction extends SimpleJtwigFunction {
 		}
 		catch(final IllegalArgumentException ex) {
 			ex.printStackTrace();
-			return "";
+			return "The range function can't be applied : \"" + ex.getClass().getName() + "\".";
 		}
 	}
 	

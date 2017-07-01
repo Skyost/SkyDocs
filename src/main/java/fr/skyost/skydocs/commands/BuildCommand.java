@@ -13,6 +13,7 @@ import java.util.Map;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.commonmark.Extension;
+import org.commonmark.ext.autolink.AutolinkExtension;
 import org.commonmark.ext.gfm.strikethrough.StrikethroughExtension;
 import org.commonmark.ext.gfm.tables.TablesExtension;
 import org.commonmark.ext.heading.anchor.HeadingAnchorExtension;
@@ -81,7 +82,7 @@ public class BuildCommand extends Command {
 	@Override
 	public final void run() {
 		try {
-			System.out.print("Creating build directory and loading theme... ");
+			output("Creating build directory and loading theme...");
 			firstTime();
 			
 			if(buildDirectory.exists()) {
@@ -99,7 +100,7 @@ public class BuildCommand extends Command {
 			secondTime();
 			printTimeElapsed();
 			
-			System.out.print("Copying and converting files... ");
+			output("Copying and converting files...");
 			firstTime();
 			
 			final JtwigModel model = JtwigModel.newModel(project.getProjectVariables());
@@ -108,7 +109,7 @@ public class BuildCommand extends Command {
 			final IncludeFileFunction includeFile = new IncludeFileFunction(project.getContentDirectory(), model, DocsTemplate.RANGE_FUNCTION);
 			final EnvironmentConfiguration configuration = EnvironmentConfigurationBuilder.configuration().functions().add(includeFile).add(DocsTemplate.RANGE_FUNCTION).and().build();
 			
-			final List<Extension> extensions = Arrays.asList(TablesExtension.create(), StrikethroughExtension.create(), HeadingAnchorExtension.create());
+			final List<Extension> extensions = Arrays.asList(AutolinkExtension.create(), StrikethroughExtension.create(), TablesExtension.create(), HeadingAnchorExtension.create());
 			final Parser parser = Parser.builder().extensions(extensions).build();
 			final HtmlRenderer renderer = HtmlRenderer.builder().extensions(extensions).build();
 			
@@ -174,7 +175,7 @@ public class BuildCommand extends Command {
 			
 			final File assetsDirectory = new File(themeDirectory, Constants.FILE_ASSETS_DIRECTORY);
 			if(assetsDirectory.exists() && assetsDirectory.isDirectory()) {
-				System.out.print("Copying assets directory... ");
+				output("Copying assets directory...");
 				firstTime();
 				
 				Utils.copyDirectory(assetsDirectory, new File(buildDirectory, Constants.FILE_ASSETS_DIRECTORY));
@@ -183,11 +184,10 @@ public class BuildCommand extends Command {
 				printTimeElapsed();
 			}
 			
-			System.out.println("Done ! You just have to put the content of \"" + buildDirectory.getPath() + "\" on your web server.");
+			output("Done ! You just have to put the content of \"" + buildDirectory.getPath() + "\" on your web server.");
 		}
 		catch(final Exception ex) {
-			System.out.println();
-			ex.printStackTrace();
+			printStackTrace(ex);
 		}
 		super.run();
 	}
@@ -213,7 +213,7 @@ public class BuildCommand extends Command {
 	 */
 	
 	public final void printTimeElapsed() {
-		System.out.println("Done in " + ((float)((secondTime - firstTime) / 1000f)) + " seconds !");
+		outputLine("Done in " + ((float)((secondTime - firstTime) / 1000f)) + " seconds !");
 	}
 	
 	/**
@@ -223,7 +223,7 @@ public class BuildCommand extends Command {
 	 */
 	
 	public final void reloadProject() throws LoadException {
-		System.out.print("Loading project from directory \"" + directoryPath + "\"... ");
+		output("Loading project from directory \"" + directoryPath + "\"... ");
 		firstTime();
 		
 		project = DocsProject.loadFromDirectory(new File(directoryPath));
@@ -294,8 +294,8 @@ public class BuildCommand extends Command {
 				Files.copy(file.toPath(), destination.toPath());
 			}
 			catch(final FileAlreadyExistsException ex) {
-				System.out.println();
-				System.out.println("The file \"" + file.getPath() + "\" will not be copied because it already exists : \"" + destination.getPath() + "\".");
+				blankLine();
+				outputLine("The file \"" + file.getPath() + "\" will not be copied because it already exists : \"" + destination.getPath() + "\".");
 			}
 			return;
 		}

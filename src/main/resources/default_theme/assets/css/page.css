@@ -55,13 +55,14 @@ pre {
 	padding-bottom: 80px;
 }
 
-#content h1 {
+#content h1, #content h2, #content h3, #content h4 {
 	border-bottom: 1px solid #eceeef;
 	padding-bottom: 10px;
+	position: relative;
 }
 
-#content h1, #content h2, #content h3, #content h4 {
-	position: relative;
+#content h2, #content h3, #content h4 {
+	padding-top: 10px;
 }
 
 #content h1 .print {
@@ -95,6 +96,10 @@ pre {
 
 #content .anchor:hover {
 	color: #2c3e50;
+}
+
+#content article img {
+	max-width: 100%;
 }
 
 #content nav ul {

@@ -18,31 +18,29 @@ public class UpdateCommand extends Command implements GithubUpdaterResultListene
 
 	@Override
 	public final void updaterStarted() {
-		System.out.println("Checking for updates...");
+		outputLine("Checking for updates...");
 	}
 
 	@Override
 	public final void updaterException(final Exception ex) {
-		System.out.println("Error while checking for updates :");
-		ex.printStackTrace();
+		printStackTrace(ex);
+		outputLine("Error while checking for updates :");
 	}
 
 	@Override
 	public final void updaterResponse(final String response) {
-		if(!response.startsWith("2")) {
-			System.out.println("Bad response while checking for updates : " + response);
-		}
+		outputLine("Bad response while checking for updates : " + response);
 	}
 
 	@Override
 	public final void updaterUpdateAvailable(final String localVersion, final String remoteVersion) {
-		System.out.println("An update is available : v" + remoteVersion + " !");
-		System.out.println("Heads to https://github.com/" + GithubUpdater.UPDATER_GITHUB_USERNAME + "/" + GithubUpdater.UPDATER_GITHUB_REPO + "/releases to download it !");
+		outputLine("An update is available : v" + remoteVersion + " !");
+		outputLine("Heads to https://github.com/" + GithubUpdater.UPDATER_GITHUB_USERNAME + "/" + GithubUpdater.UPDATER_GITHUB_REPO + "/releases to download it !");
 	}
 
 	@Override
 	public final void updaterNoUpdate(final String localVersion, final String remoteVersion) {
-		System.out.println("No update available.");
+		outputLine("No update available.");
 	}
 	
 }

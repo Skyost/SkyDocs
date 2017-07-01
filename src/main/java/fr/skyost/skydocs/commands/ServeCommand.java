@@ -41,6 +41,10 @@ public class ServeCommand extends Command {
 	
 	private final int port;
 	
+	/**
+	 * Last build time in millis.
+	 */
+	
 	private long lastBuild;
 	
 	public ServeCommand(final String... args) {
@@ -54,6 +58,7 @@ public class ServeCommand extends Command {
 			final InternalServer server = new InternalServer(port);
 			
 			final BuildCommand command = new BuildCommand(this.getArguments());
+			command.setOutputing(false);
 			boolean firstBuild = true;
 			registerFileListener(command);
 			
@@ -63,23 +68,22 @@ public class ServeCommand extends Command {
 				newBuild(command, firstBuild);
 				if(firstBuild) {
 					buildDirectory = command.getCurrentBuildDirectory();
-					System.out.println("You can point your browser to http://localhost:" + port + "...");
+					outputLine("You can point your browser to http://localhost:" + port + "...");
 					if(Desktop.isDesktopSupported()) {
 						Desktop.getDesktop().browse(new URL("http://localhost:" + port).toURI());
 					}
 					server.start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
 				}
 				firstBuild = false;
-				System.out.println("Enter nothing to rebuild the website or enter something to stop the server (auto rebuild is enabled) :");
-				System.out.println();
-				line = scanner.nextLine();
+				outputLine("Enter nothing to rebuild the website or enter something to stop the server (auto rebuild is enabled) :");
+				blankLine();
+				line = scanner.hasNextLine() ? scanner.nextLine() : System.lineSeparator();
 			}
 			scanner.close();
 			server.stop();
 		}
 		catch(final Exception ex) {
-			System.out.println();
-			ex.printStackTrace();
+			printStackTrace(ex);
 		}
 		super.run();
 	}
@@ -94,13 +98,13 @@ public class ServeCommand extends Command {
 	 */
 	
 	private final void newBuild(final BuildCommand command, final boolean firstBuild) throws LoadException {
-		System.out.println("Running build command...");
+		output("Running build command...");
 		if(!firstBuild) {
 			command.reloadProject();
 		}
 		command.run();
 		lastBuild = System.currentTimeMillis();
-		System.out.println("Done building documentation !");
+		outputLine("Done !");
 	}
 	
 	/**
@@ -158,13 +162,12 @@ public class ServeCommand extends Command {
 		}
 		try {
 			newBuild(command, false);
-			System.out.println("Enter nothing to rebuild the website or enter something to stop the server (auto rebuild is enabled) :");
-			System.out.println();
+			outputLine("Enter nothing to rebuild the website or enter something to stop the server (auto rebuild is enabled) :");
+			blankLine();
 		}
 		catch(final Exception ex) {
-			System.out.println();
-			System.out.println("Unable to build the project !");
-			ex.printStackTrace();
+			printStackTrace(ex);
+			outputLine("Unable to build the project !");
 		}
 	}
 	

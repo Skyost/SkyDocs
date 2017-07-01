@@ -19,6 +19,12 @@ public abstract class Command implements Runnable {
 	private boolean exitOnFinish = false;
 	
 	/**
+	 * If this command should output informations.
+	 */
+
+	private boolean output = true;
+	
+	/**
 	 * Creates a new Command instance.
 	 * 
 	 * @param args The arguments.
@@ -69,6 +75,26 @@ public abstract class Command implements Runnable {
 	}
 	
 	/**
+	 * Gets if this command should use System.out.print(...).
+	 * 
+	 * @return Whether this command should output informations.
+	 */
+	
+	public final boolean isOutputing() {
+		return output;
+	}
+	
+	/**
+	 * Sets whether this command should use System.out.print(...).
+	 * 
+	 * @param output Whether this command should output informations.
+	 */
+	
+	public final void setOutputing(final boolean output) {
+		this.output  = output;
+	}
+	
+	/**
 	 * Run the command.
 	 */
 	
@@ -77,6 +103,37 @@ public abstract class Command implements Runnable {
 		if(exitOnFinish) {
 			System.exit(0);
 		}
+	}
+	
+	public final void output(final String message) {
+		output(message, output);
+	}
+	
+	public final void output(final String message, final boolean output) {
+		if(output) {
+			System.out.print(message + " ");
+		}
+	}
+	
+	public final void outputLine(final String message) {
+		outputLine(message, output);
+	}
+	
+	public final void outputLine(final String message, final boolean output) {
+		if(output) {
+			System.out.println(message);
+		}
+	}
+	
+	public final void blankLine() {
+		if(output) {
+			System.out.println();
+		}
+	}
+	
+	public final void printStackTrace(final Throwable throwable) {
+		System.out.println();
+		throwable.printStackTrace();
 	}
 	
 }
