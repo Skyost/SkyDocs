@@ -77,7 +77,7 @@ public class ServeCommand extends Command {
 				firstBuild = false;
 				outputLine("Enter nothing to rebuild the website or enter something to stop the server (auto rebuild is enabled) :");
 				blankLine();
-				line = scanner.hasNextLine() ? scanner.nextLine() : System.lineSeparator();
+				line = scanner.hasNextLine() ? scanner.nextLine() : " ";
 			}
 			scanner.close();
 			server.stop();
