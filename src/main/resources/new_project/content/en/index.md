@@ -5,7 +5,7 @@ language: en
 
 # Home
 
-Hi there, welcome on {{ project_name }} !
+Hi there, welcome on {{ project.getName() }} !
 
 ## How to edit this page ?
 

@@ -5,7 +5,7 @@ language: fr
 
 # Accueil
 
-Bonjour à vous, et bienvenue sur {{ project_name }} !
+Bonjour à vous, et bienvenue sur {{ project.getName() }} !
 
 ## Comment modifier cette page ?
 

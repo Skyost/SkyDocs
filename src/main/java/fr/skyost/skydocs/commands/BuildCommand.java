@@ -103,8 +103,7 @@ public class BuildCommand extends Command {
 			output("Copying and converting files...");
 			firstTime();
 			
-			final JtwigModel model = JtwigModel.newModel(project.getProjectVariables());
-			model.with(Constants.VARIABLE_PROJECT, project);
+			final JtwigModel model = template.createModel().with(Constants.VARIABLE_PROJECT, project);
 			
 			final IncludeFileFunction includeFile = new IncludeFileFunction(project.getContentDirectory(), model, DocsTemplate.RANGE_FUNCTION);
 			final EnvironmentConfiguration configuration = EnvironmentConfigurationBuilder.configuration().functions().add(includeFile).add(DocsTemplate.RANGE_FUNCTION).and().build();

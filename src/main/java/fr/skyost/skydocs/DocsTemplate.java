@@ -100,7 +100,7 @@ public class DocsTemplate {
 			throw new InvalidTemplateException("\"" + Constants.FILE_THEME_PAGE_FILE + "\" not found.");
 		}
 		
-		final JtwigModel model = JtwigModel.newModel(variables);
+		final JtwigModel model = createModel();
 		final IncludeFileFunction includeFile = new IncludeFileFunction(themeDirectory, model, false);
 		template = includeFile.renderIncludeFile(pageTemplate);
 	}
@@ -134,17 +134,40 @@ public class DocsTemplate {
 			page = DocsPage.createFromFile(project, file);
 		}
 		
-		final HashMap<String, Object> variables = new HashMap<String, Object>(this.variables);
-		if(otherVariables != null) {
-			variables.putAll(otherVariables);
-		}
-		variables.put(Constants.VARIABLE_PAGE, page);
-		
-		final JtwigModel model = JtwigModel.newModel(variables);
+		final JtwigModel model = createModel().with(Constants.VARIABLE_PAGE, page);
 		final IncludeFileFunction includeFile = new IncludeFileFunction(themeDirectory, model, RANGE_FUNCTION);
 		final EnvironmentConfiguration configuration = EnvironmentConfigurationBuilder.configuration().functions().add(includeFile).add(RANGE_FUNCTION).and().build();
 		
 		Files.write(file.toPath(), JtwigTemplate.inlineTemplate(template, configuration).render(model).getBytes(StandardCharsets.UTF_8));
+	}
+	
+	/**
+	 * Creates the corresponding model for this template.
+	 * 
+	 * @return The corresponding JTwig model.
+	 */
+	
+	public final JtwigModel createModel() {
+		return createModel(null);
+	}
+	
+	/**
+	 * Creates the corresponding model for this template with some variables.
+	 * 
+	 * @param otherVariables The variables.
+	 * 
+	 * @return The corresponding JTwig model.
+	 */
+	
+	public final JtwigModel createModel(final Map<String, Object> otherVariables) {
+		final HashMap<String, Object> variables = new HashMap<String, Object>(this.variables);
+		if(otherVariables != null) {
+			variables.putAll(otherVariables);
+		}
+		return JtwigModel.newModel(variables)
+				.with(Constants.VARIABLE_GENERATOR_NAME, Constants.APP_NAME)
+				.with(Constants.VARIABLE_GENERATOR_VERSION, Constants.APP_VERSION)
+				.with(Constants.VARIABLE_GENERATOR_WEBSITE, Constants.APP_WEBSITE);
 	}
 	
 }

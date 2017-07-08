@@ -313,6 +313,24 @@ public class Constants {
 	public static final String FUNCTION_RANGE = "range";
 	
 	/**
+	 * The SkyDocs variable.
+	 */
+	
+	public static final String VARIABLE_GENERATOR_NAME = "generator_name";
+	
+	/**
+	 * The SkyDocs version.
+	 */
+	
+	public static final String VARIABLE_GENERATOR_VERSION = "generator_version";
+	
+	/**
+	 * The SkyDocs website.
+	 */
+	
+	public static final String VARIABLE_GENERATOR_WEBSITE = "generator_website";
+	
+	/**
 	 * The project variable.
 	 */
 	
