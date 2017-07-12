@@ -4,14 +4,14 @@
 			<span class="navbar-toggler-icon"></span>
 		</button>
 		
-		<a class="navbar-brand" href="/{{ page.getLanguage() }}/index.html"><img src="{{ block('path') }}assets/img/icon.png" width="30" height="30" class="d-inline-block align-top" alt="{{ project.getName() }}"> {{ project.getName() }}</a>
+		<a class="navbar-brand" href="{{ block('path') }}index.html"><img src="{{ block('path') }}assets/img/icon.png" width="30" height="30" class="d-inline-block align-top" alt="{{ project.getName() }}"> {{ project.getName() }}</a>
 
 		<div class="collapse navbar-collapse" id="navbar">
 		
 			{{ project.getMenuHTMLByLanguage(page.getLanguage()) }}
 			
 			{% if project.getLunrSearch() %}
-				<form class="form-inline my-2 my-lg-0" action="../search.html" method="get">
+				<form class="form-inline my-2 my-lg-0" action="{{ block('path') }}search.html" method="get">
 					<input name="keywords" class="form-control mr-sm-2" type="search" placeholder="...">
 					<span class="input-group-btn">
 						<button class="btn btn-success my-2 my-sm-0" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
