@@ -102,6 +102,9 @@ public class Utils {
 	public static final String[] separateFileHeader(final File file) {
 		try {
 			final List<String> lines = Files.readAllLines(file.toPath(), StandardCharsets.UTF_8);
+			if(lines.size() == 0) {
+				return new String[]{null, ""};
+			}
 			if(!lines.get(0).equals(Constants.HEADER_MARK)) {
 				return new String[]{null, Utils.join(LINE_SEPARATOR, lines)};
 			}

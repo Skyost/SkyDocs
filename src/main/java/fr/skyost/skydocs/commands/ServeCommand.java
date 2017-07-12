@@ -60,13 +60,13 @@ public class ServeCommand extends Command {
 			final BuildCommand command = new BuildCommand(this.getArguments());
 			command.setOutputing(false);
 			boolean firstBuild = true;
-			registerFileListener(command);
 			
 			final Scanner scanner = new Scanner(System.in, StandardCharsets.UTF_8.name());
 			String line = "";
 			while(line.equals("")) {
 				newBuild(command, firstBuild);
 				if(firstBuild) {
+					registerFileListener(command);
 					buildDirectory = command.getCurrentBuildDirectory();
 					outputLine("You can point your browser to http://localhost:" + port + "...");
 					if(Desktop.isDesktopSupported()) {

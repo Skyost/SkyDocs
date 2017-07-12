@@ -28,6 +28,8 @@ $(document).ready(function() {
 		'prefix': 'nav'
 	});
 	
+	$('#content nav ul').css('max-width', $('#content nav ul').width());
+	
 	$(window).scroll(function() {
 		if($('#content nav ul').height() > $(window).height()) {
 			return;

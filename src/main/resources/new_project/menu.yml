@@ -32,5 +32,5 @@ language: en
   weight: 3
   children:
     - title: 'Français'
-      link: '../fr/'
+      link: '/fr/'
       weight: 0
