@@ -1,7 +1,11 @@
 package fr.skyost.skydocs.commands;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
@@ -25,6 +29,8 @@ import org.jtwig.environment.EnvironmentConfiguration;
 import org.jtwig.environment.EnvironmentConfigurationBuilder;
 
 import com.google.common.base.Ascii;
+import com.yahoo.platform.yui.compressor.CssCompressor;
+import com.yahoo.platform.yui.compressor.JavaScriptCompressor;
 
 import fr.skyost.skydocs.Constants;
 import fr.skyost.skydocs.DocsPage;
@@ -39,6 +45,12 @@ import fr.skyost.skydocs.utils.Utils;
  */
 
 public class BuildCommand extends Command {
+	
+	/**
+	 * If you are in production mode.
+	 */
+	
+	private final boolean prod;
 	
 	/**
 	 * The project's directory path.
@@ -72,9 +84,10 @@ public class BuildCommand extends Command {
 	
 	private DocsProject project;
 	
-	public BuildCommand(final String... args) throws LoadException {
+	public BuildCommand(final boolean prod, final String... args) throws LoadException {
 		super(args);
 		
+		this.prod = prod;
 		directoryPath = args.length > 0 && args[0].length() > 0 ? args[0] : System.getProperty("user.dir");
 		reloadProject();
 	}
@@ -177,7 +190,7 @@ public class BuildCommand extends Command {
 				output("Copying assets directory...");
 				firstTime();
 				
-				Utils.copyDirectory(assetsDirectory, new File(buildDirectory, Constants.FILE_ASSETS_DIRECTORY));
+				copyAssets(assetsDirectory, new File(buildDirectory, Constants.FILE_ASSETS_DIRECTORY));
 				
 				secondTime();
 				printTimeElapsed();
@@ -189,6 +202,16 @@ public class BuildCommand extends Command {
 			printStackTrace(ex);
 		}
 		super.run();
+	}
+	
+	/**
+	 * Checks if the command is in prod mode.
+	 * 
+	 * @return Whether the command is in prod mode.
+	 */
+	
+	public final boolean isProdMode() {
+		return prod;
 	}
 	
 	/**
@@ -301,6 +324,40 @@ public class BuildCommand extends Command {
 		destination.mkdirs();
 		for(final File child : file.listFiles()) {
 			copy(copied, child, new File(destination.getPath() + File.separator + file.getName()));
+		}
+	}
+	
+	public final void copyAssets(final File directory, final File destination) throws IOException {
+		if(directory.isFile()) {
+			final String extension = FilenameUtils.getExtension(directory.getName());
+			if(prod && (extension.equalsIgnoreCase("css") || extension.equalsIgnoreCase("js"))) {
+				try {
+					final InputStreamReader input = new InputStreamReader(new FileInputStream(directory), StandardCharsets.UTF_8);
+					final OutputStreamWriter output = new OutputStreamWriter(new FileOutputStream(destination), StandardCharsets.UTF_8);
+					if(extension.equalsIgnoreCase("css")) {
+						final CssCompressor compressor = new CssCompressor(input);
+						compressor.compress(output, -1);
+					}
+					else {
+						final JavaScriptCompressor compressor = new JavaScriptCompressor(input, null);
+						compressor.compress(output, -1, true, false, false, false);
+					}
+					input.close();
+					output.close();
+					return;
+				}
+				catch(final Exception ex) {
+					printStackTrace(ex);
+					blankLine();
+					outputLine("Failed to minify \"" + directory.getPath() + "\" !");
+				}
+			}
+			Files.copy(directory.toPath(), destination.toPath());
+			return;
+		}
+		destination.mkdirs();
+		for(final File file : directory.listFiles()) {
+			copyAssets(file, new File(destination, file.getName()));
 		}
 	}
 	

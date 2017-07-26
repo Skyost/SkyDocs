@@ -57,7 +57,7 @@ public class ServeCommand extends Command {
 		try {
 			final InternalServer server = new InternalServer(port);
 			
-			final BuildCommand command = new BuildCommand(this.getArguments());
+			final BuildCommand command = new BuildCommand(false, this.getArguments());
 			command.setOutputing(false);
 			boolean firstBuild = true;
 			

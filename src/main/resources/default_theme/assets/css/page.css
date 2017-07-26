@@ -28,6 +28,46 @@ pre {
 	border: 1px solid rgba(0, 0, 0, 0.2);
 }
 
+/* CUSTOM SCROLLBARS FOR WEBKIT USERS */
+
+::-webkit-scrollbar {
+	width: 6px;
+	height: 6px;
+}
+
+::-webkit-scrollbar-button {
+	width: 0px;
+	height: 0px;
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: #999999;
+	border: 0px none white;
+	border-radius: 0px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background-color: #777777;
+}
+
+::-webkit-scrollbar-thumb:active {
+	background-color: #424242;
+}
+
+::-webkit-scrollbar-track {
+	background-color: transparent;
+	border: 0px none transparent;
+	border-radius: 0px;
+}
+
+::-webkit-scrollbar-track:active {
+	background-color: white;
+}
+
+::-webkit-scrollbar-corner {
+	background-color: transparent;
+}
+
 /* NAVIGATION BAR */
 
 .navbar .form-inline input {
@@ -39,6 +79,25 @@ pre {
 
 .navbar .form-inline .btn-success {
 	border: 0;
+}
+
+/* ANCHORS */
+
+.anchorjs-link {
+	transition: all .25s linear;
+}
+
+.anchorjs-link:link, .anchorjs-link:active, .anchorjs-link:visited {
+	color: #2c3e50;
+	text-decoration: none;
+}
+
+.anchorjs-link:hover {
+	color: #2c3e50;
+}
+
+*:hover > .anchorjs-link {
+	margin-left: -1.125em !important;
 }
 
 /* CONTENT */
@@ -68,27 +127,6 @@ pre {
 	position: absolute;
 	right: 0;
 	top: 25%;
-}
-
-#content h1:hover .anchor, #content h2:hover .anchor, #content h3:hover .anchor, #content h4:hover .anchor {
-	opacity: 0.7;
-}
-
-#content .anchor {
-	opacity: 0;
-	transition: opacity 0.3s ease;
-	position: absolute;
-	top: 0;
-	margin-left: -1.5em;
-	display: block;
-}
-
-#content .anchor:link, #content .anchor:visited {
-	color: #3d5670;
-}
-
-#content .anchor:hover {
-	color: #2c3e50;
 }
 
 #content article img {

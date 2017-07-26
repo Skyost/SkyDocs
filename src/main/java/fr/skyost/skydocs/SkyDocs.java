@@ -24,7 +24,7 @@ public class SkyDocs {
 			break;
 		case Constants.COMMAND_BUILD:
 			try {
-				final BuildCommand buildCommand = new BuildCommand(Arrays.copyOfRange(args, 1, args.length));
+				final BuildCommand buildCommand = new BuildCommand(true, Arrays.copyOfRange(args, 1, args.length));
 				buildCommand.setExitOnFinish(true);
 				buildCommand.run();
 			}

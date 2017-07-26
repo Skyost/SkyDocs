@@ -28,23 +28,29 @@ $(document).ready(function() {
 		'prefix': 'nav'
 	});
 	
-	$('#content nav ul').css('max-width', $('#content nav ul').width());
-	
+	var navigation = $('#content nav ul');
+	navigation.css('max-width', navigation.width());
 	$(window).scroll(function() {
-		if($('#content nav ul').height() > $(window).height()) {
+		if(navigation.height() > $(window).height()) {
+			resetPosition(navigation);
 			return;
 		}
-		if($(window).width() < 750) {
-			$('#content nav ul').css('position', '');
+		if($(window).width() < 768) {
+			resetPosition(navigation);
 			return;
 		}
-		$('#content nav ul').css('position', isElementInViewport($('header')) ? '' : 'fixed').css('top', '31px');
+		if($('#navbar').is(':in-viewport')) {
+			resetPosition(navigation);
+		}
+		else {
+			navigation.css('position', 'fixed');
+			navigation.css('top', '30px');
+		}
 	});
 	
 	// ANCHORS LINKS AND PRINT LINKS :
-	$('#content h1, #content h2, #content h3, #content h4').each(function() {
-		$(this).html($(this).html() + '<a href="#' + $(this).attr('id') + '" class="anchor no-print"><i class="fa fa-link" aria-hidden="true"></i></a>');
-	});
+	anchors.options.placement = 'left';
+	anchors.add('h1, h2, h3, h4');
 	
 	$('#content h1').each(function() {
 		$(this).html($(this).html() + '<span class="print no-print"></span>');
@@ -52,6 +58,14 @@ $(document).ready(function() {
 	
 	$('.print').click(function() {
 		$('article').print();
+	});
+	
+	if(window.location.hash.length > 0) {
+		goToHash(undefined, window.location.hash);
+	}
+	
+	$('a[href*=\\#]').on('click', function(event) {
+		goToHash(event, this.hash);
 	});
 	
 	// OTHERS :
@@ -62,15 +76,33 @@ $(document).ready(function() {
 	});
 });
 
-function isElementInViewport(el) {
-	if (typeof jQuery === "function" && el instanceof jQuery) {
-		el = el[0];
+/**
+* Found here : https://stackoverflow.com/a/18365991/3608831
+*/
+
+function goToHash(event, hash) {
+	if(hash.length == 0) {
+		return;
 	}
-	var rect = el.getBoundingClientRect();
-	return (
-		rect.top >= 0 &&
-		rect.left >= 0 &&
-		rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-		rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-    );
+	var jqueryHash = $(hash);
+	if(!jqueryHash.length) {
+		return;
+	}
+	if(!typeof event === 'undefined') {
+		event.preventDefault();
+	}
+	$('html, body').animate({
+		scrollTop: jqueryHash.offset().top
+	}, 500);
+	if(history.pushState) {
+		history.pushState(null, null, hash);
+	}
+	else {
+		location.hash = hash;
+	}
+}
+
+function resetPosition(navigation) {
+	navigation.css('position', 'relative');
+	navigation.css('top', '');
 }
