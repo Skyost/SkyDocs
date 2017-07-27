@@ -8,7 +8,7 @@
 	<!-- Description -->
 	<meta name="description" content="SkyDocs is a lightweight static documentation builder with MarkDown."/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-	<meta name="generator" content="SkyDocs v0.2 Beta"/>
+	<meta name="generator" content="SkyDocs v0.2.1 Beta"/>
 	
 	<!-- OpenGraph -->
 	<meta property="og:type" content="website"/>
@@ -137,7 +137,8 @@
 <p>SkyDocs est un générateur de documentation léger avec MarkDown.</p>
 <p><a href="https://github.com/Skyost/SkyDocs/blob/master/pom.xml"><img src="https://img.shields.io/librariesio/github/Skyost/SkyDocs.svg?style=flat-square" alt="Libraries.io for GitHub" /></a>
 <a href="https://choosealicense.com/licenses/gpl-3.0/"><img src="https://img.shields.io/github/license/Skyost/SkyDocs.svg?style=flat-square" alt="license" /></a>
-<a href="https://github.com/Skyost/SkyDocs/releases"><img src="https://img.shields.io/github/release/Skyost/SkyDocs/all.svg?style=flat-square" alt="GitHub (pre-)release" /></a></p>
+<a href="https://github.com/Skyost/SkyDocs/releases"><img src="https://img.shields.io/github/release/Skyost/SkyDocs/all.svg?style=flat-square" alt="GitHub (pre-)release" /></a>
+<a href="https://circleci.com/gh/Skyost/SkyDocs"><img src="https://img.shields.io/circleci/project/github/Skyost/SkyDocs.svg?style=flat-square" alt="CircleCI" /></a></p>
 <h2 id="vue-densemble">Vue d'ensemble</h2>
 <p>SkyDocs est un logiciel qui prend vos <a href="https://blog.ghost.org/markdown/">fichiers MarkDown</a> et génère un site web complet grâce à quelques tours de magie !<br />
 Vous pouvez tout configurer : le thème, les pages, les menus, ...</p>
@@ -151,6 +152,7 @@ Vous pouvez tout configurer : le thème, les pages, les menus, ...</p>
 <li>Thème responsive et HTML5-valid inclus</li>
 <li>Générez une documentation multi-langage</li>
 <li>Génération rapide</li>
+<li>Réduit automatique la taille des fichiers CSS et JS en mode production</li>
 <li>Et bien plus !</li>
 </ul>
 <h2 id="documentation">Documentation</h2>
@@ -162,7 +164,7 @@ Vous pouvez tout configurer : le thème, les pages, les menus, ...</p>
 		</div>
 		
 		<footer class="container">
-	<p class="text-muted"><i class="fa fa-file-text" aria-hidden="true"></i> Documentation theme created by <a href="https://www.skyost.eu">Skyost</a>. Powered by <a href="https://skyost.github.io/SkyDocs/">SkyDocs</a> v0.2 Beta.</p>
+	<p class="text-muted"><i class="fa fa-file-text" aria-hidden="true"></i> Documentation theme created by <a href="https://www.skyost.eu">Skyost</a>. Powered by <a href="https://skyost.github.io/SkyDocs/">SkyDocs</a> v0.2.1 Beta.</p>
 </footer>
 
  
@@ -171,6 +173,8 @@ Vous pouvez tout configurer : le thème, les pages, les menus, ...</p>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jQuery.print/1.5.1/jQuery.print.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/is-in-viewport/3.0.0/isInViewport.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.min.js"></script>
 <script type="text/javascript" src="../assets/js/toc.min.js"></script>
 <script type="text/javascript" src="../assets/js/page.js"></script>
 		
