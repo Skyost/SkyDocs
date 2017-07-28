@@ -22,7 +22,7 @@ You can configure everything you want : themes, pages, menus, ...
 * Responsive and HTML5 valid theme provided
 * Generate a multi-language documentation
 * Fast building
-* Automatically minify CSS and JS files in production mode.
+* Automatically minifies CSS and JS files in production mode.
 * A lot more !
 
 ## Documentation

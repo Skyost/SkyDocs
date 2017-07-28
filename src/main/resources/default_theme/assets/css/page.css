@@ -1,7 +1,7 @@
 /* GENERAL STYLES */
 
 ::selection {
-	background-color: #ffef9d;
+	background-color: #99ffc4;
 }
 
 html {
@@ -70,15 +70,19 @@ pre {
 
 /* NAVIGATION BAR */
 
-.navbar .form-inline input {
-	border: 0;
+header nav {
+	background-color: #1c894a;
+}
+
+header .navbar .form-inline input {
+	border: none;
 	margin-right: 0 !important;
 	border-top-right-radius: 0;
 	border-bottom-right-radius: 0;
 }
 
-.navbar .form-inline .btn-success {
-	border: 0;
+header .navbar .form-inline [class ^= 'btn'] {
+	border: none;
 }
 
 /* ANCHORS */
