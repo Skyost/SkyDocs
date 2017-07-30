@@ -1,0 +1,27 @@
+/* GENERAL STYLES */
+
+::selection {
+	background-color: #bfdfff;
+}
+
+/* NAVIGATION BAR */
+
+header nav {
+	background-color: #2980b9;
+}
+
+header .navbar .form-inline [class ^= 'btn'] {
+	color: white;
+	background-color: #5bc0de;
+	border-color: #5bc0de;
+}
+
+/* NAVIGATION SIDEBAR */
+
+#content #nav-toc .is-active-link {
+	color: #2980b9 !important;
+}
+
+#content #nav-toc .is-active-link:before {
+	background-color: #2980b9;
+}

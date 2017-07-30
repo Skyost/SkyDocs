@@ -1,9 +1,5 @@
 /* GENERAL STYLES */
 
-::selection {
-	background-color: #99ffc4;
-}
-
 html {
 	height: 100%;
 	box-sizing: border-box;
@@ -69,10 +65,6 @@ pre {
 }
 
 /* NAVIGATION BAR */
-
-header nav {
-	background-color: #1c894a;
-}
 
 header .navbar .form-inline input {
 	border: none;
@@ -190,12 +182,7 @@ header .navbar .form-inline [class ^= 'btn'] {
 }
 
 #content #nav-toc .is-active-link {
-	color: #27ae60 !important;
 	font-weight: bold;
-}
-
-#content #nav-toc .is-active-link:before {
-	background-color: #27ae60;
 }
 
 #content #nav-toc a:link, #content #nav-toc a:active, #content #nav-toc a:visited {
