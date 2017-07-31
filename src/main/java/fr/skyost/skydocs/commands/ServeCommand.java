@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.util.Scanner;
 
 import org.apache.commons.io.FilenameUtils;
@@ -99,12 +100,16 @@ public class ServeCommand extends Command {
 	
 	private final void newBuild(final BuildCommand command, final boolean firstBuild) throws LoadException {
 		output("Running build command...");
+		firstTime();
+		
 		if(!firstBuild) {
 			command.reloadProject();
 		}
 		command.run();
 		lastBuild = System.currentTimeMillis();
-		outputLine("Done !");
+
+		secondTime();
+		printTimeElapsed();
 	}
 	
 	/**
@@ -271,11 +276,14 @@ public class ServeCommand extends Command {
 				final BufferedInputStream bufferedInput = new BufferedInputStream(fileInput);
 				return newFixedLengthResponse(Status.OK, NanoHTTPD.getMimeTypeForFile(file.getPath()), bufferedInput, -1);
 			}
+			catch(final NoSuchFileException ex) {
+				return newFixedLengthResponse(Status.NOT_FOUND, NanoHTTPD.MIME_HTML, "<html><head><title>404 Error</title></head><body>404 File not found." + refreshScript + "</body></html>");
+			}
 			catch(final FileNotFoundException ex) {
-				return newFixedLengthResponse(Status.NOT_FOUND, NanoHTTPD.MIME_PLAINTEXT, "404 File not found.");
+				return newFixedLengthResponse(Status.NOT_FOUND, NanoHTTPD.MIME_HTML, "<html><head><title>404 Error</title></head><body>404 File not found (or inaccessible)." + refreshScript + "</body></html>");
 			}
 			catch(final Exception ex) {
-				return newFixedLengthResponse(Status.UNAUTHORIZED, NanoHTTPD.MIME_PLAINTEXT, ex.getClass().getName());
+				return newFixedLengthResponse(Status.NOT_FOUND, NanoHTTPD.MIME_HTML, "<html><head><title>Error</title></head><body>" + ex.getClass().getName() + refreshScript + "</body></html>");
 			}
 		}
 		

@@ -53,6 +53,14 @@ public class Utils {
 		return file;
 	}
 	
+	/**
+	 * Tries to parse an Integer from a String.
+	 * 
+	 * @param string The String.
+	 * 
+	 * @return The Integer or null.
+	 */
+	
 	public static final Integer parseInt(final String string) {
 		try {
 			return Integer.parseInt(string);

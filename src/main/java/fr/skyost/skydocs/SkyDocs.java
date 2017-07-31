@@ -30,7 +30,7 @@ public class SkyDocs {
 			}
 			catch(final LoadException ex) {
 				System.out.println();
-				System.out.println("Cannot load the project in the specified directory !");
+				System.out.println("Cannot load the project from the specified directory !");
 				ex.printStackTrace();
 			}
 			break;

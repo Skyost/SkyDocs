@@ -25,6 +25,18 @@ public abstract class Command implements Runnable {
 	private boolean output = true;
 	
 	/**
+	 * First time point.
+	 */
+	
+	private long firstTime = 0L;
+	
+	/**
+	 * Second time point.
+	 */
+	
+	private long secondTime = 0L;
+	
+	/**
 	 * Creates a new Command instance.
 	 * 
 	 * @param args The arguments.
@@ -92,6 +104,30 @@ public abstract class Command implements Runnable {
 	
 	public final void setOutputing(final boolean output) {
 		this.output  = output;
+	}
+	
+	/**
+	 * Registers the first time point.
+	 */
+	
+	public final void firstTime() {
+		firstTime = System.currentTimeMillis();
+	}
+	
+	/**
+	 * Registers the second time point.
+	 */
+	
+	public final void secondTime() {
+		secondTime = System.currentTimeMillis();
+	}
+	
+	/**
+	 * Prints "Done in x seconds !" with x being the time between the first and the second point.
+	 */
+	
+	public final void printTimeElapsed() {
+		outputLine("Done in " + ((float)((secondTime - firstTime) / 1000f)) + " seconds !");
 	}
 	
 	/**

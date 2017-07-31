@@ -7,9 +7,7 @@ title: Search results
 
 <p id="loading"><em>Loading...</em></p>
 
-<ul id="results" style="display: none;">
-
-</ul>
+<ul id="results" style="display: none; padding-left: 0; list-style-type: none;"></ul>
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.1.2/lunr.min.js"></script>
 <script type="text/javascript">
@@ -69,7 +67,7 @@ title: Search results
 	function displaySearchResults(results, pages) {
 		var searchResults = document.getElementById('results');
 
-		if(results.length) { // Are there any results?
+		if(results.length) {
 			var appendString = '';
 
 			for(var i = 0; i < results.length; i++) {	// Iterate over the results

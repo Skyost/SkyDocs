@@ -5,7 +5,7 @@
  <modelVersion>4.0.0</modelVersion>
  <groupId>SkyDocs</groupId>
  <artifactId>SkyDocs</artifactId>
- <version>0.2.2</version>
+ <version>0.3</version>
  <name>SkyDocs</name>
  <description>SkyDocs is a lightweight static documentation builder with MarkDown.</description>
  <build>

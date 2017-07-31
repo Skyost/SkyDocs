@@ -2,6 +2,7 @@ package fr.skyost.skydocs;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -13,6 +14,7 @@ import org.yaml.snakeyaml.Yaml;
 
 import fr.skyost.skydocs.DocsMenu.DocsMenuEntry;
 import fr.skyost.skydocs.exceptions.InvalidProjectDataException;
+import fr.skyost.skydocs.exceptions.InvalidTemplateException;
 import fr.skyost.skydocs.exceptions.LoadException;
 import fr.skyost.skydocs.utils.Utils;
 
@@ -41,6 +43,12 @@ public class DocsProject {
 	private final HashSet<DocsMenu> menus = new HashSet<DocsMenu>();
 	
 	/**
+	 * Template of this project.
+	 */
+	
+	private DocsTemplate template;
+	
+	/**
 	 * Other variables of this project.
 	 */
 	
@@ -50,12 +58,15 @@ public class DocsProject {
 	 * Creates a new DocsProject instance.
 	 * 
 	 * @param projectVariables The prject.yml variables.
+	 * @param directory The project's dirctory.
 	 * 
 	 * @throws InvalidProjectDataException If the projectVariables supplied are invalid.
+	 * @throws IOException If an exception occurs while creating the template.
+	 * @throws InvalidTemplateException If an exception occurs while creating the template.
 	 */
 	
-	public DocsProject(final Map<String, Object> projectVariables) throws InvalidProjectDataException {
-		this(projectVariables, new File(System.getProperty("user.dir")), null, null);
+	public DocsProject(final Map<String, Object> projectVariables, final File directory) throws InvalidProjectDataException, InvalidTemplateException, IOException {
+		this(projectVariables, directory, null, null, null);
 		if(projectVariables == null) {
 			throw new InvalidProjectDataException("Invalid project data.");
 		}
@@ -80,12 +91,15 @@ public class DocsProject {
 	 * @param directory The project's dirctory.
 	 * @param pages Pages of this project.
 	 * @param menus Menus of this project.
+	 * @param template Template of this project.
 	 * 
 	 * @throws InvalidProjectDataException If the projectVariables supplied are invalid.
+	 * @throws IOException If an exception occurs while creating the template.
+	 * @throws InvalidTemplateException If an exception occurs while creating the template.
 	 */
 	
-	private DocsProject(final Map<String, Object> projectVariables, final File directory, final Set<DocsPage> pages, final Set<DocsMenu> menus) throws InvalidProjectDataException {
-		this.directoryPath = directory.getPath();
+	private DocsProject(final Map<String, Object> projectVariables, final File directory, final Set<DocsPage> pages, final Set<DocsMenu> menus, final DocsTemplate template) throws InvalidProjectDataException, InvalidTemplateException, IOException {
+		this.directoryPath = directory == null ? System.getProperty("user.dir") : directory.getPath();
 		if(pages != null) {
 			this.pages.addAll(pages);
 		}
@@ -95,6 +109,7 @@ public class DocsProject {
 		if(projectVariables != null) {
 			this.projectVariables.putAll(projectVariables);
 		}
+		this.template = template == null ? new DocsTemplate(null, this) : template;
 	}
 	
 	/**
@@ -327,6 +342,26 @@ public class DocsProject {
 	}
 	
 	/**
+	 * Gets the template of this project.
+	 * 
+	 * @return The template of this project.
+	 */
+	
+	public final DocsTemplate getTemplate() {
+		return template;
+	}
+	
+	/**
+	 * Sets the template of this project.
+	 * 
+	 * @param template The template of this project.
+	 */
+	
+	public final void setTemplate(final DocsTemplate template) {
+		this.template = template;
+	}
+	
+	/**
 	 * Gets other project variables.
 	 */
 	
@@ -490,8 +525,8 @@ public class DocsProject {
 			final Yaml yaml = new Yaml();
 			@SuppressWarnings("unchecked")
 			final HashMap<String, Object> data = (HashMap<String, Object>)yaml.load(new FileInputStream(file));
-			
-			return new DocsProject(data);
+
+			return new DocsProject(data, file.getParentFile());
 		}
 		catch(final Exception ex) {
 			throw new InvalidProjectDataException(ex);

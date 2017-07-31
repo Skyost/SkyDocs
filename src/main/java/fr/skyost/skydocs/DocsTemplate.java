@@ -62,7 +62,7 @@ public class DocsTemplate {
 		}
 		this.variables.put(Constants.VARIABLE_PROJECT, project);
 		this.themeDirectory = project.getThemeDirectory();
-		loadFromTemplateDirectory(project);
+		loadFromTemplateDirectory();
 	}
 	
 	/**
@@ -86,15 +86,13 @@ public class DocsTemplate {
 	}
 	
 	/**
-	 * Loads this template data from a project's theme directory.
-	 * 
-	 * @param project The project.
+	 * Loads this template data.
 	 * 
 	 * @throws InvalidTemplateException If an error occurs while loading the template from the theme directory.
 	 * @throws IOException If an exception occurs while reading the template.
 	 */
 	
-	public final void loadFromTemplateDirectory(final DocsProject project) throws InvalidTemplateException, IOException {
+	public final void loadFromTemplateDirectory() throws InvalidTemplateException, IOException {
 		final File pageTemplate = new File(themeDirectory, Constants.FILE_THEME_PAGE_FILE);
 		if(!pageTemplate.exists() || !pageTemplate.isFile()) {
 			throw new InvalidTemplateException("\"" + Constants.FILE_THEME_PAGE_FILE + "\" not found.");
@@ -134,7 +132,7 @@ public class DocsTemplate {
 			page = DocsPage.createFromFile(project, file);
 		}
 		
-		final JtwigModel model = createModel().with(Constants.VARIABLE_PAGE, page);
+		final JtwigModel model = createModel(otherVariables).with(Constants.VARIABLE_PAGE, page);
 		final IncludeFileFunction includeFile = new IncludeFileFunction(themeDirectory, model, RANGE_FUNCTION);
 		final EnvironmentConfiguration configuration = EnvironmentConfigurationBuilder.configuration().functions().add(includeFile).add(RANGE_FUNCTION).and().build();
 		
