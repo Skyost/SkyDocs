@@ -8,7 +8,7 @@
 	<!-- Description -->
 	<meta name="description" content="SkyDocs is a lightweight static documentation builder with MarkDown."/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-	<meta name="generator" content="SkyDocs v0.2.1 Beta"/>
+	<meta name="generator" content="SkyDocs v0.3 Beta"/>
 	
 	<!-- OpenGraph -->
 	<meta property="og:type" content="website"/>
@@ -28,7 +28,7 @@
 	<meta name="twitter:image" content="https://skyost.github.io/SkyDocs/assets/img/icon.png"/>
 	
 	<!-- Styles -->
-	<meta name="theme-color" content="#292b2c"/>
+	<meta id="theme-color" name="theme-color" content="#8e44ad"/>
 	
 	
 	
@@ -38,11 +38,23 @@
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"/>
 	
 	<link rel="stylesheet" type="text/css" href="../assets/css/page.css"/>
+	
+	<!-- Uncomment the theme you want -->
+	
+	<link rel="stylesheet" type="text/css" href="../assets/css/themes/blue.css"/>
+	<!--<link rel="stylesheet" type="text/css" href="../assets/css/themes/green.css"/>-->
+	<!--<link rel="stylesheet" type="text/css" href="../assets/css/themes/orange.css"/>-->
+	<!--<link rel="stylesheet" type="text/css" href="../assets/css/themes/red.css"/>-->
+	
+	<script type="text/javascript" src="../assets/js/themes/blue.js"></script>
+	<!--<script type="text/javascript" src="../assets/js/themes/green.js"></script>-->
+	<!--<script type="text/javascript" src="../assets/js/themes/orange.js"></script>-->
+	<!--<script type="text/javascript" src="../assets/js/themes/red.js"></script>-->
 </head>
 
 	<body>
 		<header>
-	<nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse bg-faded">
+	<nav class="navbar navbar-toggleable-md navbar-inverse">
 		<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
@@ -118,7 +130,7 @@
 				<form class="form-inline my-2 my-lg-0" action="../search.html" method="get">
 					<input name="keywords" class="form-control mr-sm-2" type="search" placeholder="...">
 					<span class="input-group-btn">
-						<button class="btn btn-success my-2 my-sm-0" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+						<button class="btn btn-secondary my-2 my-sm-0" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
 					</span>
 				</form>
 			
@@ -127,14 +139,14 @@
 </header>
 		
 		<div id="content" class="container row">
-			<nav class="col-md-4 col-xs-12">
-				
-			</nav>
+			<div class="col-md-4 col-xs-12">
+				<nav id="nav-toc"></nav>
+			</div>
 			
 			<article class="col-md-8 col-xs-12">
 				
 				<h1 id="documentation">Documentation</h1>
-<p>Cette documentation a été écrite pour <strong>SkyDocs v0.2.1 Beta</strong>. N'oubliez pas de le mettre à jour (un guide est disponible ci-dessous) !</p>
+<p>Cette documentation a été écrite pour <strong>SkyDocs v0.3 Beta</strong>. N'oubliez pas de le mettre à jour (un guide est disponible ci-dessous) !</p>
 <h2 id="téléchargement--installation">Téléchargement &amp; installation</h2>
 <p>Voici les étapes pour télécharger et installer le logiciel.</p>
 <h3 id="téléchargement">Téléchargement</h3>
@@ -215,12 +227,15 @@ SkyDocs va essayer de générer le projet contenu dans le dossier courant). La p
 </tbody>
 </table>
 <p>Veuillez noter que les fichiers CSS et JS seront réduits lorsque vous exécuterez la commande <em>build</em>. Ils <strong>ne seront pas réduits</strong> avec la commande <em>serve</em>.</p>
+
+								
+				<small class="date text-muted float-right"><i class="fa fa-calendar" aria-hidden="true"></i> 27 juil. 2017 15:30:42</small>
 				
 			</article>
 		</div>
 		
 		<footer class="container">
-	<p class="text-muted"><i class="fa fa-file-text" aria-hidden="true"></i> Documentation theme created by <a href="https://www.skyost.eu">Skyost</a>. Powered by <a href="https://skyost.github.io/SkyDocs/">SkyDocs</a> v0.2.1 Beta.</p>
+	<p class="text-muted"><i class="fa fa-file-text" aria-hidden="true"></i> Documentation theme created by <a href="https://www.skyost.eu">Skyost</a>. Powered by <a href="https://skyost.github.io/SkyDocs/">SkyDocs</a> v0.3 Beta.</p>
 </footer>
 
  
@@ -231,7 +246,7 @@ SkyDocs va essayer de générer le projet contenu dans le dossier courant). La p
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jQuery.print/1.5.1/jQuery.print.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/is-in-viewport/3.0.0/isInViewport.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.min.js"></script>
-<script type="text/javascript" src="../assets/js/toc.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/3.0.2/tocbot.min.js"></script>
 <script type="text/javascript" src="../assets/js/page.js"></script>
 		
 	</body>

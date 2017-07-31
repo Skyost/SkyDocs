@@ -8,7 +8,7 @@
 	<!-- Description -->
 	<meta name="description" content="SkyDocs is a lightweight static documentation builder with MarkDown."/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-	<meta name="generator" content="SkyDocs v0.2.1 Beta"/>
+	<meta name="generator" content="SkyDocs v0.3 Beta"/>
 	
 	<!-- OpenGraph -->
 	<meta property="og:type" content="website"/>
@@ -28,7 +28,7 @@
 	<meta name="twitter:image" content="https://skyost.github.io/SkyDocs/assets/img/icon.png"/>
 	
 	<!-- Styles -->
-	<meta name="theme-color" content="#292b2c"/>
+	<meta id="theme-color" name="theme-color" content="#8e44ad"/>
 	
 	
 	
@@ -38,11 +38,23 @@
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"/>
 	
 	<link rel="stylesheet" type="text/css" href="../assets/css/page.css"/>
+	
+	<!-- Uncomment the theme you want -->
+	
+	<link rel="stylesheet" type="text/css" href="../assets/css/themes/blue.css"/>
+	<!--<link rel="stylesheet" type="text/css" href="../assets/css/themes/green.css"/>-->
+	<!--<link rel="stylesheet" type="text/css" href="../assets/css/themes/orange.css"/>-->
+	<!--<link rel="stylesheet" type="text/css" href="../assets/css/themes/red.css"/>-->
+	
+	<script type="text/javascript" src="../assets/js/themes/blue.js"></script>
+	<!--<script type="text/javascript" src="../assets/js/themes/green.js"></script>-->
+	<!--<script type="text/javascript" src="../assets/js/themes/orange.js"></script>-->
+	<!--<script type="text/javascript" src="../assets/js/themes/red.js"></script>-->
 </head>
 
 	<body>
 		<header>
-	<nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse bg-faded">
+	<nav class="navbar navbar-toggleable-md navbar-inverse">
 		<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
@@ -118,7 +130,7 @@
 				<form class="form-inline my-2 my-lg-0" action="../search.html" method="get">
 					<input name="keywords" class="form-control mr-sm-2" type="search" placeholder="...">
 					<span class="input-group-btn">
-						<button class="btn btn-success my-2 my-sm-0" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+						<button class="btn btn-secondary my-2 my-sm-0" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
 					</span>
 				</form>
 			
@@ -127,18 +139,18 @@
 </header>
 		
 		<div id="content" class="container row">
-			<nav class="col-md-4 col-xs-12">
-				
-			</nav>
+			<div class="col-md-4 col-xs-12">
+				<nav id="nav-toc"></nav>
+			</div>
 			
 			<article class="col-md-8 col-xs-12">
 				
 				<h1 id="skydocs">SkyDocs</h1>
 <p>SkyDocs is a lightweight static documentation builder with MarkDown.</p>
 <p><a href="https://github.com/Skyost/SkyDocs/blob/master/pom.xml"><img src="https://img.shields.io/librariesio/github/Skyost/SkyDocs.svg?style=flat-square" alt="Libraries.io for GitHub" /></a>
+<a href="https://circleci.com/gh/Skyost/SkyDocs"><img src="https://img.shields.io/circleci/project/github/Skyost/SkyDocs.svg?style=flat-square" alt="CircleCI" /></a>
 <a href="https://choosealicense.com/licenses/gpl-3.0/"><img src="https://img.shields.io/github/license/Skyost/SkyDocs.svg?style=flat-square" alt="license" /></a>
-<a href="https://github.com/Skyost/SkyDocs/releases"><img src="https://img.shields.io/github/release/Skyost/SkyDocs/all.svg?style=flat-square" alt="GitHub (pre-)release" /></a>
-<a href="https://circleci.com/gh/Skyost/SkyDocs"><img src="https://img.shields.io/circleci/project/github/Skyost/SkyDocs.svg?style=flat-square" alt="CircleCI" /></a></p>
+<a href="https://github.com/Skyost/SkyDocs/releases"><img src="https://img.shields.io/github/release/Skyost/SkyDocs/all.svg?style=flat-square" alt="GitHub (pre-)release" /></a></p>
 <h2 id="overview">Overview</h2>
 <p>SkyDocs is a software that takes your <a href="https://blog.ghost.org/markdown/">MarkDown files</a> and build a complete website with some magic tricks !<br />
 You can configure everything you want : theme, pages, menus, ...</p>
@@ -152,19 +164,22 @@ You can configure everything you want : theme, pages, menus, ...</p>
 <li>Responsive and HTML5 valid theme provided</li>
 <li>Generate a multi-language documentation</li>
 <li>Fast building</li>
-<li>Automatically minify CSS and JS files in production mode.</li>
+<li>Automatically minifies CSS and JS files in production mode.</li>
 <li>A lot more !</li>
 </ul>
 <h2 id="documentation">Documentation</h2>
 <p>Everything you need to know is available in the menu <q>Documentation</q>.</p>
 <h2 id="download">Download</h2>
 <p>If you are interested, you can download SkyDocs on <a href="documentation.html#downloading-installing">this page</a>.</p>
+
+								
+				<small class="date text-muted float-right"><i class="fa fa-calendar" aria-hidden="true"></i> Jul 29, 2017 1:27:17 AM</small>
 				
 			</article>
 		</div>
 		
 		<footer class="container">
-	<p class="text-muted"><i class="fa fa-file-text" aria-hidden="true"></i> Documentation theme created by <a href="https://www.skyost.eu">Skyost</a>. Powered by <a href="https://skyost.github.io/SkyDocs/">SkyDocs</a> v0.2.1 Beta.</p>
+	<p class="text-muted"><i class="fa fa-file-text" aria-hidden="true"></i> Documentation theme created by <a href="https://www.skyost.eu">Skyost</a>. Powered by <a href="https://skyost.github.io/SkyDocs/">SkyDocs</a> v0.3 Beta.</p>
 </footer>
 
  
@@ -175,7 +190,7 @@ You can configure everything you want : theme, pages, menus, ...</p>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jQuery.print/1.5.1/jQuery.print.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/is-in-viewport/3.0.0/isInViewport.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.min.js"></script>
-<script type="text/javascript" src="../assets/js/toc.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/3.0.2/tocbot.min.js"></script>
 <script type="text/javascript" src="../assets/js/page.js"></script>
 		
 	</body>

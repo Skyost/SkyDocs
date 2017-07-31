@@ -8,7 +8,7 @@
 	<!-- Description -->
 	<meta name="description" content="SkyDocs is a lightweight static documentation builder with MarkDown."/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-	<meta name="generator" content="SkyDocs v0.2.1 Beta"/>
+	<meta name="generator" content="SkyDocs v0.3 Beta"/>
 	
 	<!-- OpenGraph -->
 	<meta property="og:type" content="website"/>
@@ -28,7 +28,7 @@
 	<meta name="twitter:image" content="https://skyost.github.io/SkyDocs/assets/img/icon.png"/>
 	
 	<!-- Styles -->
-	<meta name="theme-color" content="#292b2c"/>
+	<meta id="theme-color" name="theme-color" content="#8e44ad"/>
 	
 	
 	
@@ -38,11 +38,23 @@
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"/>
 	
 	<link rel="stylesheet" type="text/css" href="../assets/css/page.css"/>
+	
+	<!-- Uncomment the theme you want -->
+	
+	<link rel="stylesheet" type="text/css" href="../assets/css/themes/blue.css"/>
+	<!--<link rel="stylesheet" type="text/css" href="../assets/css/themes/green.css"/>-->
+	<!--<link rel="stylesheet" type="text/css" href="../assets/css/themes/orange.css"/>-->
+	<!--<link rel="stylesheet" type="text/css" href="../assets/css/themes/red.css"/>-->
+	
+	<script type="text/javascript" src="../assets/js/themes/blue.js"></script>
+	<!--<script type="text/javascript" src="../assets/js/themes/green.js"></script>-->
+	<!--<script type="text/javascript" src="../assets/js/themes/orange.js"></script>-->
+	<!--<script type="text/javascript" src="../assets/js/themes/red.js"></script>-->
 </head>
 
 	<body>
 		<header>
-	<nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse bg-faded">
+	<nav class="navbar navbar-toggleable-md navbar-inverse">
 		<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
@@ -118,7 +130,7 @@
 				<form class="form-inline my-2 my-lg-0" action="../search.html" method="get">
 					<input name="keywords" class="form-control mr-sm-2" type="search" placeholder="...">
 					<span class="input-group-btn">
-						<button class="btn btn-success my-2 my-sm-0" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+						<button class="btn btn-secondary my-2 my-sm-0" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
 					</span>
 				</form>
 			
@@ -127,9 +139,9 @@
 </header>
 		
 		<div id="content" class="container row">
-			<nav class="col-md-4 col-xs-12">
-				
-			</nav>
+			<div class="col-md-4 col-xs-12">
+				<nav id="nav-toc"></nav>
+			</div>
 			
 			<article class="col-md-8 col-xs-12">
 				
@@ -137,19 +149,23 @@
 <p>Voici les technologies embarquées ainsi que la licence du logiciel.</p>
 <h2 id="technologies">Technologies</h2>
 <p>SkyDocs embarque quelques technologies : <a href="https://bitbucket.org/asomov/snakeyaml">SnakeYAML v1.18</a>, <a href="http://commonmark.org/">CommonMark v0.9.0</a>,
-<a href="https://github.com/NanoHttpd/nanohttpd">NanoHTTPD v2.3.1</a>, <a href="http://jtwig.org/">jtwig v5.86.0</a> et <a href="http://yui.github.io/yuicompressor/">YUI Compressor v2.4.8</a>.</p>
+<a href="https://github.com/NanoHttpd/nanohttpd">NanoHTTPD v2.3.1</a>, <a href="http://jtwig.org/">jtwig v5.86.0</a>, <a href="http://yui.github.io/yuicompressor/">YUI Compressor v2.4.8</a>
+et <a href="https://lunrjs.com">Lunr.js v2.1.2</a>.</p>
 <p>Ce thème a été créé à l'aide de <a href="https://v4-alpha.getbootstrap.com/">Bootstrap v4.0.0-alpha.6</a>, <a href="http://jquery.com/">jQuery v3.2.1</a>,
 <a href="http://fontawesome.io/">FontAwesome</a>, <a href="https://www.iconfinder.com/icons/905556/paper_print_printer_printing_icon"></a>,
-<a href="http://projects.jga.me/toc/">TOC v0.3.2</a> et <a href="https://doersguild.github.io/jQuery.print/">jQuery.print v1.5.1</a>.</p>
+<a href="http://tscanlin.github.io/tocbot/">Tocbot v3.0.2</a> et <a href="https://doersguild.github.io/jQuery.print/">jQuery.print v1.5.1</a>.</p>
 <h2 id="licence">Licence</h2>
-<p>SkyDocs et ce thème ont été créé <a href="https://www.skyost.eu">Skyost</a> et sont disponibles sous licence <a href="https://choosealicense.com/licenses/gpl-3.0/">GNU GPL v3</a>.
+<p>SkyDocs et ce thème ont été créé par <a href="https://www.skyost.eu">Skyost</a> et sont disponibles sous licence <a href="https://choosealicense.com/licenses/gpl-3.0/">GNU GPL v3</a>.
 L'icône originale de SkyDocs a été créée par <a href="https://www.iconfinder.com/icons/762531/document_file_format_text_txt_icon">Kokota</a>.</p>
+
+								
+				<small class="date text-muted float-right"><i class="fa fa-calendar" aria-hidden="true"></i> 31 juil. 2017 15:54:34</small>
 				
 			</article>
 		</div>
 		
 		<footer class="container">
-	<p class="text-muted"><i class="fa fa-file-text" aria-hidden="true"></i> Documentation theme created by <a href="https://www.skyost.eu">Skyost</a>. Powered by <a href="https://skyost.github.io/SkyDocs/">SkyDocs</a> v0.2.1 Beta.</p>
+	<p class="text-muted"><i class="fa fa-file-text" aria-hidden="true"></i> Documentation theme created by <a href="https://www.skyost.eu">Skyost</a>. Powered by <a href="https://skyost.github.io/SkyDocs/">SkyDocs</a> v0.3 Beta.</p>
 </footer>
 
  
@@ -160,7 +176,7 @@ L'icône originale de SkyDocs a été créée par <a href="https://www.iconfinde
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jQuery.print/1.5.1/jQuery.print.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/is-in-viewport/3.0.0/isInViewport.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.min.js"></script>
-<script type="text/javascript" src="../assets/js/toc.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/3.0.2/tocbot.min.js"></script>
 <script type="text/javascript" src="../assets/js/page.js"></script>
 		
 	</body>
