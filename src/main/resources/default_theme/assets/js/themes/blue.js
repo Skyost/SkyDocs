@@ -1,0 +1,1 @@
+document.getElementById('theme-color').content = '#2980b9';

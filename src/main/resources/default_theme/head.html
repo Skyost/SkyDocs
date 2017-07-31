@@ -25,7 +25,7 @@
 	<meta name="twitter:image" content="{{ project.getURL() }}/assets/img/icon.png"/>
 	
 	<!-- Styles -->
-	<meta name="theme-color" content="#292b2c"/>
+	<meta id="theme-color" name="theme-color" content="#8e44ad"/>
 	
 	{% set dirNumbers = range(2, ((page.getPageRelativeURL() | split('/')) | length)) %}
 	
@@ -35,8 +35,16 @@
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"/>
 	
 	<link rel="stylesheet" type="text/css" href="{{ block('path') }}assets/css/page.css"/>
+	
+	<!-- Uncomment the theme you want -->
+	
 	<link rel="stylesheet" type="text/css" href="{{ block('path') }}assets/css/themes/blue.css"/>
-	<!--<link rel="stylesheet" type="text/css" href="{{ block('path') }}assets/css/themes/red.css"/>-->
 	<!--<link rel="stylesheet" type="text/css" href="{{ block('path') }}assets/css/themes/green.css"/>-->
 	<!--<link rel="stylesheet" type="text/css" href="{{ block('path') }}assets/css/themes/orange.css"/>-->
+	<!--<link rel="stylesheet" type="text/css" href="{{ block('path') }}assets/css/themes/red.css"/>-->
+	
+	<script type="text/javascript" src="{{ block('path') }}assets/js/themes/blue.js"></script>
+	<!--<script type="text/javascript" src="{{ block('path') }}assets/js/themes/green.js"></script>-->
+	<!--<script type="text/javascript" src="{{ block('path') }}assets/js/themes/orange.js"></script>-->
+	<!--<script type="text/javascript" src="{{ block('path') }}assets/js/themes/red.js"></script>-->
 </head>

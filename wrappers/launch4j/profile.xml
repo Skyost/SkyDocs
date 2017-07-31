@@ -2,8 +2,8 @@
 <launch4jConfig>
   <dontWrapJar>false</dontWrapJar>
   <headerType>console</headerType>
-  <jar>SkyDocs-v0.3.0.jar</jar>
-  <outfile>SkyDocs-v0.3.0.exe</outfile>
+  <jar>SkyDocs-v0.3.jar</jar>
+  <outfile>SkyDocs-v0.3.exe</outfile>
   <errTitle></errTitle>
   <cmdLine></cmdLine>
   <chdir>.</chdir>
@@ -25,15 +25,15 @@
   </jre>
   <versionInfo>
     <fileVersion>0.3.0.0</fileVersion>
-    <txtFileVersion>v0.3.0</txtFileVersion>
-    <fileDescription>SkyDocs v0.3.0 Beta</fileDescription>
+    <txtFileVersion>v0.3</txtFileVersion>
+    <fileDescription>SkyDocs v0.3 Beta</fileDescription>
     <copyright>This product is licensed under GNU GPL v3. Please check https://skyost.github.io/SkyDocs/en/about.html for more informations.</copyright>
     <productVersion>0.3.0.0</productVersion>
-    <txtProductVersion>v0.3.0</txtProductVersion>
-    <productName>SkyDocs v0.3.0 Beta</productName>
+    <txtProductVersion>v0.3</txtProductVersion>
+    <productName>SkyDocs v0.3 Beta</productName>
     <companyName>Skyost</companyName>
     <internalName>SkyDocs</internalName>
-    <originalFilename>SkyDocs-v0.3.0.exe</originalFilename>
+    <originalFilename>SkyDocs-v0.3.exe</originalFilename>
     <trademarks></trademarks>
     <language>ENGLISH_US</language>
   </versionInfo>

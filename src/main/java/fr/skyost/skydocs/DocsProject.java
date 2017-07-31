@@ -482,6 +482,12 @@ public class DocsProject {
 				throw new LoadException(Constants.FILE_PROJECT_DATA + " not found !");
 			}
 			
+			final File themeDirectory = new File(directory, Constants.FILE_THEME_DIRECTORY);
+			if(!themeDirectory.exists() || !themeDirectory.isDirectory()) {
+				themeDirectory.mkdir();
+				Utils.extract(Constants.RESOURCE_DEFAULT_THEME_PATH, Constants.RESOURCE_DEFAULT_THEME_DIRECTORY, themeDirectory);
+			}
+			
 			final DocsProject project = DocsProject.createFromFile(projectData);
 			project.setDirectory(directory);
 			

@@ -77,6 +77,66 @@ header .navbar .form-inline [class ^= 'btn'] {
 	border: none;
 }
 
+#content #nav-toc {
+	top: 0;
+	position: relative;
+	font-weight: lighter;
+	margin-top: 30px;
+	font-size: 0.9em;
+}
+
+#content #nav-toc .toc-list {
+	list-style-type: none;
+	padding-left: 0;
+	margin-bottom: 0;
+}
+
+#content #nav-toc .toc-link {
+	display: inline-block;
+	padding-left: 20px;
+	position: relative;
+}
+
+#content #nav-toc .toc-link:before {
+	display: inline-block;
+	content: '';
+	background-color: rgba(0, 0, 0, 0.075);
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	width: 2px;
+}
+
+/* NAVIGATION SIDEBAR */
+
+#content #nav-toc .toc-list > .toc-list-item > .toc-list > .toc-list-item > .toc-link {
+	padding-left: 40px;
+}
+
+#content #nav-toc .toc-list > .toc-list-item > .toc-list > .toc-list-item > .toc-list > .toc-list-item > .toc-link {
+	padding-left: 60px;
+}
+
+#content #nav-toc .is-collapsible {
+	max-height: 1000px;
+	overflow: hidden;
+	transition: all 300ms ease-in-out;
+}
+
+#content #nav-toc .is-collapsed {
+	max-height: 0;
+}
+
+#content #nav-toc .is-active-link {
+	font-weight: bold;
+}
+
+#content #nav-toc a:link, #content #nav-toc a:active, #content #nav-toc a:visited {
+	color: black;
+	text-decoration: none;
+}
+
 /* ANCHORS */
 
 .anchorjs-link {
@@ -132,62 +192,8 @@ header .navbar .form-inline [class ^= 'btn'] {
 	max-width: 100%;
 }
 
-#content #nav-toc {
-	top: 0;
-	position: relative;
-	font-weight: lighter;
-	margin-top: 30px;
-	font-size: 0.9em;
-}
-
-#content #nav-toc .toc-list {
-	list-style-type: none;
-	padding-left: 0;
-	margin-bottom: 0;
-}
-
-#content #nav-toc .toc-link {
-	display: inline-block;
-	padding-left: 20px;
-	position: relative;
-}
-
-#content #nav-toc .toc-link:before {
-	display: inline-block;
-	content: '';
-	background-color: rgba(0, 0, 0, 0.075);
-	position: absolute;
-	left: 0;
-	top: 0;
-	bottom: 0;
-	width: 2px;
-}
-
-#content #nav-toc .toc-list > .toc-list-item > .toc-list > .toc-list-item > .toc-link {
-	padding-left: 40px;
-}
-
-#content #nav-toc .toc-list > .toc-list-item > .toc-list > .toc-list-item > .toc-list > .toc-list-item > .toc-link {
-	padding-left: 60px;
-}
-
-#content #nav-toc .is-collapsible {
-	max-height: 1000px;
-	overflow: hidden;
-	transition: all 300ms ease-in-out;
-}
-
-#content #nav-toc .is-collapsed {
-	max-height: 0;
-}
-
-#content #nav-toc .is-active-link {
-	font-weight: bold;
-}
-
-#content #nav-toc a:link, #content #nav-toc a:active, #content #nav-toc a:visited {
-	color: black;
-	text-decoration: none;
+#content article .date {
+	margin: 20px 0 10px 0;
 }
 
 /* FOOTER */

@@ -70,20 +70,13 @@ public class BuildCommand extends Command {
 	@Override
 	public final void run() {
 		try {
-			output("Creating build directory and loading theme...");
+			output("Creating build directory...");
 			firstTime();
 			
 			if(buildDirectory.exists()) {
 				Utils.deleteDirectory(buildDirectory);
 			}
 			buildDirectory.mkdirs();
-			
-			final File themeDirectory = project.getThemeDirectory();
-			if(!themeDirectory.exists() || !themeDirectory.isDirectory()) {
-				themeDirectory.mkdir();
-				Utils.extract(Constants.RESOURCE_DEFAULT_THEME_PATH, Constants.RESOURCE_DEFAULT_THEME_DIRECTORY, themeDirectory);
-			}
-			final DocsTemplate template = new DocsTemplate(null, project);
 			
 			secondTime();
 			printTimeElapsed();
@@ -93,6 +86,7 @@ public class BuildCommand extends Command {
 			
 			final HashSet<File> copied = new HashSet<File>();
 			
+			final DocsTemplate template = project.getTemplate();
 			final boolean lunr = project.getLunrSearch();
 			final StringBuilder lunrContent = new StringBuilder();
 			
@@ -118,7 +112,7 @@ public class BuildCommand extends Command {
 					lunrContent.append("'" + title.toLowerCase().replace(".", "-").replace("'", "\\'") + "': {" + "title: '" + Utils.stripHTML(title).replace("'", "\\'") + "', " + "content: '" + contentNoHTML.replace("'", "\\'") + "', " + "url: '" + page.getPageRelativeURL().substring(1) + "'" + "}, ");
 				}
 				
-				template.applyTemplate(project, destination, page, null);
+				template.applyTemplate(destination, page, null);
 			}
 			
 			if(lunr && lunrContent.length() != 0) {
@@ -132,7 +126,7 @@ public class BuildCommand extends Command {
 				model.with(Constants.VARIABLE_PAGE, DocsPage.createFromFile(project, searchFile));
 				
 				Files.write(searchFile.toPath(), JtwigTemplate.fileTemplate(searchFile).render(model).getBytes(StandardCharsets.UTF_8));
-				template.applyTemplate(project, searchFile);
+				template.applyTemplate(searchFile);
 			}
 			
 			final File contentDirectory = Utils.createFileIfNotExist(project.getContentDirectory());
@@ -146,7 +140,7 @@ public class BuildCommand extends Command {
 			secondTime();
 			printTimeElapsed();
 			
-			final File assetsDirectory = new File(themeDirectory, Constants.FILE_ASSETS_DIRECTORY);
+			final File assetsDirectory = new File(project.getThemeDirectory(), Constants.FILE_ASSETS_DIRECTORY);
 			if(assetsDirectory.exists() && assetsDirectory.isDirectory()) {
 				output("Copying assets directory...");
 				firstTime();
@@ -182,7 +176,7 @@ public class BuildCommand extends Command {
 	 */
 	
 	public final void reloadProject() throws LoadException {
-		output("Loading project from directory \"" + directoryPath + "\"... ");
+		output("Loading project from directory \"" + directoryPath + "\" and loading theme... ");
 		firstTime();
 		
 		project = DocsProject.loadFromDirectory(new File(directoryPath));

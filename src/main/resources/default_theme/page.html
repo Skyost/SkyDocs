@@ -14,6 +14,8 @@
 			<article class="col-md-8 col-xs-12">
 				
 				{{ page.getContent() }}
+								
+				<small class="date text-muted float-right"><i class="fa fa-calendar" aria-hidden="true"></i> {{ page.getLastModificationTimeForLocale(page.getLanguage()) }}</small>
 				
 			</article>
 		</div>

@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
+import org.apache.commons.io.FilenameUtils;
+
 import fr.skyost.skydocs.Constants;
 import fr.skyost.skydocs.utils.Utils;
 
@@ -28,9 +30,13 @@ public class NewCommand extends Command {
 			
 			output("Creating a new project in the directory \"" + directory + "\"...");
 			Utils.extract(Constants.RESOURCE_NEW_PROJECT_PATH, Constants.RESOURCE_NEW_PROJECT_DIRECTORY, directory);
+			
+			final String path = Utils.getJARFile().getPath();
+			final boolean isJAR = FilenameUtils.getExtension(path).equalsIgnoreCase("jar");
+			
 			for(final String extension : new String[]{"bat", "sh", "command"}) {
-				createFile(new File(directory, "build." + extension), "java -jar \"%s\" build");
-				createFile(new File(directory, "serve." + extension), "java -jar \"%s\" serve");
+				createFile(new File(directory, "build." + extension), (isJAR ? "java -jar " : "") + "\"%s\" build");
+				createFile(new File(directory, "serve." + extension), (isJAR ? "java -jar " : "") + "\"%s\" serve");
 			}
 			
 			secondTime();

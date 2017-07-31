@@ -35,6 +35,12 @@ public class DocsTemplate {
 	private final HashMap<String, Object> variables = new HashMap<String, Object>();
 	
 	/**
+	 * The project this template belongs to.
+	 */
+	
+	private final DocsProject project;
+	
+	/**
 	 * Cached partially parsed page.html.
 	 */
 	
@@ -61,6 +67,7 @@ public class DocsTemplate {
 			this.variables.putAll(variables);
 		}
 		this.variables.put(Constants.VARIABLE_PROJECT, project);
+		this.project = project;
 		this.themeDirectory = project.getThemeDirectory();
 		loadFromTemplateDirectory();
 	}
@@ -86,6 +93,16 @@ public class DocsTemplate {
 	}
 	
 	/**
+	 * Gets the project this template belongs to.
+	 * 
+	 * @return The project this template belongs to.
+	 */
+	
+	public final DocsProject getProject() {
+		return project;
+	}
+	
+	/**
 	 * Loads this template data.
 	 * 
 	 * @throws InvalidTemplateException If an error occurs while loading the template from the theme directory.
@@ -106,20 +123,18 @@ public class DocsTemplate {
 	/**
 	 * Applies the template to a file.
 	 * 
-	 * @param project The project this template belongs to.
 	 * @param file The file.
 	 * 
 	 * @throws IOException If an exception occurs while saving the file.
 	 */
 	
-	public final void applyTemplate(final DocsProject project, final File file) throws IOException {
-		applyTemplate(project, file, null, null);
+	public final void applyTemplate(final File file) throws IOException {
+		applyTemplate(file, null, null);
 	}
 	
 	/**
 	 * Applies the template to a file.
 	 * 
-	 * @param project The project this template belongs to.
 	 * @param file The file.
 	 * @param page If the file is page.
 	 * @param otherVariables Other variables to put.
@@ -127,7 +142,7 @@ public class DocsTemplate {
 	 * @throws IOException If an exception occurs while saving the file.
 	 */
 	
-	public final void applyTemplate(final DocsProject project, final File file, DocsPage page, final Map<String, Object> otherVariables) throws IOException {
+	public final void applyTemplate(final File file, DocsPage page, final Map<String, Object> otherVariables) throws IOException {
 		if(page == null) {
 			page = DocsPage.createFromFile(project, file);
 		}
