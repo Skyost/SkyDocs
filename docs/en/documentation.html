@@ -28,7 +28,7 @@
 	<meta name="twitter:image" content="https://skyost.github.io/SkyDocs/assets/img/icon.png"/>
 	
 	<!-- Styles -->
-	<meta id="theme-color" name="theme-color" content="#8e44ad"/>
+	<meta name="theme-color" content="#292b2c"/>
 	
 	
 	
@@ -38,18 +38,10 @@
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"/>
 	
 	<link rel="stylesheet" type="text/css" href="../assets/css/page.css"/>
-	
-	<!-- Uncomment the theme you want -->
-	
 	<link rel="stylesheet" type="text/css" href="../assets/css/themes/blue.css"/>
+	<!--<link rel="stylesheet" type="text/css" href="../assets/css/themes/red.css"/>-->
 	<!--<link rel="stylesheet" type="text/css" href="../assets/css/themes/green.css"/>-->
 	<!--<link rel="stylesheet" type="text/css" href="../assets/css/themes/orange.css"/>-->
-	<!--<link rel="stylesheet" type="text/css" href="../assets/css/themes/red.css"/>-->
-	
-	<script type="text/javascript" src="../assets/js/themes/blue.js"></script>
-	<!--<script type="text/javascript" src="../assets/js/themes/green.js"></script>-->
-	<!--<script type="text/javascript" src="../assets/js/themes/orange.js"></script>-->
-	<!--<script type="text/javascript" src="../assets/js/themes/red.js"></script>-->
 </head>
 
 	<body>
@@ -154,7 +146,7 @@
 <p>Then you can download the latest version of SkyDocs <a href="https://github.com/Skyost/SkyDocs/releases/latest">here</a>. Unzip the file where you want and that's it !</p>
 <h3 id="creating-a-new-project">Creating a new project</h3>
 <p>To <strong>create a new project</strong>, go to the SkyDocs directory and run the command <code>java -jar SkyDocs.jar new [directory]</code>.
-This will create a brand new project in the specified directory. If you don't specifiy a directory, the current location will be used instead.</p>
+This will create a brand new project in the specified directory. If you don't specify a directory, the current location will be used instead.</p>
 <p>You can also <strong>manually create a new project</strong> : first create a directory and create a file named <em>project.yml</em> and configure it as you want (below are the available options),
 then create a <em>menu.yml</em> file (check below to see how to configure it). You also need to create a directory named <em>content</em> (this is where you put your pages, images, ...).
 That's it !</p>
@@ -205,7 +197,7 @@ Nice website uh ?
 <p>The first lines are the header, you can only put two things here : the title (<em>title</em>) and the language of the page (<em>language</em>).</p>
 <p>In a menu, you can only put a language.</p>
 <h2 id="build-your-documentation">Build your documentation</h2>
-<p>When you have finished to configure your documentation, you are ready to build it !</p>
+<p>When you have finished configuring your documentation, you are ready to build it !</p>
 <p>To automatically <strong>build</strong> the documentation, run the file <code>build.bat</code> (or <code>build.sh</code>). To <strong>serve</strong> it on localhost, run the file <code>serve.bat</code> (or <code>serve.sh</code>).
 Those files are created when you create a new project via the command <code>java -jar SkyDocs.jar new [directory]</code>.</p>
 <p>You can also manually <strong>build your documentation</strong> with the command : <code>java -jar SkyDocs.jar build [directory]</code> (if you omit the directory, SkyDocs will try to build
@@ -228,8 +220,6 @@ SkyDocs will try to build the project contained in the current directory). The d
 </table>
 <p>Please note that CSS and JS files will be minified when you run the <em>build</em> command. They will <strong>not be minified</strong> with the <em>serve</em> command.</p>
 
-								
-				<small class="date text-muted float-right"><i class="fa fa-calendar" aria-hidden="true"></i> Jul 27, 2017 3:29:21 PM</small>
 				
 			</article>
 		</div>

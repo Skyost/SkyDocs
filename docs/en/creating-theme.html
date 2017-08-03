@@ -28,7 +28,7 @@
 	<meta name="twitter:image" content="https://skyost.github.io/SkyDocs/assets/img/icon.png"/>
 	
 	<!-- Styles -->
-	<meta id="theme-color" name="theme-color" content="#8e44ad"/>
+	<meta name="theme-color" content="#292b2c"/>
 	
 	
 	
@@ -38,18 +38,10 @@
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"/>
 	
 	<link rel="stylesheet" type="text/css" href="../assets/css/page.css"/>
-	
-	<!-- Uncomment the theme you want -->
-	
 	<link rel="stylesheet" type="text/css" href="../assets/css/themes/blue.css"/>
+	<!--<link rel="stylesheet" type="text/css" href="../assets/css/themes/red.css"/>-->
 	<!--<link rel="stylesheet" type="text/css" href="../assets/css/themes/green.css"/>-->
 	<!--<link rel="stylesheet" type="text/css" href="../assets/css/themes/orange.css"/>-->
-	<!--<link rel="stylesheet" type="text/css" href="../assets/css/themes/red.css"/>-->
-	
-	<script type="text/javascript" src="../assets/js/themes/blue.js"></script>
-	<!--<script type="text/javascript" src="../assets/js/themes/green.js"></script>-->
-	<!--<script type="text/javascript" src="../assets/js/themes/orange.js"></script>-->
-	<!--<script type="text/javascript" src="../assets/js/themes/red.js"></script>-->
 </head>
 
 	<body>
@@ -147,10 +139,10 @@
 				
 				<h1 id="creating-your-theme">Creating your theme</h1>
 <p>You probably want to get rid of this ugly default template. Here's how to create your own template.</p>
-<h2 id="page-template">Page template</h2>
+<h2 id="pagehtml-file">page.html file</h2>
 <p>First, you need to have created a project. If you don't know how to create your project, please check <a href="documentation.html#creating-a-new-project">this page</a>.
-Then in your project's directory, create a folder named <em>theme</em> (if it is already created then delete it and re-create it).</p>
-<p>In the theme directory, you must have a file called <em>page.html</em>. This file's content will be applied on each page of your project (located in the contents directory, with the <em>.md</em> file extension).
+Then in your project's directory, create a folder named <em>theme</em> (if it is already created, then delete it and re-create it).</p>
+<p>In the theme directory, you must have a file called <em>page.html</em>. This file's content will be applied to each page of your project (located in the contents directory, with the <em>.md</em> file extension).
 Remember : SkyDocs uses <a href="http://jtwig.org/documentation/reference/functions">jtwig</a> to format your HTML content. So for instance, if <em>page.html</em> contains :</p>
 <pre><code>&lt;p&gt;Here's the content of my page called &quot;{{ page.getTitle() }}&quot; :&lt;/p&gt;
 {{ page.getContent() }}
@@ -205,8 +197,6 @@ Once created, put everything you want in it : JS Scripts, some CSS and images, e
 	<iframe class="embed-responsive-item" src="https://www.youtube.com/embed/C6lzYBmoVxY?showinfo=0" allowfullscreen></iframe>
 </div>
 
-								
-				<small class="date text-muted float-right"><i class="fa fa-calendar" aria-hidden="true"></i> Jul 31, 2017 4:26:23 PM</small>
 				
 			</article>
 		</div>
