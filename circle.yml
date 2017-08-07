@@ -1,0 +1,3 @@
+test:
+  post:
+     - for file in /home/ubuntu/SkyDocs/target/SkyDocs-v*.jar do sudo mv -v "$file" "${file%.jar}-SNAPSHOT.jar" done
