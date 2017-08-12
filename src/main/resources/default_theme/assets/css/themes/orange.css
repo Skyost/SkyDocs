@@ -5,14 +5,6 @@
 	background-color: #e67e22;
 }
 
-a {
-	color: #d35400;
-}
-
-a:hover, a:active, a:focus {
-	color: #aa4400;
-}
-
 /* NAVIGATION BAR */
 
 header nav {

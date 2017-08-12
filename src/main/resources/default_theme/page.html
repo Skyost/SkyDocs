@@ -7,15 +7,13 @@
 		{{ includeFile("header.html") }}
 		
 		<div id="content" class="container row">
-			<div class="col-md-4 col-xs-12">
+			<div class="col-md-4 col-xs-12 d-none d-md-block">
 				<nav id="nav-toc"></nav>
 			</div>
 			
 			<article class="col-md-8 col-xs-12">
 				
 				{{ page.getContent() }}
-								
-				<small class="date text-muted float-right"><i class="fa fa-calendar" aria-hidden="true"></i> {{ page.getLastModificationTimeForLocale(page.getLanguage()) }}</small>
 				
 			</article>
 		</div>

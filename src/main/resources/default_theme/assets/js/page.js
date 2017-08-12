@@ -22,25 +22,8 @@ $(document).ready(function() {
 	$('#navbar ul li').addClass('nav-item');
 	$('#navbar ul li > a').addClass('nav-link');
 	
-	// ANCHORS LINKS AND PRINT LINKS :
-	anchors.options.placement = 'left';
-	anchors.add('h1, h2, h3, h4');
-	
-	$('#content h1').each(function() {
-		$(this).html($(this).html() + '<span class="print no-print"></span>');
-	});
-	
-	$('.print').click(function() {
-		$('article').print();
-	});
-	
-	if(window.location.hash.length > 0) {
-		goToHash(undefined, window.location.hash);
-	}
-	
-	$('a[href*=\\#]').on('click', function(event) {
-		goToHash(event, this.hash);
-	});
+	// THEME COLOR :
+	$('#theme-color').attr('content', $('header nav').css('background-color'));
 	
 	// TABLE OF CONTENTS :
 	tocbot.init({
@@ -75,6 +58,26 @@ $(document).ready(function() {
 		if(navigation.height() + (marginPadding * 2) > $(window).height() || $(window).width() < 768) {
 			resetPosition(navigation);
 		}
+	});
+	
+	// ANCHORS LINKS AND PRINT LINKS :
+	anchors.options.placement = 'left';
+	anchors.add('h1, h2, h3, h4');
+	
+	$('#content h1').each(function() {
+		$(this).html($(this).html() + '<span class="print no-print"></span>');
+	});
+	
+	$('.print').click(function() {
+		$('article').print();
+	});
+	
+	if(window.location.hash.length > 0) {
+		goToHash(undefined, window.location.hash);
+	}
+	
+	$('a[href*=\\#]').on('click', function(event) {
+		goToHash(event, this.hash);
 	});
 	
 	// OTHERS :
