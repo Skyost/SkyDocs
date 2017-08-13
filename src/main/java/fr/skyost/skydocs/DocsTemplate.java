@@ -151,6 +151,10 @@ public class DocsTemplate {
 		final IncludeFileFunction includeFile = new IncludeFileFunction(themeDirectory, model, RANGE_FUNCTION);
 		final EnvironmentConfiguration configuration = EnvironmentConfigurationBuilder.configuration().functions().add(includeFile).add(RANGE_FUNCTION).and().build();
 		
+		if(otherVariables != null) {
+			page.addAdditionalVariables(otherVariables);
+		}
+		
 		Files.write(file.toPath(), JtwigTemplate.inlineTemplate(template, configuration).render(model).getBytes(StandardCharsets.UTF_8));
 	}
 	

@@ -96,6 +96,12 @@ public class DocsPage {
 	private final HashMap<String, Object> header;
 	
 	/**
+	 * Additional variables (when parsing).
+	 */
+	
+	private final HashMap<String, Object> additionalVariables = new HashMap<String, Object>();
+	
+	/**
 	 * Creates a new DocsPage instance.
 	 * 
 	 * @param project The project this page belongs to.
@@ -197,6 +203,55 @@ public class DocsPage {
 	}
 	
 	/**
+	 * Adds a new additional variable.
+	 * 
+	 * @param variable The variable's name.
+	 * @param value The variable's value.
+	 */
+	
+	public final void addAdditionalVariable(final String variable, final Object value) {
+		additionalVariables.put(variable, value);
+	}
+	
+	/**
+	 * Adds all specified additional variable.
+	 * 
+	 * @param additionalVariables The additional variables.
+	 */
+	
+	public final void addAdditionalVariables(final Map<String, Object> additionalVariables) {
+		this.additionalVariables.putAll(additionalVariables);
+	}
+	
+	/**
+	 * Removes an additional variable.
+	 * 
+	 * @param variable The variable's name.
+	 */
+	
+	public final void removeAdditionalVariable(final String variable) {
+		additionalVariables.remove(variable);
+	}
+	
+	/**
+	 * Clears all additional variables.
+	 */
+	
+	public final void clearAdditionalVariables() {
+		additionalVariables.clear();
+	}
+	
+	/**
+	 * Gets all additional variables.
+	 * 
+	 * @return A map containing all additional variables.
+	 */
+	
+	public final Map<String, Object> getAdditionalVariables() {
+		return additionalVariables;
+	}
+	
+	/**
 	 * Gets the field (put by the user in the header).
 	 * 
 	 * @param key The key.
@@ -231,7 +286,7 @@ public class DocsPage {
 	 */
 	
 	public final String getContent() {
-		final JtwigModel model = project.getTemplate().createModel().with(Constants.VARIABLE_PAGE, this);
+		final JtwigModel model = project.getTemplate().createModel(additionalVariables).with(Constants.VARIABLE_PAGE, this);
 		
 		final IncludeFileFunction includeFile = new IncludeFileFunction(project.getContentDirectory(), model, DocsTemplate.RANGE_FUNCTION);
 		final EnvironmentConfiguration configuration = EnvironmentConfigurationBuilder.configuration().functions().add(includeFile).add(DocsTemplate.RANGE_FUNCTION).and().build();

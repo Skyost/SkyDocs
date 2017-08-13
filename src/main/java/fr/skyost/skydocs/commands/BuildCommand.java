@@ -9,11 +9,10 @@ import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 import com.google.common.base.Ascii;
@@ -103,30 +102,25 @@ public class BuildCommand extends Command {
 				}
 				
 				if(lunr) {
-					String contentNoHTML = Utils.stripHTML(page.getContent());
-					if(contentNoHTML.length() >= 140) {
-						contentNoHTML = Ascii.truncate(contentNoHTML, 140, "...");
+					final String title = page.getTitle();
+					String content = Utils.stripHTML(page.getContent());
+					if(content.length() >= 140) {
+						content = Ascii.truncate(content, 140, "...");
 					}
-					final Map<String, Object> header = page.getHeader();
-					final String title = header != null && header.containsKey(Constants.KEY_HEADER_TITLE) ? header.get(Constants.KEY_HEADER_TITLE).toString() : StringUtils.capitalize(FilenameUtils.removeExtension(file.getName()));
-					lunrContent.append("'" + title.toLowerCase().replace(".", "-").replace("'", "\\'") + "': {" + "title: '" + Utils.stripHTML(title).replace("'", "\\'") + "', " + "content: '" + contentNoHTML.replace("'", "\\'") + "', " + "url: '" + page.getPageRelativeURL().substring(1) + "'" + "}, ");
+					lunrContent.append("'" + title.toLowerCase().replace(".", "-").replace("'", "\\'") + "': {" + "title: '" + Utils.stripHTML(title).replace("'", "\\'") + "', " + "content: '" + content.replace("'", "\\'") + "', " + "url: '" + page.getPageRelativeURL().substring(1) + "'" + "}, ");
 				}
 				
 				template.applyTemplate(destination, page, null);
 			}
 			
 			if(lunr && lunrContent.length() != 0) {
-				final JtwigModel model = project.getTemplate().createModel();
-				
 				final String lunrContentString = lunrContent.toString();
-				model.with(Constants.VARIABLE_LUNR_DATA, "var pages = {" + (lunrContentString.length() > 0 ? lunrContentString.substring(0, lunrContentString.length() - 2) : "") + "};");
-				
-				final File searchFile = new File(buildDirectory, Constants.RESOURCE_SEARCH_PAGE_FILE);
 				Utils.extract(Constants.RESOURCE_SEARCH_PAGE_PATH, Constants.RESOURCE_SEARCH_PAGE_FILE, buildDirectory);
-				model.with(Constants.VARIABLE_PAGE, DocsPage.createFromFile(project, searchFile));
 				
-				Files.write(searchFile.toPath(), JtwigTemplate.fileTemplate(searchFile).render(model).getBytes(StandardCharsets.UTF_8));
-				template.applyTemplate(searchFile);
+				final HashMap<String, Object> pageVariables = new HashMap<String, Object>();
+				pageVariables.put(Constants.VARIABLE_LUNR_DATA, "var pages = {" + (lunrContentString.length() > 0 ? lunrContentString.substring(0, lunrContentString.length() - 2) : "") + "};");
+				
+				template.applyTemplate(new File(buildDirectory, Constants.RESOURCE_SEARCH_PAGE_FILE), null, pageVariables);
 			}
 			
 			final File contentDirectory = Utils.createFileIfNotExist(project.getContentDirectory());
