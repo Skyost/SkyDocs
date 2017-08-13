@@ -91,7 +91,6 @@ public class BuildCommand extends Command {
 			
 			for(final DocsPage page : project.getPages()) {
 				final File file = page.getFile();
-				copied.add(file);
 				if(!file.exists() || !file.isFile()) {
 					continue;
 				}
@@ -111,6 +110,7 @@ public class BuildCommand extends Command {
 				}
 				
 				template.applyTemplate(destination, page, null);
+				copied.add(file);
 			}
 			
 			if(lunr && lunrContent.length() != 0) {
