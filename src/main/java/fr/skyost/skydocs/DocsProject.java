@@ -501,7 +501,7 @@ public class DocsProject {
 			project.loadPages(project.getContentDirectory());
 			
 			if(project.getMenus().size() == 0) {
-				project.addMenus(new DocsMenu(project.getDefaultLanguage(), new DocsMenuEntry("No menu.yml found", "#", 0)));
+				project.addMenus(new DocsMenu(project.getDefaultLanguage(), new DocsMenuEntry("No menu.yml found", "#", 0, false)));
 			}
 			if(project.getMenuByLanguage(project.getDefaultLanguage()) == null) {
 				final DocsMenu defaultMenu = project.getMenus().iterator().next();

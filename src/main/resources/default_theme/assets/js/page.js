@@ -23,7 +23,7 @@ $(document).ready(function() {
 	$('#navbar ul li > a').addClass('nav-link');
 	
 	// THEME COLOR :
-	$('#theme-color').attr('content', $('header nav').css('background-color'));
+	$('#theme-color').attr('content', rgb2hex($('header nav').css('background-color')));
 	
 	// TABLE OF CONTENTS :
 	tocbot.init({
@@ -112,6 +112,22 @@ function goToHash(event, hash) {
 	else {
 		location.hash = hash;
 	}
+}
+
+/**
+* Found here : https://stackoverflow.com/a/3627747/3608831
+*/
+
+function rgb2hex(rgb) {
+	if(/^#[0-9A-F]{6}$/i.test(rgb)) {
+		return rgb;
+	}
+
+	rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+	function hex(x) {
+		return('0' + parseInt(x).toString(16)).slice(-2);
+	}
+	return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
 }
 
 function resetPosition(navigation) {

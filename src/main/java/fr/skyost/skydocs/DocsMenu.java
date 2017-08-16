@@ -235,6 +235,12 @@ public class DocsMenu {
 		private int weight;
 		
 		/**
+		 * If the link should be opened in a new tab.
+		 */
+		
+		private boolean wewTab;
+		
+		/**
 		 * Children of this entry.
 		 */
 		
@@ -246,13 +252,15 @@ public class DocsMenu {
 		 * @param title Title of the entry.
 		 * @param link Link attached to the entry.
 		 * @param weight Weight of the entry.
+		 * @param newTab Whether the entry should be opened in a new page.
 		 * @param children Children of the entry.
 		 */
 		
-		public DocsMenuEntry(final String title, final String link, final int weight, final DocsMenuEntry... children) {
+		public DocsMenuEntry(final String title, final String link, final int weight, final boolean newTab, final DocsMenuEntry... children) {
 			this.title = title;
 			this.link = link;
 			this.weight = weight;
+			this.wewTab = newTab;
 			if(children != null) {
 				this.children.addAll(Arrays.asList(children));
 			}
@@ -319,6 +327,26 @@ public class DocsMenu {
 		}
 		
 		/**
+		 * Check whether the entry should be opened in a new page.
+		 * 
+		 * @return Whether the entry should be opened in a new page.
+		 */
+		
+		public final boolean shouldOpenInNewTab() {
+			return wewTab;
+		}
+		
+		/**
+		 * Sets whether the entry should be opened in a new page.
+		 * 
+		 * @param newTab Whether the entry should be opened in a new page.
+		 */
+		
+		public final void setOpenInNewTable(final boolean newTab) {
+			this.wewTab = newTab;
+		}
+		
+		/**
 		 * Adds children to this entry.
 		 * 
 		 * @param children Children to add.
@@ -378,7 +406,7 @@ public class DocsMenu {
 		
 		public final String toHTML() {
 			final AutoLineBreakStringBuilder builder = new AutoLineBreakStringBuilder("<li>");
-			builder.append("<a href=\"" + getLink() + "\">" + getTitle() + "</a>");
+			builder.append("<a href=\"" + getLink() + "\"" + (shouldOpenInNewTab() ? " target=\"_blank\"" : "") + ">" + getTitle() + "</a>");
 			if(children.size() > 0) {
 				builder.append("<ul>");
 				orderMenuEntries(children);
@@ -403,7 +431,7 @@ public class DocsMenu {
 		
 		@SuppressWarnings("unchecked")
 		public static final DocsMenuEntry fromYAML(final Map<String, Object> yamlObject) throws InvalidMenuEntryException {
-			final DocsMenuEntry page = new DocsMenuEntry(null, null, 0);
+			final DocsMenuEntry page = new DocsMenuEntry(null, null, 0, false);
 			
 			if(!yamlObject.containsKey(Constants.KEY_MENU_TITLE)) {
 				throw new InvalidMenuEntryException("Missing key \"" + Constants.KEY_MENU_TITLE + "\".");
@@ -419,6 +447,10 @@ public class DocsMenu {
 				throw new InvalidMenuEntryException("Missing key \"" + Constants.KEY_MENU_WEIGHT + "\".");
 			}
 			page.setWeight(Integer.parseInt(yamlObject.get(Constants.KEY_MENU_WEIGHT).toString()));
+			
+			if(yamlObject.containsKey(Constants.KEY_MENU_NEW_TAB)) {
+				page.setOpenInNewTable(Boolean.parseBoolean(yamlObject.get(Constants.KEY_MENU_NEW_TAB).toString()));
+			}
 			
 			if(yamlObject.containsKey(Constants.KEY_MENU_CHILDREN)) {
 				final List<?> children = (List<?>)yamlObject.get(Constants.KEY_MENU_CHILDREN);

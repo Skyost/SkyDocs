@@ -145,6 +145,12 @@ public class Constants {
 	public static final String KEY_MENU_WEIGHT = "weight";
 	
 	/**
+	 * Whether the menu item should be opened in a new tab.
+	 */
+	
+	public static final String KEY_MENU_NEW_TAB = "new_tab";
+	
+	/**
 	 * Children of the menu item key.
 	 */
 	
