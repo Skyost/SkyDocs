@@ -28,14 +28,13 @@
 	<meta name="twitter:image" content="https://skyost.github.io/SkyDocs/assets/img/icon.png"/>
 	
 	<!-- Styles -->
-	<meta name="theme-color" content="#292b2c"/>
+	<meta id="theme-color" name="theme-color" content="#292b2c"/>
 	
 	
 	
 	<link rel="icon" type="image/png" href="../assets/img/icon.png"/>
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
-	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/css/tether.min.css"/>
-	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"/>
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/css/bootstrap.min.css"/>
 	
 	<link rel="stylesheet" type="text/css" href="../assets/css/page.css"/>
 	<link rel="stylesheet" type="text/css" href="../assets/css/themes/blue.css"/>
@@ -46,12 +45,12 @@
 
 	<body>
 		<header>
-	<nav class="navbar navbar-toggleable-md navbar-inverse">
-		<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+	<nav class="navbar navbar-expand-lg navbar-dark">
+		<a class="navbar-brand" href="../index.html"><img src="../assets/img/icon.png" width="30" height="30" class="d-inline-block align-top" alt="SkyDocs"> SkyDocs</a>
+	
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
-		
-		<a class="navbar-brand" href="../index.html"><img src="../assets/img/icon.png" width="30" height="30" class="d-inline-block align-top" alt="SkyDocs"> SkyDocs</a>
 
 		<div class="collapse navbar-collapse" id="navbar">
 		
@@ -131,7 +130,7 @@
 </header>
 		
 		<div id="content" class="container row">
-			<div class="col-md-4 col-xs-12">
+			<div class="col-md-4 col-xs-12 d-none d-md-block">
 				<nav id="nav-toc"></nav>
 			</div>
 			
@@ -168,19 +167,19 @@ Vous pouvez tout configurer : le thème, les pages, les menus, ...</p>
 			</article>
 		</div>
 		
-		<footer class="container">
+		<footer>
 	<p class="text-muted"><i class="fa fa-file-text" aria-hidden="true"></i> Documentation theme created by <a href="https://www.skyost.eu">Skyost</a>. Powered by <a href="https://skyost.github.io/SkyDocs/">SkyDocs</a> v0.3.1 Beta.</p>
 </footer>
 
  
 <!-- Javascript -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.1/umd/popper.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jQuery.print/1.5.1/jQuery.print.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/is-in-viewport/3.0.0/isInViewport.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/3.0.2/tocbot.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/3.0.3/tocbot.min.js"></script>
 <script type="text/javascript" src="../assets/js/page.js"></script>
 		
 	</body>
