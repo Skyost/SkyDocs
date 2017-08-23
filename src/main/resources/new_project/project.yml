@@ -4,3 +4,4 @@ project_url: https://skyost.github.io/SkyDocs
 
 default_language: en
 lunr_search: true
+default_order_alphabetical: true

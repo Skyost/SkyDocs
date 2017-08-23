@@ -163,7 +163,7 @@ public class DocsMenu {
 	 */
 	
 	@SuppressWarnings("unchecked")
-	public static final DocsMenu loadMenuFromMenuYML(final DocsProject project, final File menuData) throws InvalidMenuDataException {
+	public static final DocsMenu createFromFile(final DocsProject project, final File menuData) throws InvalidMenuDataException {
 		try {
 			final DocsMenu menu = new DocsMenu(project.getDefaultLanguage());
 			

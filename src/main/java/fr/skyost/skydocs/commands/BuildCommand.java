@@ -90,7 +90,7 @@ public class BuildCommand extends Command {
 			final HashSet<File> copied = new HashSet<File>();
 			
 			final DocsTemplate template = project.getTemplate();
-			final boolean lunr = project.getLunrSearch();
+			final boolean lunr = project.hasLunrSearch();
 			final StringBuilder lunrContent = new StringBuilder();
 			
 			for(final DocsPage page : project.getPages()) {

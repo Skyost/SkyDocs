@@ -55,6 +55,7 @@ public class ServeCommand extends Command {
 	
 	@Override
 	public final void run() {
+		super.run();
 		try {
 			final InternalServer server = new InternalServer(port);
 			
@@ -87,7 +88,7 @@ public class ServeCommand extends Command {
 		catch(final Exception ex) {
 			printStackTrace(ex);
 		}
-		super.run();
+		exitIfNeeded();
 	}
 	
 	@Override

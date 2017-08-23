@@ -72,6 +72,18 @@ public class DocsPage {
 	private String language;
 	
 	/**
+	 * The previous page.
+	 */
+	
+	private String previous;
+	
+	/**
+	 * The next page.
+	 */
+	
+	private String next;
+	
+	/**
 	 * Absolute path of this page.
 	 */
 	
@@ -93,7 +105,7 @@ public class DocsPage {
 	 * The page's header.
 	 */
 	
-	private final HashMap<String, Object> header;
+	private final HashMap<String, Object> header = new HashMap<String, Object>();
 	
 	/**
 	 * Additional variables (when parsing).
@@ -110,16 +122,25 @@ public class DocsPage {
 	 * @param file The file (HTML or MarkDown) that represents the content of this page.
 	 */
 	
-	public DocsPage(final DocsProject project, final String title, final String language, final File file) {
+	public DocsPage(final DocsProject project, final File file) {
+		final Map<String, Object> header = Utils.decodeFileHeader(Utils.separateFileHeader(file)[0]);
+		
 		this.project = project;
-		this.title = title;
-		this.language = language;
+		this.title = header != null && header.containsKey(Constants.KEY_HEADER_TITLE) ? header.get(Constants.KEY_HEADER_TITLE).toString() : StringUtils.capitalize(FilenameUtils.removeExtension(file.getName()));
+		this.language = header != null && header.containsKey(Constants.KEY_HEADER_LANGUAGE) ? header.get(Constants.KEY_HEADER_LANGUAGE).toString() : project.getDefaultLanguage();
 		this.absolutePath = file.getPath();
 		this.path = absolutePath.replace(project.getContentDirectory().getPath(), "").replace(project.getBuildDirectory().getPath(), "");
 		this.relativeURL = getBuildDestination(project).getPath().replace(project.getBuildDirectory().getPath(), "").replace(File.separator, "/");
 		
-		final Map<String, Object> header = Utils.decodeFileHeader(Utils.separateFileHeader(file)[0]);
-		this.header = header == null ? new HashMap<String, Object>() : new HashMap<String, Object>(header);
+		if(header != null) {
+			if(header.containsKey(Constants.KEY_HEADER_PREVIOUS)) {
+				this.previous = header.get(Constants.KEY_HEADER_PREVIOUS).toString();
+			}
+			if(header.containsKey(Constants.KEY_HEADER_NEXT)) {
+				this.next = header.get(Constants.KEY_HEADER_NEXT).toString();
+			}
+			this.header.putAll(header);
+		}
 	}
 	
 	/**
@@ -170,6 +191,66 @@ public class DocsPage {
 	
 	public final void setLanguage(final String language) {
 		this.language = language;
+	}
+	
+	/**
+	 * Checks if the page has a previous page.
+	 * 
+	 * @return Whether the page has a previous page.
+	 */
+	
+	public final boolean hasPreviousPage() {
+		return previous != null;
+	}
+	
+	/**
+	 * Gets the previous page if specified.
+	 * 
+	 * @return The previous page.
+	 */
+	
+	public final String getPreviousPage() {
+		return previous;
+	}
+	
+	/**
+	 * Sets the previous page.
+	 * 
+	 * @param previous The previous page.
+	 */
+	
+	public final void setPreviousPage(final String previous) {
+		this.previous = previous;
+	}
+	
+	/**
+	 * Checks if the page has a next page.
+	 * 
+	 * @return Whether the page has a next page.
+	 */
+	
+	public final boolean hasNextPage() {
+		return next != null;
+	}
+	
+	/**
+	 * Gets the next page if specified.
+	 * 
+	 * @return The next page.
+	 */
+	
+	public final String getNextPage() {
+		return next;
+	}
+	
+	/**
+	 * Sets the next page.
+	 * 
+	 * @param previous The next page.
+	 */
+	
+	public final void setNextPage(final String next) {
+		this.next = next;
 	}
 	
 	/**
@@ -389,22 +470,6 @@ public class DocsPage {
 	
 	public final File getBuildDestination(final DocsProject project) {
 		return new File(getBuildDestinationPath(project));
-	}
-	
-	/**
-	 * Creates a DocsPage instance from a file.
-	 * 
-	 * @param project The project this page belongs to.
-	 * @param file The page's content.
-	 * 
-	 * @return The DocsPage instance.
-	 */
-	
-	public static final DocsPage createFromFile(final DocsProject project, final File file) {
-		final Map<String, Object> headers = Utils.decodeFileHeader(Utils.separateFileHeader(file)[0]);
-		String title = headers != null && headers.containsKey(Constants.KEY_HEADER_TITLE) ? headers.get(Constants.KEY_HEADER_TITLE).toString() : StringUtils.capitalize(FilenameUtils.removeExtension(file.getName()));
-		String language = headers != null && headers.containsKey(Constants.KEY_HEADER_LANGUAGE) ? headers.get(Constants.KEY_HEADER_LANGUAGE).toString() : project.getDefaultLanguage();
-		return new DocsPage(project, title, language, file);
 	}
 	
 }

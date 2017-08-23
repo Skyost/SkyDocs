@@ -14,6 +14,7 @@ public class HelpCommand extends Command {
 	
 	@Override
 	public final void run() {
+		super.run();
 		String[] args = this.getArguments();
 		if(args.length == 0) {
 			args = new String[]{""};
@@ -42,7 +43,7 @@ public class HelpCommand extends Command {
 			}
 			break;
 		}
-		super.run();
+		exitIfNeeded();
 	}
 
 	@Override

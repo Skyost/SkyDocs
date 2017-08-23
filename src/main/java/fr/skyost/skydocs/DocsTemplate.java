@@ -144,7 +144,7 @@ public class DocsTemplate {
 	
 	public final void applyTemplate(final File file, DocsPage page, final Map<String, Object> otherVariables) throws IOException {
 		if(page == null) {
-			page = DocsPage.createFromFile(project, file);
+			page = new DocsPage(project, file);
 		}
 		
 		final JtwigModel model = createModel(otherVariables).with(Constants.VARIABLE_PAGE, page);

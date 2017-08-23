@@ -1,6 +1,6 @@
 ---
-title: New page
-language: en
+title: "New page"
+language: "en"
 ---
 
 # Page

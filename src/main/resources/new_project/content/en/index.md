@@ -1,6 +1,6 @@
 ---
-title: Home
-language: en
+title: "Home"
+language: "en"
 ---
 
 # Home

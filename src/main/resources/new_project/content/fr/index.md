@@ -1,6 +1,6 @@
 ---
-title: Accueil
-language: fr
+title: "Accueil"
+language: "fr"
 ---
 
 # Accueil

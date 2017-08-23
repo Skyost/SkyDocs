@@ -121,6 +121,18 @@ public class Constants {
 	public static final String KEY_HEADER_LANGUAGE = "language";
 	
 	/**
+	 * The previous key.
+	 */
+	
+	public static final String KEY_HEADER_PREVIOUS = "previous";
+	
+	/**
+	 * The next key.
+	 */
+	
+	public static final String KEY_HEADER_NEXT = "next";
+	
+	/**
 	 * ==============
 	 * YAML MENU KEYS
 	 * ==============
@@ -191,6 +203,12 @@ public class Constants {
 	 */
 	
 	public static final String KEY_PROJECT_LUNR_SEARCH = "lunr_search";
+	
+	/**
+	 * Whether the default order should be alphabetical.
+	 */
+	
+	public static final String KEY_PROJECT_DEFAULT_ORDER_ALPHABETICAL = "default_order_alphabetical";
 	
 	/**
 	 * =============================

@@ -3,9 +3,13 @@ package fr.skyost.skydocs;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -198,18 +202,38 @@ public class DocsProject {
 	 * @return If lunr search should be enabled for this project.
 	 */
 	
-	public final boolean getLunrSearch() {
+	public final boolean hasLunrSearch() {
 		return projectVariables.containsKey(Constants.KEY_PROJECT_LUNR_SEARCH) && Boolean.valueOf(projectVariables.get(Constants.KEY_PROJECT_LUNR_SEARCH).toString());
 	}
 	
 	/**
 	 * Sets the lunr search variable of this project.
 	 * 
-	 * @param defaultLanguage The search variable of this project.
+	 * @param lunrSearch The search variable of this project.
 	 */
 	
 	public final void setLunrSearch(final boolean lunrSearch) {
 		projectVariables.put(Constants.KEY_PROJECT_LUNR_SEARCH, lunrSearch);
+	}
+	
+	/**
+	 * Gets if the default order should be alphabetical for this project.
+	 * 
+	 * @return If the default order should be alphabetical for this project.
+	 */
+	
+	public final boolean isDefaultOrderAlphabetical() {
+		return projectVariables.containsKey(Constants.KEY_PROJECT_DEFAULT_ORDER_ALPHABETICAL) && Boolean.valueOf(projectVariables.get(Constants.KEY_PROJECT_DEFAULT_ORDER_ALPHABETICAL).toString());
+	}
+	
+	/**
+	 * Sets if the default order should be alphabetical for this project.
+	 * 
+	 * @param defaultLanguage Whether the default order should be alphabetical for this project.
+	 */
+	
+	public final void setDefaultOrderAlphabetical(final boolean defaultOrderAlphabetical) {
+		projectVariables.put(Constants.KEY_PROJECT_DEFAULT_ORDER_ALPHABETICAL, defaultOrderAlphabetical);
 	}
 	
 	/**
@@ -445,7 +469,7 @@ public class DocsProject {
 				continue;
 			}
 			if(FilenameUtils.getExtension(child.getName()).equalsIgnoreCase("md")) {
-				final DocsPage page = DocsPage.createFromFile(this, child);
+				final DocsPage page = new DocsPage(this, child);
 				final String path = page.getBuildDestinationPath(this);
 				if(destinations.contains(path)) {
 					System.out.println();
@@ -494,11 +518,38 @@ public class DocsProject {
 			for(final File child : directory.listFiles()) {
 				final String name = child.getName().toLowerCase();
 				if(name.startsWith(Constants.FILE_MENU_PREFIX) && name.endsWith(Constants.FILE_MENU_SUFFIX)) {
-					project.addMenus(DocsMenu.loadMenuFromMenuYML(project, child));
+					project.addMenus(DocsMenu.createFromFile(project, child));
 				}
 			}
 			
 			project.loadPages(project.getContentDirectory());
+			if(project.isDefaultOrderAlphabetical()) {
+				final List<DocsPage> pages = new ArrayList<DocsPage>(project.getPages());
+				Collections.sort(pages, new Comparator<DocsPage>() {
+					
+				    @Override
+				    public final int compare(final DocsPage page1, final DocsPage page2) {
+				        return page1.getPageRelativeURL().compareTo(page2.getPageRelativeURL());
+				    }
+				    
+				});
+				final int size = pages.size();
+				for(int i = 0; i != pages.size(); i++) {
+					final DocsPage page = pages.get(i);
+					if(!page.hasPreviousPage() && i > 0) {
+						final DocsPage previous = pages.get(i - 1);
+						if(page.getLanguage().equals(previous.getLanguage())) {
+							page.setPreviousPage(previous.getPageRelativeURL());
+						}
+					}
+					if(!page.hasNextPage() && i < size - 1) {
+						final DocsPage next = pages.get(i + 1);
+						if(page.getLanguage().equals(next.getLanguage())) {
+							page.setNextPage(next.getPageRelativeURL());
+						}
+					}
+				}
+			}
 			
 			if(project.getMenus().size() == 0) {
 				project.addMenus(new DocsMenu(project.getDefaultLanguage(), new DocsMenuEntry("No menu.yml found", "#", 0, false)));

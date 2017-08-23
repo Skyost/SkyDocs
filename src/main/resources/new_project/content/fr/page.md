@@ -1,6 +1,6 @@
 ---
-title: Nouvelle page
-language: fr
+title: "Nouvelle page"
+language: "fr"
 ---
 
 # Page
