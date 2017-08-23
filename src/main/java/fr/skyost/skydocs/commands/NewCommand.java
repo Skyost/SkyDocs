@@ -22,6 +22,7 @@ public class NewCommand extends Command {
 	
 	@Override
 	public final void run() {
+		super.run();
 		try {
 			final String[] args = this.getArguments();
 			final File directory = new File(args.length > 0 && args[0].length() > 0 ? args[0] : System.getProperty("user.dir"));
@@ -35,6 +36,8 @@ public class NewCommand extends Command {
 			final boolean isJAR = FilenameUtils.getExtension(path).equalsIgnoreCase("jar");
 			
 			for(final String extension : new String[]{"bat", "sh", "command"}) {
+				exitIfInterrupted();
+				
 				createFile(new File(directory, "build." + extension), (isJAR ? "java -jar " : "") + "\"%s\" build");
 				createFile(new File(directory, "serve." + extension), (isJAR ? "java -jar " : "") + "\"%s\" serve");
 			}
@@ -45,7 +48,12 @@ public class NewCommand extends Command {
 		catch(final Exception ex) {
 			printStackTrace(ex);
 		}
-		super.run();
+		exitIfNeeded();
+	}
+	
+	@Override
+	public final boolean isInterruptible() {
+		return true;
 	}
 	
 	/**

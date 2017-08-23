@@ -61,6 +61,7 @@ public class ServeCommand extends Command {
 			final BuildCommand command = new BuildCommand(false, this.getArguments());
 			command.setOutputing(false);
 			boolean firstBuild = true;
+			blankLine();
 			
 			final Scanner scanner = new Scanner(System.in, StandardCharsets.UTF_8.name());
 			String line = "";
@@ -69,11 +70,11 @@ public class ServeCommand extends Command {
 				if(firstBuild) {
 					registerFileListener(command);
 					buildDirectory = command.getCurrentBuildDirectory();
-					outputLine("You can point your browser to http://localhost:" + port + "...");
+					outputLine("You can point your browser to http://localhost:" + port + ".");
+					server.start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
 					if(Desktop.isDesktopSupported()) {
 						Desktop.getDesktop().browse(new URL("http://localhost:" + port).toURI());
 					}
-					server.start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
 				}
 				firstBuild = false;
 				outputLine("Enter nothing to rebuild the website or enter something to stop the server (auto rebuild is enabled) :");
@@ -89,6 +90,11 @@ public class ServeCommand extends Command {
 		super.run();
 	}
 	
+	@Override
+	public final boolean isInterruptible() {
+		return false;
+	}
+	
 	/**
 	 * Triggers a new build.
 	 * 
@@ -102,6 +108,9 @@ public class ServeCommand extends Command {
 		output("Running build command...");
 		firstTime();
 		
+		if(!command.isInterrupted()) {
+			command.interrupt();
+		}
 		if(!firstBuild) {
 			command.reloadProject();
 		}
@@ -128,17 +137,12 @@ public class ServeCommand extends Command {
 		observer.addListener(new FileAlterationListenerAdaptor() {
 			
 			@Override
-			public final void onFileCreate(final File file) {
-				rebuildIfNeeded(command, file);
+			public final void onDirectoryChange(final File directory) {
+				rebuildIfNeeded(command, directory);
 			}
 			
 			@Override
 			public final void onFileChange(final File file) {
-				rebuildIfNeeded(command, file);
-			}
-			
-			@Override
-			public final void onFileDelete(final File file) {
 				rebuildIfNeeded(command, file);
 			}
 			
@@ -192,35 +196,8 @@ public class ServeCommand extends Command {
 	
 	private class InternalServer extends NanoHTTPD {
 		
-		/**
-		 * Included file that will trigger a new build.
-		 */
-		
-		private final String refreshScript;
-		
 		public InternalServer(final int port) {
 			super(port);
-			
-			final AutoLineBreakStringBuilder builder = new AutoLineBreakStringBuilder(Utils.LINE_SEPARATOR + "<!-- Auto refresh script, this is not part of your built page so just ignore it ! -->");
-			builder.append("<script type=\"text/javascript\">");
-			builder.append("var lastRefresh = new Date().getTime();");
-			builder.append("function httpGetAsync() {");
-			builder.append("	var xmlHttp = new XMLHttpRequest();");
-			builder.append("	xmlHttp.onreadystatechange = function() { ");
-			builder.append("		if(xmlHttp.readyState == 4) {");
-			builder.append("			if(xmlHttp.status == 200 && lastRefresh < xmlHttp.responseText) {");
-			builder.append("				location.reload();");
-			builder.append("				return;");
-			builder.append("			}");
-			builder.append("			setTimeout(httpGetAsync, " + Constants.SERVE_FILE_POLLING_INTERVAL + ");");
-			builder.append("		}");
-			builder.append("	}");
-			builder.append("	xmlHttp.open('GET', '/" + Constants.SERVE_LASTBUILD_URL + "', true);");
-			builder.append("	xmlHttp.send(null);");
-			builder.append("}");
-			builder.append("httpGetAsync();");
-			builder.append("</script>");
-			refreshScript = builder.toString();
 		}
 		
 		@Override
@@ -259,7 +236,7 @@ public class ServeCommand extends Command {
 						builder.append("		</ul>");
 						builder.append("		<hr/>");
 						builder.append("		<p style=\"text-align:right;\"><a href=\"" + Constants.APP_WEBSITE + "\">" + Constants.APP_NAME + " " + Constants.APP_VERSION + "</a></p>");
-						builder.append(refreshScript);
+						builder.append(Utils.AUTO_REFRESH_SCRIPT);
 						builder.append("	</body>");
 						builder.append("</html>");
 						return newFixedLengthResponse(Response.Status.UNAUTHORIZED, NanoHTTPD.MIME_HTML, builder.toString());
@@ -268,7 +245,7 @@ public class ServeCommand extends Command {
 				if(FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("html")) {
 					String content = new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
 					if(content.contains("<body>") && content.contains("</body>")) {
-						content = content.replace("</body>", refreshScript + "</body>");
+						content = content.replace("</body>", Utils.AUTO_REFRESH_SCRIPT + "</body>");
 						return newFixedLengthResponse(Status.OK, NanoHTTPD.MIME_HTML, content);
 					}
 				}
@@ -277,13 +254,13 @@ public class ServeCommand extends Command {
 				return newFixedLengthResponse(Status.OK, NanoHTTPD.getMimeTypeForFile(file.getPath()), bufferedInput, -1);
 			}
 			catch(final NoSuchFileException ex) {
-				return newFixedLengthResponse(Status.NOT_FOUND, NanoHTTPD.MIME_HTML, "<html><head><title>404 Error</title></head><body>404 File not found." + refreshScript + "</body></html>");
+				return newFixedLengthResponse(Status.NOT_FOUND, NanoHTTPD.MIME_HTML, "<html><head><title>404 Error</title></head><body>404 File not found." + Utils.AUTO_REFRESH_SCRIPT + "</body></html>");
 			}
 			catch(final FileNotFoundException ex) {
-				return newFixedLengthResponse(Status.NOT_FOUND, NanoHTTPD.MIME_HTML, "<html><head><title>404 Error</title></head><body>404 File not found (or inaccessible)." + refreshScript + "</body></html>");
+				return newFixedLengthResponse(Status.NOT_FOUND, NanoHTTPD.MIME_HTML, "<html><head><title>404 Error</title></head><body>404 File not found (or inaccessible)." + Utils.AUTO_REFRESH_SCRIPT + "</body></html>");
 			}
 			catch(final Exception ex) {
-				return newFixedLengthResponse(Status.NOT_FOUND, NanoHTTPD.MIME_HTML, "<html><head><title>Error</title></head><body>" + ex.getClass().getName() + refreshScript + "</body></html>");
+				return newFixedLengthResponse(Status.NOT_FOUND, NanoHTTPD.MIME_HTML, "<html><head><title>Error</title></head><body>" + ex.getClass().getName() + Utils.AUTO_REFRESH_SCRIPT + "</body></html>");
 			}
 		}
 		

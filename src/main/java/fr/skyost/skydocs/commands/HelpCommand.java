@@ -44,5 +44,10 @@ public class HelpCommand extends Command {
 		}
 		super.run();
 	}
+
+	@Override
+	public final boolean isInterruptible() {
+		return false;
+	}
 	
 }

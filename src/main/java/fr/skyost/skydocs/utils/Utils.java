@@ -32,6 +32,35 @@ public class Utils {
 	public static final String LINE_SEPARATOR = System.lineSeparator();
 	
 	/**
+	 * The auto refresh page script.
+	 */
+	
+	public static final String AUTO_REFRESH_SCRIPT;
+	
+	static {
+		final AutoLineBreakStringBuilder builder = new AutoLineBreakStringBuilder(Utils.LINE_SEPARATOR + "<!-- Auto refresh script, this is not part of your built page so just ignore it ! -->");
+		builder.append("<script type=\"text/javascript\">");
+		builder.append("var lastRefresh = new Date().getTime();");
+		builder.append("function httpGetAsync() {");
+		builder.append("	var xmlHttp = new XMLHttpRequest();");
+		builder.append("	xmlHttp.onreadystatechange = function() { ");
+		builder.append("		if(xmlHttp.readyState == 4) {");
+		builder.append("			if(xmlHttp.status == 200 && lastRefresh < xmlHttp.responseText) {");
+		builder.append("				location.reload();");
+		builder.append("				return;");
+		builder.append("			}");
+		builder.append("			setTimeout(httpGetAsync, " + Constants.SERVE_FILE_POLLING_INTERVAL + ");");
+		builder.append("		}");
+		builder.append("	}");
+		builder.append("	xmlHttp.open('GET', '/" + Constants.SERVE_LASTBUILD_URL + "', true);");
+		builder.append("	xmlHttp.send(null);");
+		builder.append("}");
+		builder.append("httpGetAsync();");
+		builder.append("</script>");
+		AUTO_REFRESH_SCRIPT = builder.toString();
+	}
+	
+	/**
 	 * Creates a file or a directory if it does not exist.
 	 * 
 	 * @param file The file or directory.

@@ -185,6 +185,10 @@ header .navbar .form-inline [class ^= 'btn'] {
 	text-decoration: none;
 }
 
+#content article .date {
+	margin: 20px 0 10px 0;
+}
+
 /* FOOTER */
 
 footer {

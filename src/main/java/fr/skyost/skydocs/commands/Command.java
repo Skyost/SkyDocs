@@ -37,6 +37,12 @@ public abstract class Command implements Runnable {
 	private long secondTime = 0L;
 	
 	/**
+	 * Whether this command has been interrupted.
+	 */
+	
+	boolean isInterrupted = false;
+	
+	/**
 	 * Creates a new Command instance.
 	 * 
 	 * @param args The arguments.
@@ -65,6 +71,14 @@ public abstract class Command implements Runnable {
 	public final void setArguments(final String... args) {
 		this.args = args;
 	}
+	
+	/**
+	 * Checks if this command is interruptible.
+	 * 
+	 * @return Whether this command is interruptible.
+	 */
+	
+	public abstract boolean isInterruptible();
 	
 	/**
 	 * Checks if the JVM should exit on finish.
@@ -136,40 +150,135 @@ public abstract class Command implements Runnable {
 	
 	@Override
 	public void run() {
+		isInterrupted = false;
+	}
+	
+	/**
+	 * Exits if interrupted.
+	 * 
+	 * @throws InterruptionException The interruption signal.
+	 */
+	
+	void exitIfInterrupted() throws InterruptionException {
+		if(!isInterrupted()) {
+			return;
+		}
+		exitIfNeeded();
+		throw new InterruptionException();
+	}
+	
+	/**
+	 * Exits if needed.
+	 */
+	
+	final void exitIfNeeded() {
+		interrupt();
 		if(exitOnFinish) {
 			System.exit(0);
 		}
 	}
 	
-	public final void output(final String message) {
+	/**
+	 * Interrupts the execution of the current command. Please note that the implementation of this method may change depending on the command.
+	 */
+	
+	public final void interrupt() {
+		isInterrupted = true;
+	}
+	
+	/**
+	 * Checks if this command is interrupted (or is currently not running).
+	 * 
+	 * @return Whether this command is interrupted (or is currently not running).
+	 */
+	
+	public final boolean isInterrupted() {
+		return isInterrupted;
+	}
+	
+	/**
+	 * Outputs a message without line break.
+	 * 
+	 * @param message The message.
+	 */
+	
+	void output(final String message) {
 		output(message, output);
 	}
 	
-	public final void output(final String message, final boolean output) {
+	/**
+	 * Outputs a message without line break.
+	 * 
+	 * @param message The message.
+	 * @param output Whether the message should be printed.
+	 */
+	
+	void output(final String message, final boolean output) {
 		if(output) {
 			System.out.print(message + " ");
 		}
 	}
 	
-	public final void outputLine(final String message) {
+	/**
+	 * Outputs a message with a line break.
+	 * 
+	 * @param message The message.
+	 */
+	
+	final void outputLine(final String message) {
 		outputLine(message, output);
 	}
 	
-	public final void outputLine(final String message, final boolean output) {
+	/**
+	 * Outputs a message with a line break.
+	 * 
+	 * @param message The message.
+	 * @param output Whether the message should be printed.
+	 */
+	
+	final void outputLine(final String message, final boolean output) {
 		if(output) {
 			System.out.println(message);
 		}
 	}
 	
-	public final void blankLine() {
+	/**
+	 * Prints a blank line.
+	 */
+	
+	final void blankLine() {
 		if(output) {
 			System.out.println();
 		}
 	}
 	
-	public final void printStackTrace(final Throwable throwable) {
+	/**
+	 * Prints the StackTrace of a specified throwable.
+	 * 
+	 * @param throwable The throwable.
+	 */
+	
+	final void printStackTrace(final Throwable throwable) {
 		System.out.println();
+		if(throwable instanceof InterruptionException) {
+			outputLine(throwable.getMessage());
+			return;
+		}
 		throwable.printStackTrace();
+	}
+	
+	/**
+	 * The interruption signal.
+	 */
+	
+	public static class InterruptionException extends Exception {
+		
+		private static final long serialVersionUID = 1L;
+
+		public InterruptionException() {
+			super("Interrupted !");
+		}
+		
 	}
 	
 }

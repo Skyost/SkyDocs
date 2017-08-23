@@ -12,8 +12,14 @@ public class UpdateCommand extends Command implements GithubUpdaterResultListene
 	
 	@Override
 	public final void run() {
-		new GithubUpdater(Constants.APP_VERSION.split(" ")[0].substring(1), this).start();
 		super.run();
+		new GithubUpdater(Constants.APP_VERSION.split(" ")[0].substring(1), this).start();
+		exitIfNeeded();
+	}
+	
+	@Override
+	public final boolean isInterruptible() {
+		return false;
 	}
 
 	@Override

@@ -68,17 +68,21 @@ public class BuildCommand extends Command {
 	
 	@Override
 	public final void run() {
+		super.run();
+		
 		try {
 			output("Creating build directory...");
 			firstTime();
 			
-			if(buildDirectory.exists()) {
+			if(buildDirectory.exists() && buildDirectory.isDirectory()) {
 				Utils.deleteDirectory(buildDirectory);
 			}
 			buildDirectory.mkdirs();
 			
 			secondTime();
 			printTimeElapsed();
+			
+			exitIfInterrupted();
 			
 			output("Copying and converting files...");
 			firstTime();
@@ -90,6 +94,8 @@ public class BuildCommand extends Command {
 			final StringBuilder lunrContent = new StringBuilder();
 			
 			for(final DocsPage page : project.getPages()) {
+				exitIfInterrupted();
+				
 				final File file = page.getFile();
 				if(!file.exists() || !file.isFile()) {
 					continue;
@@ -150,7 +156,13 @@ public class BuildCommand extends Command {
 		catch(final Exception ex) {
 			printStackTrace(ex);
 		}
-		super.run();
+		
+		exitIfNeeded();
+	}
+	
+	@Override
+	public final boolean isInterruptible() {
+		return true;
 	}
 	
 	/**
@@ -226,9 +238,14 @@ public class BuildCommand extends Command {
 	 * @param copied If a file to copy is already in this list, it will not be copied another time.
 	 * @param file The file to copy.
 	 * @param destination The destination.
+	 * 
+	 * @throws IOException If any exception occurs while copying a file.
+	 * @throws InterruptionException If the operation should be aborted.
 	 */
 	
-	public final void copy(final HashSet<File> copied, final File file, File destination) throws IOException {
+	public final void copy(final HashSet<File> copied, final File file, File destination) throws IOException, InterruptionException {
+		exitIfInterrupted();
+		
 		if(copied.contains(file) || (file.isFile() && FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("md"))) {
 			return;
 		}
@@ -252,7 +269,19 @@ public class BuildCommand extends Command {
 		}
 	}
 	
-	public final void copyAssets(final File directory, final File destination) throws IOException {
+	/**
+	 * Copies needed assets.
+	 * 
+	 * @param directory The assets directory.
+	 * @param destination The destination.
+	 * 
+	 * @throws IOException If any exception occurs while copying assets.
+	 * @throws InterruptionException If the operation should be aborted.
+	 */
+	
+	public final void copyAssets(final File directory, final File destination) throws IOException, InterruptionException {
+		exitIfInterrupted();
+		
 		if(directory.isFile()) {
 			final String extension = FilenameUtils.getExtension(directory.getName());
 			if(prod && (extension.equalsIgnoreCase("css") || extension.equalsIgnoreCase("js"))) {
