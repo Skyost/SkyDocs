@@ -8,7 +8,7 @@
 	<!-- Description -->
 	<meta name="description" content="SkyDocs is a lightweight static documentation builder with MarkDown."/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-	<meta name="generator" content="SkyDocs v0.3.1 Beta"/>
+	<meta name="generator" content="SkyDocs v0.3.2 Beta"/>
 	
 	<!-- OpenGraph -->
 	<meta property="og:type" content="website"/>
@@ -143,8 +143,15 @@
 Then in your project's directory, create a folder named <em>theme</em> (if it is already created, then delete it and re-create it).</p>
 <p>In the theme directory, you must have a file called <em>page.html</em>. This file's content will be applied to each page of your project (located in the contents directory, with the <em>.md</em> file extension).
 Remember : SkyDocs uses <a href="http://jtwig.org/documentation/reference/functions">jtwig</a> to format your HTML content. So for instance, if <em>page.html</em> contains :</p>
-<pre><code>&lt;p&gt;Here's the content of my page called &quot;{{ page.getTitle() }}&quot; :&lt;/p&gt;
-{{ page.getContent() }}
+<pre><code>&lt;html&gt;
+	&lt;head&gt;
+		&lt;title&gt;{{ page.getTitle() }} | {{ project.getName() }}&lt;/title&gt;
+	&lt;/head&gt;
+	&lt;body&gt;
+		&lt;p&gt;Here's the content of the page called &quot;{{ page.getTitle() }}&quot; :&lt;/p&gt;
+		{{ page.getContent() }}
+	&lt;/body&gt;
+&lt;/html&gt;
 </code></pre>
 <p>Then, when you build your project, this will be placed on each content page. You have a lot of other available functions :</p>
 <table>
@@ -156,7 +163,8 @@ Remember : SkyDocs uses <a href="http://jtwig.org/documentation/reference/functi
 <tr><td><code>{{ project.getDescription() }}</code></td><td>Returns the description of your project as configured in the <em>project.yml</em>.</td></tr>
 <tr><td><code>{{ project.getURL() }}</code></td><td>Returns the URL address of your project as configured in the <em>project.yml</em>.</td></tr>
 <tr><td><code>{{ project.getDefaultLanguage() }}</code></td><td>Returns your project's default language as configured in the <em>project.yml</em>.</td></tr>
-<tr><td><code>{{ project.getLunrSeach()() }}</code></td><td>Returns if lunr search should be enabled for this project as configured in the <em>plugin.yml</em>.</td></tr>
+<tr><td><code>{{ project.hasLunrSeach() }}</code></td><td>Returns if lunr search should be enabled for this project as configured in the <em>plugin.yml</em>.</td></tr>
+<tr><td><code>{{ project.isDefaultOrderAlphabetical() }}</code></td><td>Returns whether the alphabetical order is the default page order as configured in the <em>plugin.yml</em>.</td></tr>
 <tr><td><code>{{ project.getPages() }}</code></td><td>Returns an iterable list of your project pages.</td></tr>
 <tr><td><code>{{ project.getMenuHTMLByLanguage(language) }}</code></td><td>Returns the HTML content of the menu corresponding to the specified <em>language</em>.</td></tr>
 <tr><td><code>{{ project.getField(key) }}</code></td><td>Returns the field located in <em>project.yml</em> corresponding to the <em>key</em> (for example if you want the project's name, use <code>{{ project.getField(&quot;project_name&quot;) }}</code>).</td></tr>
@@ -176,6 +184,10 @@ Remember : SkyDocs uses <a href="http://jtwig.org/documentation/reference/functi
 <tr><td><code>{{ page.getLastModificationTime(format) }}</code></td><td>Gets the last modification time of a page formatted with your format. Please check <a href="https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html">this page</a> to know available formatting options.<br/>For example, <code>{{ page.getLastModificationTime(&quot;yyyy-MM-dd&quot;) }}</code> can output <em>2012-12-21</em>.</td></tr>
 <tr><td><code>{{ page.getLastModificationTimeForLocale(locale) }}</code></td><td>Gets the last modification time of a page formatted with the specified locale. If the specified locale is not valid, the system's default locale will be used instead.</td></tr>
 <tr><td><code>{{ page.getRawLastModificationTime() }}</code></td><td>Gets the last modification time of a page in milliseconds.</td></tr>
+<tr><td><code>{{ page.hasPreviousPage() }}</code></td><td>Checks if a page has a previous page. This will be <em>true</em> if you have set a value to the <code>previous</code> header key or if you have enabled the alphabetical order as the default order for pages (there must be a page before though).</td></tr>
+<tr><td><code>{{ page.getPreviousPage() }}</code></td><td>Gets the previous page of a page (configured in the MarkDown file header or automatically set if you have enabled the alphabetical order as the default order for pages).</td></tr>
+<tr><td><code>{{ page.hasNextPage() }}</code></td><td>Checks if a page has a next page. This will be <em>true</em> if you have set a value to the <code>next</code> header key or if you have enabled the alphabetical order as the default order for pages (there must be a page after though).</td></tr>
+<tr><td><code>{{ page.getNextPage() }}</code></td><td>Gets the next page of a page (configured in the MarkDown file header or automatically set if you have enabled the alphabetical order as the default order for pages).</td></tr>
 <tr><td><code>{{ page.getField(key) }}</code></td><td>Gets the field located in the header corresponding to the <em>key</em> (for example if you want the page's language, use <code>{{ page.getField(&quot;language&quot;) }}</code>).</td></tr>
 </tbody>
 </table>
@@ -197,11 +209,21 @@ Once created, put everything you want in it : JS Scripts, some CSS and images, e
 </div>
 
 				
+				<section>
+					<small class="date text-muted"><i class="fa fa-calendar" aria-hidden="true"></i> Aug 23, 2017 11:15:50 PM</small>
+					
+						<div class="paginator clearfix">
+							<a class="btn btn-secondary float-left" href="/en/documentation.html" role="button"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>							
+							<a class="btn btn-secondary float-right" href="/en/about.html" role="button"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>							
+						</div>
+					
+				</section>
+				
 			</article>
 		</div>
 		
 		<footer>
-	<p class="text-muted"><i class="fa fa-file-text" aria-hidden="true"></i> Documentation theme created by <a href="https://www.skyost.eu">Skyost</a>. Powered by <a href="https://skyost.github.io/SkyDocs/">SkyDocs</a> v0.3.1 Beta.</p>
+	<p class="text-muted"><i class="fa fa-file-text" aria-hidden="true"></i> Documentation theme created by <a href="https://www.skyost.eu">Skyost</a>. Powered by <a href="https://skyost.github.io/SkyDocs/">SkyDocs</a> v0.3.2 Beta.</p>
 </footer>
 
  
@@ -214,6 +236,7 @@ Once created, put everything you want in it : JS Scripts, some CSS and images, e
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/3.0.3/tocbot.min.js"></script>
 <script type="text/javascript" src="../assets/js/page.js"></script>
+<script type="text/javascript" src="../assets/localization/en.js"></script>
 		
 	</body>
 </html>

@@ -4,6 +4,10 @@
 	background-color: #ffcece;
 }
 
+.dropdown-item:active {
+	background-color: #dc3545;
+}
+
 /* NAVIGATION BAR */
 
 header nav {

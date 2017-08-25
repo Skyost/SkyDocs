@@ -133,3 +133,11 @@ function rgb2hex(rgb) {
 function resetPosition(navigation) {
 	navigation.css('position', '');
 }
+
+function localize(messages) {
+	$('header form input').attr('placeholder', messages['search-box-placeholder']);
+	
+	var links = $('.paginator a');
+	$(links[0]).html($(links[0]).html() + ' ' + messages['paginator-previous']);
+	$(links[1]).html(messages['paginator-next'] + ' ' + $(links[1]).html());
+}

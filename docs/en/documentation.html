@@ -8,7 +8,7 @@
 	<!-- Description -->
 	<meta name="description" content="SkyDocs is a lightweight static documentation builder with MarkDown."/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-	<meta name="generator" content="SkyDocs v0.3.1 Beta"/>
+	<meta name="generator" content="SkyDocs v0.3.2 Beta"/>
 	
 	<!-- OpenGraph -->
 	<meta property="og:type" content="website"/>
@@ -137,7 +137,7 @@
 			<article class="col-md-8 col-xs-12">
 				
 				<h1 id="documentation">Documentation</h1>
-<p>This documentation has been created for <strong>SkyDocs v0.3.1 Beta</strong>. Don't forget to update it (there is a guide below) !</p>
+<p>This documentation has been created for <strong>SkyDocs v0.3.2 Beta</strong>. Don't forget to update it (there is a guide below) !</p>
 <h2 id="downloading--installing">Downloading &amp; installing</h2>
 <p>Here are the steps to download and install the software.</p>
 <h3 id="downloading">Downloading</h3>
@@ -170,6 +170,7 @@ Here are the different keys with their corresponding description :</p>
 <tr><td>project_url</td><td>string</td><td>yes</td><td>Your documentation hosted URL address.</td></tr>
 <tr><td>default_language</td><td>string</td><td>yes</td><td>Your documentation default language.</td></tr>
 <tr><td>lunr_search</td><td>boolean</td><td>no</td><td>If you set this value to <em>true</em>, SkyDocs will include a <em>search.html</em> page which takes a <em>GET</em> parameter named <em>keywords</em>.<br>You have to send your keywords to this page, and <a href="https://lunrjs.com/">lunr</a> will process it and will show you a list of accurate pages.</td></tr>
+<tr><td>default_order_alphabetical</td><td>boolean</td><td>no</td><td>If you set this value to <em>true</em>, the software will order your page alphabetically (according to their file name). <code>page.getPreviousPage()</code> and <code>page.getNextPage()</code> will return values according to this order (if the corresponding header keys are not set).</td></tr>
 </tbody>
 </table>
 <p>Next, open the file <em>menu.yml</em>. It contains some menu entries :</p>
@@ -197,9 +198,13 @@ language: en
 # Hello
 
 Nice website uh ?
+
+**Warning ! This text will be BOLD.**
 </code></pre>
-<p>The first lines are the header, you can only put two things here : the title (<em>title</em>) and the language of the page (<em>language</em>).</p>
-<p>In a menu, you can only put a language.</p>
+<p>The first lines are the header, you can only put two things here : the title (<em>title</em>) and the language of the page (<em>language</em>).
+You can enter every parameter you want. Reserved words are <em>title</em> for the title, <em>language</em> for the language, <em>previous</em> for the previous page and <em>next</em> for the next page.<br />
+Feel free to play with all these values !</p>
+<p><strong>Warning !</strong> In a menu, you can only put a language (<em>language</em>).</p>
 <h2 id="build-your-documentation">Build your documentation</h2>
 <p>When you have finished configuring your documentation, you are ready to build it !</p>
 <p>To automatically <strong>build</strong> the documentation, run the file <code>build.bat</code> (or <code>build.sh</code>). To <strong>serve</strong> it on localhost, run the file <code>serve.bat</code> (or <code>serve.sh</code>).
@@ -225,11 +230,21 @@ SkyDocs will try to build the project contained in the current directory). The d
 <p>Please note that CSS and JS files will be minified when you run the <em>build</em> command. They will <strong>not be minified</strong> with the <em>serve</em> command.</p>
 
 				
+				<section>
+					<small class="date text-muted"><i class="fa fa-calendar" aria-hidden="true"></i> Aug 23, 2017 11:12:48 PM</small>
+					
+						<div class="paginator clearfix">
+							<a class="btn btn-secondary float-left" href="/en/index.html" role="button"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>							
+							<a class="btn btn-secondary float-right" href="/en/creating-theme.html" role="button"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>							
+						</div>
+					
+				</section>
+				
 			</article>
 		</div>
 		
 		<footer>
-	<p class="text-muted"><i class="fa fa-file-text" aria-hidden="true"></i> Documentation theme created by <a href="https://www.skyost.eu">Skyost</a>. Powered by <a href="https://skyost.github.io/SkyDocs/">SkyDocs</a> v0.3.1 Beta.</p>
+	<p class="text-muted"><i class="fa fa-file-text" aria-hidden="true"></i> Documentation theme created by <a href="https://www.skyost.eu">Skyost</a>. Powered by <a href="https://skyost.github.io/SkyDocs/">SkyDocs</a> v0.3.2 Beta.</p>
 </footer>
 
  
@@ -242,6 +257,7 @@ SkyDocs will try to build the project contained in the current directory). The d
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/3.0.3/tocbot.min.js"></script>
 <script type="text/javascript" src="../assets/js/page.js"></script>
+<script type="text/javascript" src="../assets/localization/en.js"></script>
 		
 	</body>
 </html>

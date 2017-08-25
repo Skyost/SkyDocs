@@ -8,7 +8,7 @@
 	<!-- Description -->
 	<meta name="description" content="SkyDocs is a lightweight static documentation builder with MarkDown."/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-	<meta name="generator" content="SkyDocs v0.3.1 Beta"/>
+	<meta name="generator" content="SkyDocs v0.3.2 Beta"/>
 	
 	<!-- OpenGraph -->
 	<meta property="og:type" content="website"/>
@@ -137,7 +137,7 @@
 			<article class="col-md-8 col-xs-12">
 				
 				<h1 id="documentation">Documentation</h1>
-<p>Cette documentation a été écrite pour <strong>SkyDocs v0.3.1 Beta</strong>. N'oubliez pas de le mettre à jour (un guide est disponible ci-dessous) !</p>
+<p>Cette documentation a été écrite pour <strong>SkyDocs v0.3.2 Beta</strong>. N'oubliez pas de le mettre à jour (un guide est disponible ci-dessous) !</p>
 <h2 id="téléchargement--installation">Téléchargement &amp; installation</h2>
 <p>Voici les étapes pour télécharger et installer le logiciel.</p>
 <h3 id="téléchargement">Téléchargement</h3>
@@ -170,6 +170,7 @@ Voici les différentes clés ainsi que leur description :</p>
 <tr><td>project_url</td><td>chaîne</td><td>oui</td><td>L'adresse URL de votre documentation.</td></tr>
 <tr><td>default_language</td><td>chaîne</td><td>oui</td><td>La language par défaut de votre documentation.</td></tr>
 <tr><td>lunr_search</td><td>booléen</td><td>non</td><td>Si vous passez cette valeur à <em>true</em>, SkyDocs va inclure une page <em>search.html</em> qui prend <em>keywords</em> comme paramètre <em>GET</em>.<br>Vous devez envoyer vos mots clés à cette page, et <a href="https://lunrjs.com/">lunr</a> va les traiter et renvoyer la liste des pages correspondantes.</td></tr>
+<tr><td>default_order_alphabetical</td><td>booléen</td><td>non</td><td>Si vous passez cette valeur à <em>true</em>, le logiciel classera les pages par ordre alphabétique (suivant leur nom de fichier). <code>page.getPreviousPage()</code> et <code>page.getNextPage()</code> retourneront les valeurs correspondantes à ce classement (si les en-têtes correspondantes ne sont pas définies).</td></tr>
 </tbody>
 </table>
 <p>Maintenant, ouvrez le fichier <em>menu.yml</em>. Il contient quelques entrées de menu :</p>
@@ -197,9 +198,13 @@ language: en
 # Hello
 
 Nice website uh ?
+
+**Warning ! This text will be BOLD.**
 </code></pre>
-<p>Les premières lignes sont l'en-tête, vous ne pouvez mettre que deux informations ici : le titre (<em>title</em>) et la langue de la page (<em>language</em>).</p>
-<p>Pour un menu, vous ne pouvez mettre qu'une langue.</p>
+<p>Les premières lignes représentent l'en-tête, vous ne pouvez mettre que deux informations ici : le titre (<em>title</em>) et la langue de la page (<em>language</em>).
+Vous pouvez y entrer les paramètres que vous souhaitez. Les mots réservés sont <em>title</em> pour le titre, <em>language</em> pour la langue, <em>previous</em> pour la page précédente et <em>next</em> pour la page suivante.<br />
+N'hésitez pas à jouer avec les différentes valeurs !</p>
+<p><strong>Attention !</strong> Pour un menu, vous ne pourrez spécifier qu'une langue (<em>language</em>).</p>
 <h2 id="compiler-votre-documentation">Compiler votre documentation</h2>
 <p>Lorsque vous avez terminé de configurer votre documentation, vous êtes prêt pour la générer !</p>
 <p>Pour générer <strong>générer</strong> automatiquement la documentation, exécutez le fichier <code>build.bat</code> (ou <code>build.sh</code>). Pour la <strong>servir</strong> sur localhost, exécutez le fichier <code>serve.bat</code> (ou <code>serve.sh</code>).
@@ -225,11 +230,21 @@ SkyDocs va essayer de générer le projet contenu dans le dossier courant). Le p
 <p>Veuillez noter que les fichiers CSS et JS seront réduits lorsque vous exécuterez la commande <em>build</em>. Ils <strong>ne seront pas réduits</strong> avec la commande <em>serve</em>.</p>
 
 				
+				<section>
+					<small class="date text-muted"><i class="fa fa-calendar" aria-hidden="true"></i> 23 août 2017 23:13:37</small>
+					
+						<div class="paginator clearfix">
+							<a class="btn btn-secondary float-left" href="/fr/index.html" role="button"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>							
+							<a class="btn btn-secondary float-right" href="/fr/creer-theme.html" role="button"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>							
+						</div>
+					
+				</section>
+				
 			</article>
 		</div>
 		
 		<footer>
-	<p class="text-muted"><i class="fa fa-file-text" aria-hidden="true"></i> Documentation theme created by <a href="https://www.skyost.eu">Skyost</a>. Powered by <a href="https://skyost.github.io/SkyDocs/">SkyDocs</a> v0.3.1 Beta.</p>
+	<p class="text-muted"><i class="fa fa-file-text" aria-hidden="true"></i> Documentation theme created by <a href="https://www.skyost.eu">Skyost</a>. Powered by <a href="https://skyost.github.io/SkyDocs/">SkyDocs</a> v0.3.2 Beta.</p>
 </footer>
 
  
@@ -242,6 +257,7 @@ SkyDocs va essayer de générer le projet contenu dans le dossier courant). Le p
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/3.0.3/tocbot.min.js"></script>
 <script type="text/javascript" src="../assets/js/page.js"></script>
+<script type="text/javascript" src="../assets/localization/fr.js"></script>
 		
 	</body>
 </html>
