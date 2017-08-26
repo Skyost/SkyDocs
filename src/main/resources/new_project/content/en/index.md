@@ -1,6 +1,7 @@
 ---
 title: "Home"
 language: "en"
+next: "page.html"
 ---
 
 # Home

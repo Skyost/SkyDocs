@@ -1,6 +1,7 @@
 ---
 title: "New page"
 language: "en"
+previous: "index.html"
 ---
 
 # Page

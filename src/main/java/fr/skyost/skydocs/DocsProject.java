@@ -267,6 +267,25 @@ public class DocsProject {
 	}
 	
 	/**
+	 * Gets all pages of this project for the specified language.
+	 * 
+	 * @param language The language.
+	 * 
+	 * @return The pages of this project for the specified language.
+	 */
+	
+	public final Set<DocsPage> getPages(final String language) {
+		final HashSet<DocsPage> pages = new HashSet<DocsPage>();
+		for(final DocsPage page : this.pages) {
+			if(!page.getLanguage().equals(language)) {
+				continue;
+			}
+			pages.add(page);
+		}
+		return pages;
+	}
+	
+	/**
 	 * Adds pages to this project.
 	 * 
 	 * @param pages Pages to add.

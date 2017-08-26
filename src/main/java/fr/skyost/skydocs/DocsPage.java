@@ -361,6 +361,21 @@ public class DocsPage {
 	}
 	
 	/**
+	 * Gets the root relative URL.
+	 * 
+	 * @return The root relative URL.
+	 */
+	
+	public final String getRootRelativeURL() {
+		final int length = relativeURL.split("/").length;
+		final StringBuilder url = new StringBuilder();
+		for(int i = 2; i < length; i++) {
+			url.append("../");
+		}
+		return url.toString();
+	}
+	
+	/**
 	 * Gets the page file's content (formatted with CommonMark).
 	 * 
 	 * @return The page file's content.

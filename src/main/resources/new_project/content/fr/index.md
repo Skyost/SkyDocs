@@ -1,6 +1,7 @@
 ---
 title: "Accueil"
 language: "fr"
+next: "page.html"
 ---
 
 # Accueil
