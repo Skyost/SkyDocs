@@ -341,7 +341,11 @@ public class Utils {
 		}
 		
 		public final void append(final String string) {
-			builder.append(string + LINE_SEPARATOR);
+			defaultAppend(string + LINE_SEPARATOR);
+		}
+		
+		public final void defaultAppend(final String string) {
+			builder.append(string);
 		}
 		
 		public final void reset() {

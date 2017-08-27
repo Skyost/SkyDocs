@@ -9,10 +9,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.jtwig.JtwigModel;
+import org.jtwig.JtwigTemplate;
+import org.jtwig.environment.EnvironmentConfiguration;
+import org.jtwig.environment.EnvironmentConfigurationBuilder;
 import org.yaml.snakeyaml.Yaml;
 
 import fr.skyost.skydocs.exceptions.InvalidMenuDataException;
 import fr.skyost.skydocs.exceptions.InvalidMenuEntryException;
+import fr.skyost.skydocs.utils.IncludeFileFunction;
 import fr.skyost.skydocs.utils.Utils;
 import fr.skyost.skydocs.utils.Utils.AutoLineBreakStringBuilder;
 
@@ -142,10 +147,31 @@ public class DocsMenu {
 	 */
 	
 	public final String toHTML() {
+		return toHTML(null);
+	}
+	
+	/**
+	 * Converts this menu to its HTML form.
+	 * 
+	 * @param page The page that is calling <strong>toHTML()</strong>.
+	 * 
+	 * @return The HTML content.
+	 */
+	
+	protected final String toHTML(final DocsPage page) {
+		JtwigModel model = null;
+		EnvironmentConfiguration configuration = null;
+		if(page != null) {
+			model = page.getProject().getTemplate().createModel().with(Constants.VARIABLE_PAGE, page);
+			
+			final IncludeFileFunction includeFile = new IncludeFileFunction(page.getProject().getContentDirectory(), model, DocsTemplate.RANGE_FUNCTION);
+			configuration = EnvironmentConfigurationBuilder.configuration().functions().add(includeFile).add(DocsTemplate.RANGE_FUNCTION).and().build();
+		}
+		
 		final AutoLineBreakStringBuilder builder = new AutoLineBreakStringBuilder("<ul>");
 		orderMenuEntries(getEntries());
-		for(final DocsMenuEntry page : getEntries()) {
-			builder.append(page.toHTML());
+		for(final DocsMenuEntry entry : getEntries()) {
+			builder.append(page == null ? entry.toHTML() : JtwigTemplate.inlineTemplate(entry.toHTML(), configuration).render(model));
 		}
 		builder.append(Utils.LINE_SEPARATOR + "</ul>");
 		return builder.toString();
@@ -406,7 +432,11 @@ public class DocsMenu {
 		
 		public final String toHTML() {
 			final AutoLineBreakStringBuilder builder = new AutoLineBreakStringBuilder("<li>");
-			builder.append("<a href=\"" + getLink() + "\"" + (shouldOpenInNewTab() ? " target=\"_blank\"" : "") + ">" + getTitle() + "</a>");
+			builder.defaultAppend("<a href=\"" + getLink() + "\"");
+			if(shouldOpenInNewTab()) {
+				builder.defaultAppend(" target=\"_blank\"");
+			}
+			builder.append(">" + getTitle() + "</a>");
 			if(children.size() > 0) {
 				builder.append("<ul>");
 				orderMenuEntries(children);

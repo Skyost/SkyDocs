@@ -473,7 +473,7 @@ public class DocsPage {
 	
 	public final String getBuildDestinationPath(final DocsProject project) {
 		return project.getBuildDirectory().getPath()
-				+ (path.split(Pattern.quote(File.separator))[1].equals(getLanguage()) ? "" : File.separator + getLanguage())
+				+ (path.split(Pattern.quote(File.separator))[1].equals(language) ? "" : File.separator + language)
 				+ path.substring(0, path.lastIndexOf(".")) + ".html";
 	}
 	
@@ -485,6 +485,16 @@ public class DocsPage {
 	
 	public final File getBuildDestination(final DocsProject project) {
 		return new File(getBuildDestinationPath(project));
+	}
+	
+	/**
+	 * Gets the menu related to this page.
+	 * 
+	 * @return The menu related to this page.
+	 */
+	
+	public final String getMenu() {
+		return project.getMenuByLanguage(language).toHTML(this);
 	}
 	
 }
