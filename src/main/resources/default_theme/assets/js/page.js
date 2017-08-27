@@ -80,6 +80,14 @@ $(document).ready(function() {
 		goToHash(event, this.hash);
 	});
 	
+	// SYNTAX HIGHLIGHTING :
+	if(("code[class^='language-']").length) {
+		$('head').append('<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/>');
+		$.getScript('https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js', function() {
+			hljs.initHighlightingOnLoad();
+		});
+	}
+	
 	// OTHERS :
 	$('table').each(function() {
 		if(!$(this).hasClass('.table')) {

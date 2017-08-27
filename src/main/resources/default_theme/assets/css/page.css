@@ -10,11 +10,6 @@ body {
 	min-height: 100%;
 }
 
-pre {
-	border: 1px solid #eceeef;
-	padding: 8px;
-}
-
 .embed-responsive {
 	border: 1px solid rgba(0, 0, 0, 0.2);
 }
@@ -70,6 +65,10 @@ header .navbar .form-inline input {
 
 header .navbar .form-inline [class ^= 'btn'] {
 	border: none;
+}
+
+header .navbar .dropdown-toggle:after {
+	vertical-align: 0.1em;
 }
 
 /* ANCHORS */
