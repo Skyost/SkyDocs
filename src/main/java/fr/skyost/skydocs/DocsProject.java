@@ -318,16 +318,19 @@ public class DocsProject {
 	 * 
 	 * @param language The language.
 	 * 
-	 * @return The menu corresponding to the specified language.
+	 * @return The menu corresponding to the specified language. If not found, will return the default menu.
 	 */
 	
 	public final DocsMenu getMenuByLanguage(final String language) {
+		if(menus.size() == 0) {
+			return null;
+		}
 		for(final DocsMenu menu : menus) {
 			if(menu.getLanguage().equals(language)) {
 				return menu;
 			}
 		}
-		return null;
+		return getMenuByLanguage(getDefaultLanguage());
 	}
 	
 	/**

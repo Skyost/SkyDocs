@@ -8,6 +8,14 @@
 	background-color: #28a745;
 }
 
+article a:link, article a:visited, footer a:link, footer a:visited {
+	color: #16a085;
+}
+
+article a:hover, article a:active, article a:focus, footer a:hover, footer a:active, footer a:focus {
+	color: #107561;
+}
+
 /* NAVIGATION BAR */
 
 header nav {

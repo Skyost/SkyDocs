@@ -9,6 +9,14 @@
 	background-color: #ffc107;
 }
 
+article a:link, article a:visited, footer a:link, footer a:visited {
+	color: #e67e22;
+}
+
+article a:hover, article a:active, article a:focus, footer a:hover, footer a:active, footer a:focus {
+	color: #d35400;
+}
+
 /* NAVIGATION BAR */
 
 header nav {
@@ -17,8 +25,8 @@ header nav {
 
 header .navbar .form-inline [class ^= 'btn'] {
 	color: white;
-	background-color: #f0ad4e;
-	border-color: #f0ad4e;
+	background-color: #f39c12;
+	border-color: #f39c12;
 }
 
 /* NAVIGATION SIDEBAR */
