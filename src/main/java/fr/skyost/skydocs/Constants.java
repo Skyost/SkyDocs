@@ -22,7 +22,7 @@ public class Constants {
 	 * App's version.
 	 */
 	
-	public static final String APP_VERSION = "v0.3.3 Beta";
+	public static final String APP_VERSION = "v0.4 Beta";
 	
 	/**
 	 * App's authors.
