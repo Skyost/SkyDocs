@@ -7,10 +7,13 @@ import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.io.FilenameUtils;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 import org.jtwig.environment.EnvironmentConfiguration;
 import org.jtwig.environment.EnvironmentConfigurationBuilder;
+
+import com.googlecode.htmlcompressor.compressor.HtmlCompressor;
 
 import fr.skyost.skydocs.exceptions.InvalidTemplateException;
 import fr.skyost.skydocs.utils.IncludeFileFunction;
@@ -21,6 +24,18 @@ import fr.skyost.skydocs.utils.RangeFunction;
  */
 
 public class DocsTemplate {
+	
+	/**
+	 * The range function.
+	 */
+	
+	public static final RangeFunction RANGE_FUNCTION = new RangeFunction();
+	
+	/**
+	 * The HTML compressor.
+	 */
+	
+	public static final HtmlCompressor HTML_COMPRESSOR = new HtmlCompressor();
 	
 	/**
 	 * Theme directory of the project this template belongs to.
@@ -45,12 +60,6 @@ public class DocsTemplate {
 	 */
 	
 	private String template;
-	
-	/**
-	 * The range function.
-	 */
-	
-	public static final RangeFunction RANGE_FUNCTION = new RangeFunction();
 	
 	/**
 	 * Creates a new DocsTemplate instance.
@@ -124,25 +133,27 @@ public class DocsTemplate {
 	 * Applies the template to a file.
 	 * 
 	 * @param file The file.
+	 * @param compress Whether the file should be compressed.
 	 * 
 	 * @throws IOException If an exception occurs while saving the file.
 	 */
 	
-	public final void applyTemplate(final File file) throws IOException {
-		applyTemplate(file, null, null);
+	public final void applyTemplate(final File file, final boolean compress) throws IOException {
+		applyTemplate(file, compress, null, null);
 	}
 	
 	/**
 	 * Applies the template to a file.
 	 * 
 	 * @param file The file.
+	 * @param compress Whether the file should be compressed.
 	 * @param page If the file is page.
 	 * @param otherVariables Other variables to put.
 	 * 
 	 * @throws IOException If an exception occurs while saving the file.
 	 */
 	
-	public final void applyTemplate(final File file, DocsPage page, final Map<String, Object> otherVariables) throws IOException {
+	public final void applyTemplate(final File file, final boolean compress, DocsPage page, final Map<String, Object> otherVariables) throws IOException {
 		if(page == null) {
 			page = new DocsPage(project, file);
 		}
@@ -155,7 +166,12 @@ public class DocsTemplate {
 			page.addAdditionalVariables(otherVariables);
 		}
 		
-		Files.write(file.toPath(), JtwigTemplate.inlineTemplate(template, configuration).render(model).getBytes(StandardCharsets.UTF_8));
+		String content = JtwigTemplate.inlineTemplate(template, configuration).render(model);
+		if(compress && FilenameUtils.getExtension(file.getPath()).equalsIgnoreCase("html")) {
+			content = HTML_COMPRESSOR.compress(content);
+		}
+		
+		Files.write(file.toPath(), content.getBytes(StandardCharsets.UTF_8));
 	}
 	
 	/**

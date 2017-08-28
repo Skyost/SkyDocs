@@ -115,7 +115,7 @@ public class BuildCommand extends Command {
 					lunrContent.append("'" + title.toLowerCase().replace(".", "-").replace("'", "\\'") + "': {" + "title: '" + Utils.stripHTML(title).replace("'", "\\'") + "', " + "content: '" + content.replace("'", "\\'") + "', " + "url: '" + page.getPageRelativeURL().substring(1) + "'" + "}, ");
 				}
 				
-				template.applyTemplate(destination, page, null);
+				template.applyTemplate(destination, prod, page, null);
 				copied.add(file);
 			}
 			
@@ -126,7 +126,7 @@ public class BuildCommand extends Command {
 				final HashMap<String, Object> pageVariables = new HashMap<String, Object>();
 				pageVariables.put(Constants.VARIABLE_LUNR_DATA, "var pages = {" + (lunrContentString.length() > 0 ? lunrContentString.substring(0, lunrContentString.length() - 2) : "") + "};");
 				
-				template.applyTemplate(new File(buildDirectory, Constants.RESOURCE_SEARCH_PAGE_FILE), null, pageVariables);
+				template.applyTemplate(new File(buildDirectory, Constants.RESOURCE_SEARCH_PAGE_FILE), prod, null, pageVariables);
 			}
 			
 			final File contentDirectory = Utils.createFileIfNotExist(project.getContentDirectory());
