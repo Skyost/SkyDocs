@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -547,14 +546,7 @@ public class DocsProject {
 			project.loadPages(project.getContentDirectory());
 			if(project.isDefaultOrderAlphabetical()) {
 				final List<DocsPage> pages = new ArrayList<DocsPage>(project.getPages());
-				Collections.sort(pages, new Comparator<DocsPage>() {
-					
-				    @Override
-				    public final int compare(final DocsPage page1, final DocsPage page2) {
-				        return page1.getPageRelativeURL().compareTo(page2.getPageRelativeURL());
-				    }
-				    
-				});
+				Collections.sort(pages);
 				final int size = pages.size();
 				for(int i = 0; i != pages.size(); i++) {
 					final DocsPage page = pages.get(i);

@@ -33,7 +33,7 @@ import fr.skyost.skydocs.utils.Utils;
  * Represent a MarkDown or HTML page.
  */
 
-public class DocsPage {
+public class DocsPage implements Comparable<DocsPage> {
 	
 	/**
 	 * CommonMark extensions.
@@ -141,6 +141,11 @@ public class DocsPage {
 			}
 			this.header.putAll(header);
 		}
+	}
+	
+	@Override
+	public final int compareTo(final DocsPage page) {
+		return getPageRelativeURL().compareTo(page.getPageRelativeURL());
 	}
 	
 	/**

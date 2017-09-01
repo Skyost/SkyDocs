@@ -37,6 +37,12 @@ public class DocsTemplate {
 	
 	public static final HtmlCompressor HTML_COMPRESSOR = new HtmlCompressor();
 	
+	static {
+		HTML_COMPRESSOR.setRemoveHttpProtocol(false);
+		HTML_COMPRESSOR.setRemoveHttpsProtocol(false);
+		HTML_COMPRESSOR.setPreserveLineBreaks(true);
+	}
+	
 	/**
 	 * Theme directory of the project this template belongs to.
 	 */

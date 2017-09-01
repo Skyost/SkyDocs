@@ -6,12 +6,12 @@
 	<body>
 		{{ includeFile("header.html") }}
 		
-		<div id="content" class="container row">
-			<div class="col-md-4 col-xs-12 d-none d-md-block">
+		<div id="content" class="container-fluid row">
+			<div class="col-md-3 d-none d-md-block">
 				<nav id="nav-toc"></nav>
 			</div>
 			
-			<article class="col-md-8 col-xs-12">
+			<article class="col-md-7">
 				
 				{{ page.getContent() }}
 				

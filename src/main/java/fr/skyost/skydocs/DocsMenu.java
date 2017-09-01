@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -226,21 +225,14 @@ public class DocsMenu {
 	 */
 	
 	public static final void orderMenuEntries(final List<DocsMenuEntry> entries) {
-		Collections.sort(entries, new Comparator<DocsMenuEntry>() {
-			
-		    @Override
-		    public final int compare(final DocsMenuEntry page1, final DocsMenuEntry page2) {
-		        return Integer.compare(page1.getWeight(), page2.getWeight());
-		    }
-		    
-		});
+		Collections.sort(entries);
 	}
 	
 	/**
 	 * Represents a menu entry.
 	 */
 	
-	public static class DocsMenuEntry {
+	public static class DocsMenuEntry implements Comparable<DocsMenuEntry> {
 		
 		/**
 		 * The title of this entry.
@@ -290,6 +282,11 @@ public class DocsMenu {
 			if(children != null) {
 				this.children.addAll(Arrays.asList(children));
 			}
+		}
+		
+		@Override
+		public final int compareTo(final DocsMenuEntry entry) {
+			return Integer.compare(getWeight(), entry.getWeight());
 		}
 		
 		/**

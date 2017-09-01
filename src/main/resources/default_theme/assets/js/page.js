@@ -62,7 +62,7 @@ $(document).ready(function() {
 	
 	// ANCHORS LINKS AND PRINT LINKS :
 	anchors.options.placement = 'left';
-	anchors.add('h1, h2, h3, h4');
+	anchors.add('article h1, article h2, article h3, article h4');
 	
 	$('#content h1').each(function() {
 		$(this).html($(this).html() + '<span class="print no-print"></span>');
