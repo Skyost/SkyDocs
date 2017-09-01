@@ -8,7 +8,7 @@
 	<!-- Description -->
 	<meta name="description" content="SkyDocs is a lightweight static documentation builder with MarkDown."/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-	<meta name="generator" content="SkyDocs v0.3.2 Beta"/>
+	<meta name="generator" content="SkyDocs v0.4 Beta"/>
 	
 	<!-- OpenGraph -->
 	<meta property="og:type" content="website"/>
@@ -29,18 +29,17 @@
 	
 	<!-- Styles -->
 	<meta id="theme-color" name="theme-color" content="#292b2c"/>
-	
-	
-	
+		
 	<link rel="icon" type="image/png" href="../assets/img/icon.png"/>
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/css/bootstrap.min.css"/>
 	
 	<link rel="stylesheet" type="text/css" href="../assets/css/page.css"/>
 	<link rel="stylesheet" type="text/css" href="../assets/css/themes/blue.css"/>
-	<!--<link rel="stylesheet" type="text/css" href="../assets/css/themes/red.css"/>-->
 	<!--<link rel="stylesheet" type="text/css" href="../assets/css/themes/green.css"/>-->
 	<!--<link rel="stylesheet" type="text/css" href="../assets/css/themes/orange.css"/>-->
+	<!--<link rel="stylesheet" type="text/css" href="../assets/css/themes/purple.css"/>-->
+	<!--<link rel="stylesheet" type="text/css" href="../assets/css/themes/red.css"/>-->
 </head>
 
 	<body>
@@ -129,12 +128,12 @@
 	</nav>
 </header>
 		
-		<div id="content" class="container row">
-			<div class="col-md-4 col-xs-12 d-none d-md-block">
+		<div id="content" class="container-fluid row">
+			<div class="col-md-3 d-none d-md-block">
 				<nav id="nav-toc"></nav>
 			</div>
 			
-			<article class="col-md-8 col-xs-12">
+			<article class="col-md-7">
 				
 				<h1 id="créer-un-thème">Créer un thème</h1>
 <p>Vous souhaitez probablement vous séparer de ce thème tout moche. Voici comment créer votre propre thème.</p>
@@ -143,7 +142,8 @@
 Maintenant, rendez-vous dans le répertoire de votre projet et créez un dossier appelé <em>theme</em> (s'il est déjà créé, supprimez-le et recréez-le).</p>
 <p>Dans le dossier du theme, vous devez posséder un fichier appelé <em>page.html</em>. Le contenu de ce fichier sera appliqué sur chaque page de votre projet (situées dans le dossier <em>content</em> et possédant l'extension de fichier <em>.md</em>).
 Souvenez-vous : SkyDocs utilise <a href="http://jtwig.org/documentation/reference/functions">jtwig</a> pour formatter votre contenu HTML. Donc par exemple, si <em>page.html</em> contient :</p>
-<pre><code>&lt;html&gt;
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
 	&lt;head&gt;
 		&lt;title&gt;{{ page.getTitle() }} | {{ project.getName() }}&lt;/title&gt;
 	&lt;/head&gt;
@@ -153,7 +153,7 @@ Souvenez-vous : SkyDocs utilise <a href="http://jtwig.org/documentation/referenc
 	&lt;/body&gt;
 &lt;/html&gt;
 </code></pre>
-<p>Quand vous construirez votre projet, ceci sera placé sur chaque page de contenu. Vous avez beaucoup d'autres fonctions disponibles :</p>
+<p>Quand vous construirez votre projet, ceci sera placé sur chaque page MarkDown. Vous avez beaucoup d'autres fonctions disponibles :</p>
 <table>
 <thead>
 <tr><th>Fonction</th><th>Description</th></tr>
@@ -166,7 +166,8 @@ Souvenez-vous : SkyDocs utilise <a href="http://jtwig.org/documentation/referenc
 <tr><td><code>{{ project.getLunrSeach()() }}</code></td><td>Retourne si oui ou non la recherche lunr doit être activée comme configuré dans <em>plugin.yml</em>.</td></tr>
 <tr><td><code>{{ project.isDefaultOrderAlphabetical() }}</code></td><td>Retourne si oui ou non l'ordre alphabétique est l'ordre par défaut pour les pages comme configuré dans <em>plugin.yml</em>.</td></tr>
 <tr><td><code>{{ project.getPages() }}</code></td><td>Retourne une liste itérable des pages de votre projet.</td></tr>
-<tr><td><code>{{ project.getMenuHTMLByLanguage(language) }}</code></td><td>Retourne le contenu HTML du menu correspondant au <em>language</em> (langue) spécifiée.</td></tr>
+<tr><td><code>{{ project.getPages(language) }}</code></td><td>Retourne une liste itérable des pages de votre projet qui sont écrites dans la langue spécifiée.</td></tr>
+<tr><td><code>{{ project.getMenuHTMLByLanguage(language) }}</code></td><td>Retourne le contenu HTML du menu correspondant au <em>language</em> (langue) spécifiée. Ce contenu ne sera pas parsé avec jtwig.</td></tr>
 <tr><td><code>{{ project.getField(key) }}</code></td><td>Retourne la valeur contenue dans <em>project.yml</em> correspondante à la <em>key</em> (clé) spécifiée (par exemple si vous souhaitez le nom du projet, utilisez <code>{{ project.getField(&quot;project_name&quot;) }}</code>).</td></tr>
 </tbody>
 </table>
@@ -178,8 +179,10 @@ Souvenez-vous : SkyDocs utilise <a href="http://jtwig.org/documentation/referenc
 <tr><td><code>{{ page.getTitle() }}</code></td><td>Retourne le titre de la page (configuré dans l'en-tête du fichier MarkDown).</td></tr>
 <tr><td><code>{{ page.getLanguage() }}</code></td><td>Retourne la lange de la page (configuré dans l'en-tête du fichier MarkDown).</td></tr>
 <tr><td><code>{{ page.getContent() }}</code></td><td>Retourne le contenu de la page (une fois converti en HTML).</td></tr>
+<tr><td><code>{{ page.getRootRelativeURL() }}</code></td><td>Retourne une chaîne de caractères représentant l'adresse de la racine de votre site WEB relative à la page. Ainsi, si la page est située à <code>/en/creating-theme.html</code>, cette méthode renverra <code>../</code>.</td></tr>
 <tr><td><code>{{ page.getRawContent() }}</code></td><td>Retourne le contenu de la page.</td></tr>
 <tr><td><code>{{ page.getRelativeURL() }}</code></td><td>Retourne l'URL de la page.</td></tr>
+<tr><td><code>{{ page.getMenu() }}</code></td><td>Retourne le menu relatif à cette page. Ce contenu sera parsé, vous pouvez donc utiliser les variables jtwig.</td></tr>
 <tr><td><code>{{ page.getLastModificationTime() }}</code></td><td>Retourne la dernière date de modification de la page formatée grâce à la langue du système.</td></tr>
 <tr><td><code>{{ page.getLastModificationTime(format) }}</code></td><td>Retourne la dernière date de modification de la page formated avec votre format. Veuillez accéder à <a href="https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html">cette page</a> pour connaître les différentes options de format.<br/>Par exemple, <code>{{ page.getLastModificationTime(&quot;yyyy-MM-dd&quot;) }}</code> peut afficher <em>2012-12-21</em>.</td></tr>
 <tr><td><code>{{ page.getLastModificationTimeForLocale(locale) }}</code></td><td>Retourne la dernière date de modification de la page formatée avec la langue spécifiée. Si la langue spécifiée n'est pas valide, celle du système sera utilisée.</td></tr>
@@ -210,9 +213,9 @@ Une fois créé, ajoutez ce que vous souhaitez dedans : Scripts JS, du CSS et de
 
 				
 				<section>
-					<small class="date text-muted"><i class="fa fa-calendar" aria-hidden="true"></i> 25 août 2017 17:28:07</small>
+					<small class="date text-muted"><i class="fa fa-calendar" aria-hidden="true"></i> 28 août 2017 00:33:17</small>
 					
-						<div class="paginator clearfix">
+						<div class="paginator clearfix no-print">
 							<a class="btn btn-secondary float-left" href="documentation.html" role="button"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>							
 							<a class="btn btn-secondary float-right" href="a-propos.html" role="button"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>							
 						</div>
@@ -222,8 +225,12 @@ Une fois créé, ajoutez ce que vous souhaitez dedans : Scripts JS, du CSS et de
 			</article>
 		</div>
 		
-		<footer>
-	<p class="text-muted"><i class="fa fa-file-text" aria-hidden="true"></i> Documentation theme created by <a href="https://www.skyost.eu">Skyost</a>. Powered by <a href="https://skyost.github.io/SkyDocs/">SkyDocs</a> v0.3.2 Beta.</p>
+		<!-- You can add/edit/remove everything you want here ;) -->
+<footer>
+	<p class="text-muted">
+		<i class="fa fa-file-text" aria-hidden="true"></i> Documentation theme created with <i class="fa fa-heart pulse" aria-hidden="true"></i> by <a href="https://www.skyost.eu">Skyost</a>.
+		Powered by <a href="https://skyost.github.io/SkyDocs/">SkyDocs</a> v0.4 Beta.
+	</p>
 </footer>
 
  

@@ -8,7 +8,7 @@
 	<!-- Description -->
 	<meta name="description" content="SkyDocs is a lightweight static documentation builder with MarkDown."/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-	<meta name="generator" content="SkyDocs v0.3.2 Beta"/>
+	<meta name="generator" content="SkyDocs v0.4 Beta"/>
 	
 	<!-- OpenGraph -->
 	<meta property="og:type" content="website"/>
@@ -29,18 +29,17 @@
 	
 	<!-- Styles -->
 	<meta id="theme-color" name="theme-color" content="#292b2c"/>
-	
-	
-	
+		
 	<link rel="icon" type="image/png" href="../assets/img/icon.png"/>
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/css/bootstrap.min.css"/>
 	
 	<link rel="stylesheet" type="text/css" href="../assets/css/page.css"/>
 	<link rel="stylesheet" type="text/css" href="../assets/css/themes/blue.css"/>
-	<!--<link rel="stylesheet" type="text/css" href="../assets/css/themes/red.css"/>-->
 	<!--<link rel="stylesheet" type="text/css" href="../assets/css/themes/green.css"/>-->
 	<!--<link rel="stylesheet" type="text/css" href="../assets/css/themes/orange.css"/>-->
+	<!--<link rel="stylesheet" type="text/css" href="../assets/css/themes/purple.css"/>-->
+	<!--<link rel="stylesheet" type="text/css" href="../assets/css/themes/red.css"/>-->
 </head>
 
 	<body>
@@ -129,12 +128,12 @@
 	</nav>
 </header>
 		
-		<div id="content" class="container row">
-			<div class="col-md-4 col-xs-12 d-none d-md-block">
+		<div id="content" class="container-fluid row">
+			<div class="col-md-3 d-none d-md-block">
 				<nav id="nav-toc"></nav>
 			</div>
 			
-			<article class="col-md-8 col-xs-12">
+			<article class="col-md-7">
 				
 				<h1 id="creating-your-theme">Creating your theme</h1>
 <p>You probably want to get rid of this ugly default template. Here's how to create your own template.</p>
@@ -143,7 +142,8 @@
 Then in your project's directory, create a folder named <em>theme</em> (if it is already created, then delete it and re-create it).</p>
 <p>In the theme directory, you must have a file called <em>page.html</em>. This file's content will be applied to each page of your project (located in the contents directory, with the <em>.md</em> file extension).
 Remember : SkyDocs uses <a href="http://jtwig.org/documentation/reference/functions">jtwig</a> to format your HTML content. So for instance, if <em>page.html</em> contains :</p>
-<pre><code>&lt;html&gt;
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
 	&lt;head&gt;
 		&lt;title&gt;{{ page.getTitle() }} | {{ project.getName() }}&lt;/title&gt;
 	&lt;/head&gt;
@@ -153,7 +153,7 @@ Remember : SkyDocs uses <a href="http://jtwig.org/documentation/reference/functi
 	&lt;/body&gt;
 &lt;/html&gt;
 </code></pre>
-<p>Then, when you build your project, this will be placed on each content page. You have a lot of other available functions :</p>
+<p>Then, when you build your project, this will be placed on each MarkDown page. You have a lot of other available functions :</p>
 <table>
 <thead>
 <tr><th>Function</th><th>Description</th></tr>
@@ -166,7 +166,8 @@ Remember : SkyDocs uses <a href="http://jtwig.org/documentation/reference/functi
 <tr><td><code>{{ project.hasLunrSeach() }}</code></td><td>Returns if lunr search should be enabled for this project as configured in the <em>plugin.yml</em>.</td></tr>
 <tr><td><code>{{ project.isDefaultOrderAlphabetical() }}</code></td><td>Returns whether the alphabetical order is the default page order as configured in the <em>plugin.yml</em>.</td></tr>
 <tr><td><code>{{ project.getPages() }}</code></td><td>Returns an iterable list of your project pages.</td></tr>
-<tr><td><code>{{ project.getMenuHTMLByLanguage(language) }}</code></td><td>Returns the HTML content of the menu corresponding to the specified <em>language</em>.</td></tr>
+<tr><td><code>{{ project.getPages(language) }}</code></td><td>Returns an iterable list of project pages that are written in the specified language.</td></tr>
+<tr><td><code>{{ project.getMenuHTMLByLanguage(language) }}</code></td><td>Returns the HTML content of the menu corresponding to the specified <em>language</em>. This content will not be parsed using jtwig.</td></tr>
 <tr><td><code>{{ project.getField(key) }}</code></td><td>Returns the field located in <em>project.yml</em> corresponding to the <em>key</em> (for example if you want the project's name, use <code>{{ project.getField(&quot;project_name&quot;) }}</code>).</td></tr>
 </tbody>
 </table>
@@ -179,7 +180,9 @@ Remember : SkyDocs uses <a href="http://jtwig.org/documentation/reference/functi
 <tr><td><code>{{ page.getLanguage() }}</code></td><td>Gets the language of a page (configured in the MarkDown file header).</td></tr>
 <tr><td><code>{{ page.getContent() }}</code></td><td>Gets the content of a page (once converted in HTML).</td></tr>
 <tr><td><code>{{ page.getRawContent() }}</code></td><td>Gets the content of a page.</td></tr>
+<tr><td><code>{{ page.getRootRelativeURL() }}</code></td><td>Gets a string that represents your website root address relative to a page. For instance, if the page is located at <code>/en/creating-theme.html</code>, this method will return <code>../</code>.</td></tr>
 <tr><td><code>{{ page.getRelativeURL() }}</code></td><td>Gets the relative URL of a page.</td></tr>
+<tr><td><code>{{ page.getMenu() }}</code></td><td>Gets the menu relative to a page. The content will be parsed therefore you can use jtwig variables.</td></tr>
 <tr><td><code>{{ page.getLastModificationTime() }}</code></td><td>Gets the last modification time of a page formatted with system's default locale.</td></tr>
 <tr><td><code>{{ page.getLastModificationTime(format) }}</code></td><td>Gets the last modification time of a page formatted with your format. Please check <a href="https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html">this page</a> to know available formatting options.<br/>For example, <code>{{ page.getLastModificationTime(&quot;yyyy-MM-dd&quot;) }}</code> can output <em>2012-12-21</em>.</td></tr>
 <tr><td><code>{{ page.getLastModificationTimeForLocale(locale) }}</code></td><td>Gets the last modification time of a page formatted with the specified locale. If the specified locale is not valid, the system's default locale will be used instead.</td></tr>
@@ -210,9 +213,9 @@ Once created, put everything you want in it : JS Scripts, some CSS and images, e
 
 				
 				<section>
-					<small class="date text-muted"><i class="fa fa-calendar" aria-hidden="true"></i> Aug 25, 2017 5:27:29 PM</small>
+					<small class="date text-muted"><i class="fa fa-calendar" aria-hidden="true"></i> Aug 28, 2017 12:33:58 AM</small>
 					
-						<div class="paginator clearfix">
+						<div class="paginator clearfix no-print">
 							<a class="btn btn-secondary float-left" href="documentation.html" role="button"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>							
 							<a class="btn btn-secondary float-right" href="about.html" role="button"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>							
 						</div>
@@ -222,8 +225,12 @@ Once created, put everything you want in it : JS Scripts, some CSS and images, e
 			</article>
 		</div>
 		
-		<footer>
-	<p class="text-muted"><i class="fa fa-file-text" aria-hidden="true"></i> Documentation theme created by <a href="https://www.skyost.eu">Skyost</a>. Powered by <a href="https://skyost.github.io/SkyDocs/">SkyDocs</a> v0.3.2 Beta.</p>
+		<!-- You can add/edit/remove everything you want here ;) -->
+<footer>
+	<p class="text-muted">
+		<i class="fa fa-file-text" aria-hidden="true"></i> Documentation theme created with <i class="fa fa-heart pulse" aria-hidden="true"></i> by <a href="https://www.skyost.eu">Skyost</a>.
+		Powered by <a href="https://skyost.github.io/SkyDocs/">SkyDocs</a> v0.4 Beta.
+	</p>
 </footer>
 
  

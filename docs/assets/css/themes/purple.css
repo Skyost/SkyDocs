@@ -1,39 +1,40 @@
 /* GENERAL STYLES */
 
 ::selection {
-	background-color: #ffcece;
+	color: white;
+	background-color: #8e44ad;
 }
 
 .dropdown-item:active {
-	background-color: #dc3545;
+	background-color: #8e44ad;
 }
 
 article a:link, article a:visited, footer a:link, footer a:visited {
-	color: #e74c3c;
+	color: #ba14ff;
 }
 
 article a:hover, article a:active, article a:focus, footer a:hover, footer a:active, footer a:focus {
-	color: #c0392b;
+	color: #8e44ad;
 }
 
 /* NAVIGATION BAR */
 
 header nav {
-	background-color: #c0392b;
+	background-color: #8e44ad;
 }
 
 header .navbar .form-inline [class ^= 'btn'] {
 	color: white;
-	background-color: #fc706c;
-	border-color: #fc706c;
+	background-color: #d777ff;
+	border-color: #d777ff;
 }
 
 /* NAVIGATION SIDEBAR */
 
 #content #nav-toc .is-active-link {
-	color: #c0392b !important;
+	color: #9b59b6 !important;
 }
 
 #content #nav-toc .is-active-link:before {
-	background-color: #c0392b;
+	background-color: #9b59b6;
 }

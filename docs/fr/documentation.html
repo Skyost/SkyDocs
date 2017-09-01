@@ -8,7 +8,7 @@
 	<!-- Description -->
 	<meta name="description" content="SkyDocs is a lightweight static documentation builder with MarkDown."/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-	<meta name="generator" content="SkyDocs v0.3.2 Beta"/>
+	<meta name="generator" content="SkyDocs v0.4 Beta"/>
 	
 	<!-- OpenGraph -->
 	<meta property="og:type" content="website"/>
@@ -29,18 +29,17 @@
 	
 	<!-- Styles -->
 	<meta id="theme-color" name="theme-color" content="#292b2c"/>
-	
-	
-	
+		
 	<link rel="icon" type="image/png" href="../assets/img/icon.png"/>
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/css/bootstrap.min.css"/>
 	
 	<link rel="stylesheet" type="text/css" href="../assets/css/page.css"/>
 	<link rel="stylesheet" type="text/css" href="../assets/css/themes/blue.css"/>
-	<!--<link rel="stylesheet" type="text/css" href="../assets/css/themes/red.css"/>-->
 	<!--<link rel="stylesheet" type="text/css" href="../assets/css/themes/green.css"/>-->
 	<!--<link rel="stylesheet" type="text/css" href="../assets/css/themes/orange.css"/>-->
+	<!--<link rel="stylesheet" type="text/css" href="../assets/css/themes/purple.css"/>-->
+	<!--<link rel="stylesheet" type="text/css" href="../assets/css/themes/red.css"/>-->
 </head>
 
 	<body>
@@ -129,15 +128,15 @@
 	</nav>
 </header>
 		
-		<div id="content" class="container row">
-			<div class="col-md-4 col-xs-12 d-none d-md-block">
+		<div id="content" class="container-fluid row">
+			<div class="col-md-3 d-none d-md-block">
 				<nav id="nav-toc"></nav>
 			</div>
 			
-			<article class="col-md-8 col-xs-12">
+			<article class="col-md-7">
 				
 				<h1 id="documentation">Documentation</h1>
-<p>Cette documentation a été écrite pour <strong>SkyDocs v0.3.2 Beta</strong>. N'oubliez pas de le mettre à jour (un guide est disponible ci-dessous) !</p>
+<p>Cette documentation a été écrite pour <strong>SkyDocs v0.4 Beta</strong>. N'oubliez pas de le mettre à jour (un guide est disponible ci-dessous) !</p>
 <h2 id="téléchargement--installation">Téléchargement &amp; installation</h2>
 <p>Voici les étapes pour télécharger et installer le logiciel.</p>
 <h3 id="téléchargement">Téléchargement</h3>
@@ -190,12 +189,13 @@ Voici les différentes clés ainsi que leur description :</p>
 <p>Si vous souhaitez ajouter des pages, images, vidéos, etc... allez dans le dossier <em>content</em>.
 Il est recommandé de créer un sous-dossier par langue (spar exemple si votre site web a deux langues : <em>Anglais</em> et <em>Français</em>, créez deux dossiers <em>en</em> et <em>fr</em>).</p>
 <p>Maintenant, disons que nous voulons créer une page en <em>anglais</em> appelée <em>Hello</em> avec du contenu, par exemple :</p>
-<pre><code>---
-title: Hello
-language: en
+<!-- Must be RAW here, will not be rendered correctly otherwise. -->
+<pre style="margin-bottom: 0;"><code class="language-ruby">---
+title: "Hello"
+language: "en"
 ---
-
-# Hello
+</code></pre>
+<pre><code class="language-markdown"># Hello
 
 Nice website uh ?
 
@@ -221,8 +221,8 @@ SkyDocs va essayer de générer le projet contenu dans le dossier courant). Le p
 </thead>
 <tbody>
 <tr><td><code>java -jar SkyDocs.jar new [directory]</code></td><td><strong>directory :</strong> dossier courant</td><td>Créé une nouvelle documentation dans le dossier spécifié.</td></tr>
-<tr><td><code>java -jar SkyDocs.jar build [directory]</code></td><td><strong>directory :</strong> dossier courant</td><td>Génère la documentation contenue dans le dossier spécifié.</td></tr>
-<tr><td><code>java -jar SkyDocs.jar serve [directory] [port]</code></td><td><strong>directory :</strong> dossier courant<br><strong>port :</strong> 4444</td><td>Génère la documentation contenue dans le dossier spécifié et la sert sur localhost avec le port spécifié.</td></tr>
+<tr><td><code>java -jar SkyDocs.jar build [directory]</code></td><td><strong>directory :</strong> dossier courant</td><td>Génère la documentation contenue dans le dossier spécifié. HTML, CSS et JS seront minifiés, le temps de compilation sera donc plus long qu'avec <code>serve</code>.</td></tr>
+<tr><td><code>java -jar SkyDocs.jar serve [directory] [port]</code></td><td><strong>directory :</strong> dossier courant<br><strong>port :</strong> 4444</td><td>Génère la documentation contenue dans le dossier spécifié et la sert sur localhost avec le port spécifié. Pas de minification.</td></tr>
 <tr><td><code>java -jar SkyDocs.jar update</code></td><td></td><td>Vérifie si des mises à jours sont disponibles.</td></tr>
 <tr><td><code>java -jar SkyDocs.jar help [command]</code></td><td><strong>command :</strong> toutes</td><td>Affiche une liste des commandes disponibles avec leur description.</td></tr>
 </tbody>
@@ -231,9 +231,9 @@ SkyDocs va essayer de générer le projet contenu dans le dossier courant). Le p
 
 				
 				<section>
-					<small class="date text-muted"><i class="fa fa-calendar" aria-hidden="true"></i> 25 août 2017 17:28:02</small>
+					<small class="date text-muted"><i class="fa fa-calendar" aria-hidden="true"></i> 28 août 2017 12:39:54</small>
 					
-						<div class="paginator clearfix">
+						<div class="paginator clearfix no-print">
 							<a class="btn btn-secondary float-left" href="index.html" role="button"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>							
 							<a class="btn btn-secondary float-right" href="creer-theme.html" role="button"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>							
 						</div>
@@ -243,8 +243,12 @@ SkyDocs va essayer de générer le projet contenu dans le dossier courant). Le p
 			</article>
 		</div>
 		
-		<footer>
-	<p class="text-muted"><i class="fa fa-file-text" aria-hidden="true"></i> Documentation theme created by <a href="https://www.skyost.eu">Skyost</a>. Powered by <a href="https://skyost.github.io/SkyDocs/">SkyDocs</a> v0.3.2 Beta.</p>
+		<!-- You can add/edit/remove everything you want here ;) -->
+<footer>
+	<p class="text-muted">
+		<i class="fa fa-file-text" aria-hidden="true"></i> Documentation theme created with <i class="fa fa-heart pulse" aria-hidden="true"></i> by <a href="https://www.skyost.eu">Skyost</a>.
+		Powered by <a href="https://skyost.github.io/SkyDocs/">SkyDocs</a> v0.4 Beta.
+	</p>
 </footer>
 
  
