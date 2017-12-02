@@ -22,7 +22,7 @@ public class Constants {
 	 * App's version.
 	 */
 	
-	public static final String APP_VERSION = "v0.4 Beta";
+	public static final String APP_VERSION = "v0.5 Beta";
 	
 	/**
 	 * App's authors.
@@ -101,6 +101,18 @@ public class Constants {
 	 */
 	
 	public static final String COMMAND_HELP_SYNTAX = COMMAND_HELP + " [command] - Shows the available commands with their description.";
+	
+	/**
+	 * The GUI command.
+	 */
+	
+	public static final String COMMAND_GUI = "gui";
+	
+	/**
+	 * The GUI command syntax.
+	 */
+	
+	public static final String COMMAND_GUI_SYNTAX = COMMAND_GUI + " - Open up a GUI.";
 	
 	/**
 	 * ================
@@ -319,6 +331,12 @@ public class Constants {
 	public static final String RESOURCE_NEW_PROJECT_DIRECTORY = "new_project";
 	
 	/**
+	 * The project's icon location. No need to use another icon as it is already stored in the application.
+	 */
+	
+	public static final String RESOURCE_PROJECT_ICON = "/main/resources/default_theme/assets/img/icon.png";
+	
+	/**
 	 * ==============================
 	 * CUSTOM VARIABLES AND FUNCTIONS
 	 * ==============================
@@ -401,6 +419,78 @@ public class Constants {
 	 */
 	
 	public static final String SERVE_LASTBUILD_URL = "lastbuild";
+	
+	/**
+	 * ============
+	 * GUI ELEMENTS
+	 * ============
+	 */
+	
+	/**
+	 * The frame's title.
+	 */
+	
+	public static final String GUI_FRAME_TITLE = APP_NAME + " " + APP_VERSION + " - GUI";
+	
+	/**
+	 * The label text.
+	 */
+	
+	public static final String GUI_LABEL_MENU = "What do you want to do ?";
+	
+	/**
+	 * The create button text.
+	 */
+	
+	public static final String GUI_BUTTON_CREATE = "Create project...";
+	
+	/**
+	 * The add button text.
+	 */
+	
+	public static final String GUI_BUTTON_ADD = "Add project...";
+	
+	/**
+	 * The remove button text.
+	 */
+	
+	public static final String GUI_BUTTON_REMOVE = "Remove project";
+	
+	/**
+	 * The build button text.
+	 */
+	
+	public static final String GUI_BUTTON_BUILD = "Build project";
+	
+	/**
+	 * The serve button text.
+	 */
+	
+	public static final String GUI_BUTTON_SERVE = "Serve project";
+	
+	/**
+	 * The stop button text.
+	 */
+	
+	public static final String GUI_BUTTON_STOP = "Stop";
+	
+	/**
+	 * The file chooser description.
+	 */
+	
+	public static final String GUI_CHOOSER_DESCRIPTION = "Project data (" + FILE_PROJECT_DATA + ")";
+	
+	/**
+	 * The error dialog title.
+	 */
+	
+	public static final String GUI_DIALOG_ERROR_TITLE = "Error";
+	
+	/**
+	 * The error dialog message.
+	 */
+	
+	public static final String GUI_DIALOG_ERROR_MESSAGE = "An error occurred :\n%s";
 	
 	/**
 	 * ======

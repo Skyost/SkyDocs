@@ -38,7 +38,7 @@ public class HelpCommand extends Command {
 		default:
 			outputLine(Constants.APP_NAME + " " + Constants.APP_VERSION + " by " + Constants.APP_AUTHORS);
 			outputLine("Commands :");
-			for(final String command : new String[]{Constants.COMMAND_NEW_SYNTAX, Constants.COMMAND_BUILD_SYNTAX, Constants.COMMAND_SERVE_SYNTAX, Constants.COMMAND_UPDATE_SYNTAX, Constants.COMMAND_HELP_SYNTAX}){
+			for(final String command : new String[]{Constants.COMMAND_NEW_SYNTAX, Constants.COMMAND_BUILD_SYNTAX, Constants.COMMAND_SERVE_SYNTAX, Constants.COMMAND_UPDATE_SYNTAX, Constants.COMMAND_HELP_SYNTAX, Constants.COMMAND_GUI_SYNTAX}){
 				outputLine("* " + command);
 			}
 			break;

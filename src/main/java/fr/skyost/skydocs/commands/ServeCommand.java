@@ -80,20 +80,32 @@ public class ServeCommand extends Command {
 				firstBuild = false;
 				outputLine("Enter nothing to rebuild the website or enter something to stop the server (auto rebuild is enabled) :");
 				blankLine();
-				line = scanner.hasNextLine() ? scanner.nextLine() : " ";
+				
+				if(isInterrupted()) {
+					break;
+				}
+				while(System.in.available() == 0 && !isInterrupted()) {
+					Thread.sleep(10);
+				}
+				if(isInterrupted()) {
+					break;
+				}
+				
+				line = scanner.hasNextLine() && !isInterrupted() ? scanner.nextLine() : " ";
 			}
 			scanner.close();
 			server.stop();
 		}
 		catch(final Exception ex) {
 			printStackTrace(ex);
+			broadcastCommandError(ex);
 		}
 		exitIfNeeded();
 	}
 	
 	@Override
 	public final boolean isInterruptible() {
-		return false;
+		return true;
 	}
 	
 	/**
@@ -115,7 +127,13 @@ public class ServeCommand extends Command {
 		if(!firstBuild) {
 			command.reloadProject();
 		}
+		if(isInterrupted()) {
+			return;
+		}
 		command.run();
+		if(isInterrupted()) {
+			return;
+		}
 		lastBuild = System.currentTimeMillis();
 
 		secondTime();

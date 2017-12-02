@@ -1,5 +1,7 @@
 package fr.skyost.skydocs.commands;
 
+import java.util.HashSet;
+
 /**
  * Represents a command.
  */
@@ -41,6 +43,12 @@ public abstract class Command implements Runnable {
 	 */
 	
 	boolean isInterrupted = false;
+	
+	/**
+	 * The command listeners.
+	 */
+	
+	private final HashSet<CommandListener> listeners = new HashSet<CommandListener>();
 	
 	/**
 	 * Creates a new Command instance.
@@ -151,6 +159,7 @@ public abstract class Command implements Runnable {
 	@Override
 	public void run() {
 		isInterrupted = false;
+		broadcastCommandStarted();
 	}
 	
 	/**
@@ -182,8 +191,9 @@ public abstract class Command implements Runnable {
 	 * Interrupts the execution of the current command. Please note that the implementation of this method may change depending on the command.
 	 */
 	
-	public final void interrupt() {
+	public void interrupt() {
 		isInterrupted = true;
+		broadcastCommandFinished();
 	}
 	
 	/**
@@ -194,6 +204,34 @@ public abstract class Command implements Runnable {
 	
 	public final boolean isInterrupted() {
 		return isInterrupted;
+	}
+	
+	/**
+	 * Adds a listener.
+	 * 
+	 * @param listener The listener.
+	 */
+	
+	public final void addListener(final CommandListener listener) {
+		listeners.add(listener);
+	}
+	
+	/**
+	 * Removes a listener.
+	 * 
+	 * @param listener The listener.
+	 */
+	
+	public final void removeListener(final CommandListener listener) {
+		listeners.remove(listener);
+	}
+	
+	/**
+	 * Clears all listeners.
+	 */
+	
+	public final void clearListeners() {
+		listeners.clear();
 	}
 	
 	/**
@@ -265,6 +303,48 @@ public abstract class Command implements Runnable {
 			return;
 		}
 		throwable.printStackTrace();
+	}
+	
+	/**
+	 * Broadcasts a command started event.
+	 */
+	
+	final void broadcastCommandStarted() {
+		for(final CommandListener listener : listeners) {
+			listener.onCommandStarted(this);
+		}
+	}
+	
+	/**
+	 * Broadcasts a command finished event.
+	 */
+	
+	final void broadcastCommandFinished() {
+		for(final CommandListener listener : listeners) {
+			listener.onCommandFinished(this);
+		}
+	}
+	
+	/**
+	 * Broadcasts a command error event.
+	 */
+	
+	final void broadcastCommandError(final Throwable throwable) {
+		for(final CommandListener listener : listeners) {
+			listener.onCommandError(this, throwable);
+		}
+	}
+	
+	/**
+	 * The command listener interface.
+	 */
+	
+	public interface CommandListener {
+		
+		public void onCommandStarted(final Command command);
+		public void onCommandFinished(final Command command);
+		public void onCommandError(final Command command, final Throwable error);
+		
 	}
 	
 	/**

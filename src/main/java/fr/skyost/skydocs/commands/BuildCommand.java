@@ -155,6 +155,7 @@ public class BuildCommand extends Command {
 		}
 		catch(final Exception ex) {
 			printStackTrace(ex);
+			broadcastCommandError(ex);
 		}
 		
 		exitIfNeeded();

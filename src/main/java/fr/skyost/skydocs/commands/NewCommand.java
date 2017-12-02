@@ -47,6 +47,7 @@ public class NewCommand extends Command {
 		}
 		catch(final Exception ex) {
 			printStackTrace(ex);
+			broadcastCommandError(ex);
 		}
 		exitIfNeeded();
 	}

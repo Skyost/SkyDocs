@@ -29,8 +29,9 @@ public class UpdateCommand extends Command implements GithubUpdaterResultListene
 
 	@Override
 	public final void updaterException(final Exception ex) {
-		printStackTrace(ex);
 		outputLine("Error while checking for updates :");
+		printStackTrace(ex);
+		broadcastCommandError(ex);
 	}
 
 	@Override
