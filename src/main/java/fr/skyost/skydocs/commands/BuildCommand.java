@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
@@ -59,9 +60,16 @@ public class BuildCommand extends Command {
 	private DocsProject project;
 	
 	public BuildCommand(final boolean prod, final String... args) throws LoadException {
+		this(prod, null, args);
+	}
+	
+	public BuildCommand(final boolean prod, final PrintStream out, final String... args) throws LoadException {
 		super(args);
 		
 		this.prod = prod;
+		if(out != null) {
+			this.setOut(out);
+		}
 		directoryPath = args.length > 0 && args[0].length() > 0 ? args[0] : System.getProperty("user.dir");
 		reloadProject();
 	}
@@ -261,6 +269,7 @@ public class BuildCommand extends Command {
 			catch(final FileAlreadyExistsException ex) {
 				blankLine();
 				outputLine("The file \"" + file.getPath() + "\" will not be copied because it already exists : \"" + destination.getPath() + "\".");
+				broadcastCommandError(ex);
 			}
 			return;
 		}
@@ -304,6 +313,7 @@ public class BuildCommand extends Command {
 				catch(final Exception ex) {
 					printStackTrace(ex);
 					outputLine("Failed to minify \"" + directory.getPath() + "\" !");
+					broadcastCommandError(ex);
 				}
 			}
 			Files.copy(directory.toPath(), destination.toPath());

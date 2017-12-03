@@ -59,7 +59,7 @@ public class ServeCommand extends Command {
 		try {
 			final InternalServer server = new InternalServer(port);
 			
-			final BuildCommand command = new BuildCommand(false, this.getArguments());
+			final BuildCommand command = new BuildCommand(false, this.getOut(), this.getArguments());
 			command.setOutputing(false);
 			boolean firstBuild = true;
 			blankLine();
@@ -72,14 +72,15 @@ public class ServeCommand extends Command {
 					registerFileListener(command);
 					buildDirectory = command.getCurrentBuildDirectory();
 					outputLine("You can point your browser to http://localhost:" + port + ".");
+					blankLine();
 					server.start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
 					if(Desktop.isDesktopSupported()) {
 						Desktop.getDesktop().browse(new URL("http://localhost:" + port).toURI());
 					}
 				}
 				firstBuild = false;
-				outputLine("Enter nothing to rebuild the website or enter something to stop the server (auto rebuild is enabled) :");
-				blankLine();
+				standardOutputLine("Enter nothing to rebuild the website or enter something to stop the server (auto rebuild is enabled) :");
+				standardOutputLine("");
 				
 				if(isInterrupted()) {
 					break;
@@ -196,6 +197,7 @@ public class ServeCommand extends Command {
 		catch(final Exception ex) {
 			printStackTrace(ex);
 			outputLine("Unable to build the project !");
+			broadcastCommandError(ex);
 		}
 	}
 	

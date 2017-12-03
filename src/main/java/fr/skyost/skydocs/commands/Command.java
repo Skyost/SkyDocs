@@ -1,5 +1,6 @@
 package fr.skyost.skydocs.commands;
 
+import java.io.PrintStream;
 import java.util.HashSet;
 
 /**
@@ -49,6 +50,12 @@ public abstract class Command implements Runnable {
 	 */
 	
 	private final HashSet<CommandListener> listeners = new HashSet<CommandListener>();
+	
+	/**
+	 * The current PrintStream.
+	 */
+	
+	private PrintStream out = System.out;
 	
 	/**
 	 * Creates a new Command instance.
@@ -207,6 +214,26 @@ public abstract class Command implements Runnable {
 	}
 	
 	/**
+	 * Gets the current PrintStream.
+	 * 
+	 * @return The current PrintStream.
+	 */
+	
+	public final PrintStream getOut() {
+		return out;
+	}
+	
+	/**
+	 * Sets the current PrintStream.
+	 * 
+	 * @param out The new PrintStream.
+	 */
+	
+	public final void setOut(final PrintStream out) {
+		this.out = out;
+	}
+	
+	/**
 	 * Adds a listener.
 	 * 
 	 * @param listener The listener.
@@ -252,7 +279,11 @@ public abstract class Command implements Runnable {
 	 */
 	
 	void output(final String message, final boolean output) {
-		if(output) {
+		if(!output) {
+			return;
+		}
+		out.print(message + " ");
+		if(out != System.out) {
 			System.out.print(message + " ");
 		}
 	}
@@ -275,9 +306,26 @@ public abstract class Command implements Runnable {
 	 */
 	
 	final void outputLine(final String message, final boolean output) {
-		if(output) {
+		if(!output) {
+			return;
+		}
+		out.println(message);
+		if(out != System.out) {
 			System.out.println(message);
 		}
+	}
+	
+	/**
+	 * Outputs a line only if the current PrintStream is System.out.
+	 * 
+	 * @param message The line.
+	 */
+	
+	final void standardOutputLine(final String message) {
+		if(!output || out != System.out) {
+			return;
+		}
+		out.println(message);
 	}
 	
 	/**
@@ -285,7 +333,11 @@ public abstract class Command implements Runnable {
 	 */
 	
 	final void blankLine() {
-		if(output) {
+		if(!output) {
+			return;
+		}
+		out.println();
+		if(out != System.out) {
 			System.out.println();
 		}
 	}
@@ -297,12 +349,15 @@ public abstract class Command implements Runnable {
 	 */
 	
 	final void printStackTrace(final Throwable throwable) {
-		System.out.println();
+		out.println();
 		if(throwable instanceof InterruptionException) {
 			outputLine(throwable.getMessage());
 			return;
 		}
-		throwable.printStackTrace();
+		throwable.printStackTrace(out);
+		if(out != System.out) {
+			throwable.printStackTrace();
+		}
 	}
 	
 	/**

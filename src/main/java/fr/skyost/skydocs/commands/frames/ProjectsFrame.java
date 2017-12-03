@@ -6,6 +6,8 @@ import javax.swing.JOptionPane;
 
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.DefaultListModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -14,6 +16,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -32,6 +35,9 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -47,14 +53,18 @@ public class ProjectsFrame extends JFrame implements CommandListener {
 	private static final short PROJECTS_PANEL_WIDTH = 500;
 	private static final short BUTTONS_WIDTH = 160;
 	
+	private final PrintStream guiPrintStream = new PrintStream(new GUIPrintStream());
+	
 	private final DefaultListModel<String> projectsModel = new DefaultListModel<String>();
 	private final JList<String> projectsList = new JList<String>(projectsModel);
 	
-	private final JButton btnCreateProject = new JButton(Constants.GUI_BUTTON_CREATE);
-	private final JButton btnAddProject = new JButton(Constants.GUI_BUTTON_ADD);
-	private final JButton btnRemoveProject = new JButton(Constants.GUI_BUTTON_REMOVE);
-	private final JButton btnBuildProject = new JButton(Constants.GUI_BUTTON_BUILD);
-	private final JButton btnServeProject = new JButton(Constants.GUI_BUTTON_SERVE);
+	private final JButton createProjectButton = new JButton(Constants.GUI_BUTTON_CREATE);
+	private final JButton addProjectButton = new JButton(Constants.GUI_BUTTON_ADD);
+	private final JButton removeProjectButton = new JButton(Constants.GUI_BUTTON_REMOVE);
+	private final JButton buildProjectButton = new JButton(Constants.GUI_BUTTON_BUILD);
+	private final JButton serveProjectButton = new JButton(Constants.GUI_BUTTON_SERVE);
+	
+	private final JTextArea logTextArea = new JTextArea();
 	
 	private NewCommand newCommand;
 	private BuildCommand buildCommand;
@@ -66,7 +76,9 @@ public class ProjectsFrame extends JFrame implements CommandListener {
 		this.setIconImages(buildIconsList());
 		
 		projectsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		projectsList.setBorder(new LineBorder(Color.BLACK));
+		projectsList.setBorder(new LineBorder(Color.GRAY));
+		
+		logTextArea.setEditable(false);
 		
 		final JPanel projectsPanel = new JPanel();
 		projectsPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -86,7 +98,7 @@ public class ProjectsFrame extends JFrame implements CommandListener {
 		final JLabel lblGlobalMenu = new JLabel(Constants.GUI_LABEL_MENU);
 		lblGlobalMenu.setFont(lblGlobalMenu.getFont().deriveFont(Font.ITALIC));
 		
-		btnCreateProject.addActionListener(new ActionListener() {
+		createProjectButton.addActionListener(new ActionListener() {
 
 			@Override
 			public final void actionPerformed(final ActionEvent event) {
@@ -104,13 +116,14 @@ public class ProjectsFrame extends JFrame implements CommandListener {
 						return;
 					}
 					newCommand = new NewCommand(path);
+					newCommand.setOut(guiPrintStream);
 					newCommand.addListener(ProjectsFrame.this);
 					new Thread(newCommand).start();
 				}
 			}
 			
 		});
-		btnAddProject.addActionListener(new ActionListener() {
+		addProjectButton.addActionListener(new ActionListener() {
 
 			@Override
 			public final void actionPerformed(final ActionEvent event) {
@@ -140,8 +153,8 @@ public class ProjectsFrame extends JFrame implements CommandListener {
 			}
 			
 		});
-		btnRemoveProject.setEnabled(false);
-		btnRemoveProject.addActionListener(new ActionListener() {
+		removeProjectButton.setEnabled(false);
+		removeProjectButton.addActionListener(new ActionListener() {
 
 			@Override
 			public final void actionPerformed(final ActionEvent event) {
@@ -151,14 +164,14 @@ public class ProjectsFrame extends JFrame implements CommandListener {
 			}
 			
 		});
-		btnBuildProject.setEnabled(false);
-		btnBuildProject.addActionListener(new ActionListener() {
+		buildProjectButton.setEnabled(false);
+		buildProjectButton.addActionListener(new ActionListener() {
 
 			@Override
 			public final void actionPerformed(final ActionEvent event) {
 				try {
 					if(buildCommand == null) {
-						buildCommand = new BuildCommand(true, projectsModel.getElementAt(projectsList.getSelectedIndex()));
+						buildCommand = new BuildCommand(true, guiPrintStream, projectsModel.getElementAt(projectsList.getSelectedIndex()));
 						buildCommand.addListener(ProjectsFrame.this);
 						new Thread(buildCommand).start();
 						return;
@@ -171,40 +184,47 @@ public class ProjectsFrame extends JFrame implements CommandListener {
 			}
 			
 		});
-		btnServeProject.setEnabled(false);
-		btnServeProject.addActionListener(new ActionListener() {
+		serveProjectButton.setEnabled(false);
+		serveProjectButton.addActionListener(new ActionListener() {
 
 			@Override
 			public final void actionPerformed(final ActionEvent event) {
-					if(serveCommand == null) {
-						serveCommand = new ServeCommand(projectsModel.getElementAt(projectsList.getSelectedIndex()));
-						serveCommand.addListener(ProjectsFrame.this);
-						new Thread(serveCommand).start();
-						return;
-					}
-					serveCommand.interrupt();
+				if(serveCommand == null) {
+					serveCommand = new ServeCommand(projectsModel.getElementAt(projectsList.getSelectedIndex()));
+					serveCommand.setOut(guiPrintStream);
+					serveCommand.addListener(ProjectsFrame.this);
+					new Thread(serveCommand).start();
+					return;
+				}
+				serveCommand.interrupt();
 			}
 			
 		});
+		
+		final JScrollPane scrollPane = new JScrollPane(logTextArea);
+		scrollPane.setBorder(projectsList.getBorder());
 		
 		final JPanel menuPanel = new JPanel();
 		this.getContentPane().add(menuPanel, BorderLayout.SOUTH);
 		
 		final GroupLayout menuPanelLayout = new GroupLayout(menuPanel);
 		menuPanelLayout.setHorizontalGroup(
-			menuPanelLayout.createParallelGroup(Alignment.LEADING)
+			menuPanelLayout.createParallelGroup(Alignment.TRAILING)
 				.addGroup(menuPanelLayout.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(menuPanelLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(btnBuildProject, GroupLayout.DEFAULT_SIZE, BUTTONS_WIDTH, Short.MAX_VALUE)
-						.addComponent(btnCreateProject, GroupLayout.DEFAULT_SIZE, BUTTONS_WIDTH, Short.MAX_VALUE)
-						.addComponent(lblGlobalMenu, GroupLayout.DEFAULT_SIZE, BUTTONS_WIDTH, Short.MAX_VALUE))
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addGroup(menuPanelLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(btnServeProject, GroupLayout.DEFAULT_SIZE, BUTTONS_WIDTH, Short.MAX_VALUE)
-						.addComponent(btnAddProject, GroupLayout.DEFAULT_SIZE, BUTTONS_WIDTH, Short.MAX_VALUE))
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(btnRemoveProject, GroupLayout.DEFAULT_SIZE, BUTTONS_WIDTH, Short.MAX_VALUE)
+						.addGroup(menuPanelLayout.createSequentialGroup()
+							.addGroup(menuPanelLayout.createParallelGroup(Alignment.TRAILING)
+								.addComponent(buildProjectButton, Alignment.LEADING, 0, BUTTONS_WIDTH, Short.MAX_VALUE)
+								.addComponent(createProjectButton, Alignment.LEADING, 0, BUTTONS_WIDTH, Short.MAX_VALUE)
+								.addComponent(lblGlobalMenu, Alignment.LEADING, 0, BUTTONS_WIDTH, Short.MAX_VALUE))
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addGroup(menuPanelLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(serveProjectButton, 0, BUTTONS_WIDTH, Short.MAX_VALUE)
+								.addComponent(addProjectButton, 0, BUTTONS_WIDTH, Short.MAX_VALUE))
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(removeProjectButton, 0, BUTTONS_WIDTH, Short.MAX_VALUE))
+						.addComponent(scrollPane, Alignment.TRAILING, 0, BUTTONS_WIDTH * 3 + 20, Short.MAX_VALUE))
 					.addContainerGap())
 		);
 		menuPanelLayout.setVerticalGroup(
@@ -214,13 +234,15 @@ public class ProjectsFrame extends JFrame implements CommandListener {
 					.addComponent(lblGlobalMenu)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(menuPanelLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnCreateProject)
-						.addComponent(btnAddProject)
-						.addComponent(btnRemoveProject))
+						.addComponent(createProjectButton)
+						.addComponent(addProjectButton)
+						.addComponent(removeProjectButton))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(menuPanelLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnBuildProject)
-						.addComponent(btnServeProject))
+						.addComponent(buildProjectButton)
+						.addComponent(serveProjectButton))
+					.addGap(18)
+					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, PROJECTS_PANEL_WIDTH / 4, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		menuPanel.setLayout(menuPanelLayout);
@@ -231,9 +253,9 @@ public class ProjectsFrame extends JFrame implements CommandListener {
 			public final void valueChanged(final ListSelectionEvent event) {
 				final int index = event.getFirstIndex();
 				final boolean enabled = 0 <= index && index < projectsModel.size();
-				btnRemoveProject.setEnabled(enabled);
-				btnBuildProject.setEnabled(enabled);
-				btnServeProject.setEnabled(enabled);
+				removeProjectButton.setEnabled(enabled);
+				buildProjectButton.setEnabled(enabled);
+				serveProjectButton.setEnabled(enabled);
 			}
 			
 		});
@@ -245,21 +267,21 @@ public class ProjectsFrame extends JFrame implements CommandListener {
 	@Override
 	public final void onCommandStarted(final Command command) {
 		if(command instanceof NewCommand) {
-			btnCreateProject.setEnabled(false);
-			btnBuildProject.setEnabled(false);
-			btnServeProject.setEnabled(false);
+			createProjectButton.setEnabled(false);
+			buildProjectButton.setEnabled(false);
+			serveProjectButton.setEnabled(false);
 		}
 		else if(command instanceof BuildCommand) {
-			btnCreateProject.setEnabled(false);
-			btnBuildProject.setText(Constants.GUI_BUTTON_STOP);
-			btnServeProject.setEnabled(false);
+			createProjectButton.setEnabled(false);
+			buildProjectButton.setText(Constants.GUI_BUTTON_STOP);
+			serveProjectButton.setEnabled(false);
 		}
 		else {
-			btnCreateProject.setEnabled(false);
-			btnBuildProject.setEnabled(false);
-			btnServeProject.setText(Constants.GUI_BUTTON_STOP);
+			createProjectButton.setEnabled(false);
+			buildProjectButton.setEnabled(false);
+			serveProjectButton.setText(Constants.GUI_BUTTON_STOP);
 		}
-		btnRemoveProject.setEnabled(false);
+		removeProjectButton.setEnabled(false);
 	}
 
 	@Override
@@ -269,23 +291,23 @@ public class ProjectsFrame extends JFrame implements CommandListener {
 		if(command instanceof NewCommand) {
 			newCommand = null;
 			projectsModel.addElement(command.getArguments()[0]);
-			btnCreateProject.setEnabled(true);
-			btnBuildProject.setEnabled(enabled);
-			btnServeProject.setEnabled(enabled);
+			createProjectButton.setEnabled(true);
+			buildProjectButton.setEnabled(enabled);
+			serveProjectButton.setEnabled(enabled);
 		}
 		else if(command instanceof BuildCommand) {
 			buildCommand = null;
-			btnCreateProject.setEnabled(true);
-			btnBuildProject.setText(Constants.GUI_BUTTON_BUILD);
-			btnServeProject.setEnabled(enabled);
+			createProjectButton.setEnabled(true);
+			buildProjectButton.setText(Constants.GUI_BUTTON_BUILD);
+			serveProjectButton.setEnabled(enabled);
 		}
 		else {
 			serveCommand = null;
-			btnCreateProject.setEnabled(true);
-			btnBuildProject.setEnabled(enabled);
-			btnServeProject.setText(Constants.GUI_BUTTON_SERVE);
+			createProjectButton.setEnabled(true);
+			buildProjectButton.setEnabled(enabled);
+			serveProjectButton.setText(Constants.GUI_BUTTON_SERVE);
 		}
-		btnRemoveProject.setEnabled(true);
+		removeProjectButton.setEnabled(true);
 	}
 	
 	@Override
@@ -305,6 +327,28 @@ public class ProjectsFrame extends JFrame implements CommandListener {
 			icon//.getScaledInstance(512, 512, Image.SCALE_SMOOTH) // Already in 512x512.
 		));
 		return Collections.unmodifiableList(icons);
+	}
+	
+	public class GUIPrintStream extends OutputStream {
+
+		@Override
+		public final void write(final byte[] buffer, final int offset, final int length) throws IOException {
+			final String text = new String(buffer, offset, length);
+			SwingUtilities.invokeLater(new Runnable() {
+				
+				@Override
+				public final void run() {
+					logTextArea.append(text);
+				}
+				
+			});
+		}
+		
+		@Override
+		public final void write(final int b) throws IOException {
+			write(new byte []{(byte)b}, 0, 1);
+		}
+		
 	}
 	
 }
