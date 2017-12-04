@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import org.apache.commons.io.FilenameUtils;
 
 import fr.skyost.skydocs.Constants;
+import fr.skyost.skydocs.exceptions.ProjectAlreadyExistsException;
 import fr.skyost.skydocs.utils.Utils;
 
 /**
@@ -27,13 +28,16 @@ public class NewCommand extends Command {
 			final String[] args = this.getArguments();
 			final File directory = new File(args.length > 0 && args[0].length() > 0 ? args[0] : System.getProperty("user.dir"));
 			
+			if(new File(directory, Constants.FILE_PROJECT_DATA).exists()) {
+				throw new ProjectAlreadyExistsException("A project already exists in that location !");
+			}
+			
 			firstTime();
 			
 			output("Creating a new project in the directory \"" + directory + "\"...");
 			Utils.extract(Constants.RESOURCE_NEW_PROJECT_PATH, Constants.RESOURCE_NEW_PROJECT_DIRECTORY, directory);
 			
-			final String path = Utils.getJARFile().getPath();
-			final boolean isJAR = FilenameUtils.getExtension(path).equalsIgnoreCase("jar");
+			final boolean isJAR = FilenameUtils.getExtension(Utils.getJARFile().getPath()).equalsIgnoreCase("jar");
 			
 			for(final String extension : new String[]{"bat", "sh", "command"}) {
 				exitIfInterrupted();

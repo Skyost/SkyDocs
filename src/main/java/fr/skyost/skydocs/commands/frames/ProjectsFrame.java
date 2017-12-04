@@ -22,10 +22,13 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileFilter;
 
+import com.google.common.io.Files;
+
 import fr.skyost.skydocs.Constants;
 import fr.skyost.skydocs.commands.BuildCommand;
 import fr.skyost.skydocs.commands.Command;
 import fr.skyost.skydocs.commands.Command.CommandListener;
+import fr.skyost.skydocs.utils.Utils;
 import fr.skyost.skydocs.commands.NewCommand;
 import fr.skyost.skydocs.commands.ServeCommand;
 
@@ -34,10 +37,13 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -45,6 +51,10 @@ import java.util.List;
 
 import javax.swing.border.EmptyBorder;
 import java.awt.Toolkit;
+
+/**
+ * SkyDocs' GUI.
+ */
 
 public class ProjectsFrame extends JFrame implements CommandListener {
 
@@ -59,39 +69,54 @@ public class ProjectsFrame extends JFrame implements CommandListener {
 	private final JList<String> projectsList = new JList<String>(projectsModel);
 	
 	private final JButton createProjectButton = new JButton(Constants.GUI_BUTTON_CREATE);
-	private final JButton addProjectButton = new JButton(Constants.GUI_BUTTON_ADD);
+	private final JButton openProjectButton = new JButton(Constants.GUI_BUTTON_OPEN);
 	private final JButton removeProjectButton = new JButton(Constants.GUI_BUTTON_REMOVE);
 	private final JButton buildProjectButton = new JButton(Constants.GUI_BUTTON_BUILD);
 	private final JButton serveProjectButton = new JButton(Constants.GUI_BUTTON_SERVE);
 	
-	private final JTextArea logTextArea = new JTextArea();
+	private final JTextArea logTextArea = new JTextArea("---- Log ----" + System.lineSeparator());
 	
 	private NewCommand newCommand;
 	private BuildCommand buildCommand;
 	private ServeCommand serveCommand;
 	
 	public ProjectsFrame() {
+		loadHistory();
+		
 		this.setTitle(Constants.GUI_FRAME_TITLE);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setIconImages(buildIconsList());
+		this.addWindowListener(new WindowAdapter() {
+
+			@Override
+			public final void windowClosing(final WindowEvent event) {
+				saveHistory();
+				System.exit(0);
+			}
+
+		});
 		
 		projectsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		projectsList.setBorder(new LineBorder(Color.GRAY));
 		
 		logTextArea.setEditable(false);
+		logTextArea.setFont(createProjectButton.getFont());
 		
 		final JPanel projectsPanel = new JPanel();
 		projectsPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		this.getContentPane().add(projectsPanel, BorderLayout.CENTER);
 		
+		final JScrollPane projectsScrollPane = new JScrollPane(projectsList);
+		projectsScrollPane.setBorder(new LineBorder(Color.GRAY));
+		final JScrollPane logScrollPane = new JScrollPane(logTextArea);
+		logScrollPane.setBorder(projectsScrollPane.getBorder());
+		
 		final GroupLayout projectsPanelLayout = new GroupLayout(projectsPanel);
 		projectsPanelLayout.setHorizontalGroup(
 			projectsPanelLayout.createParallelGroup(Alignment.LEADING)
-				.addComponent(projectsList, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, PROJECTS_PANEL_WIDTH, Short.MAX_VALUE)
+				.addComponent(projectsScrollPane, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, PROJECTS_PANEL_WIDTH, Short.MAX_VALUE)
 		);
 		projectsPanelLayout.setVerticalGroup(
 			projectsPanelLayout.createParallelGroup(Alignment.LEADING)
-				.addComponent(projectsList, GroupLayout.DEFAULT_SIZE, PROJECTS_PANEL_WIDTH / 3, Short.MAX_VALUE)
+				.addComponent(projectsScrollPane, GroupLayout.DEFAULT_SIZE, PROJECTS_PANEL_WIDTH / 3, Short.MAX_VALUE)
 		);
 		projectsPanel.setLayout(projectsPanelLayout);
 		
@@ -105,7 +130,7 @@ public class ProjectsFrame extends JFrame implements CommandListener {
 				final JFileChooser chooser = new JFileChooser();
 				chooser.changeToParentDirectory();
 				chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-				if(chooser.showSaveDialog(ProjectsFrame.this) == JFileChooser.APPROVE_OPTION) {
+				if(chooser.showOpenDialog(ProjectsFrame.this) == JFileChooser.APPROVE_OPTION) {
 					File file = chooser.getSelectedFile();
 					if(!file.isDirectory()) {
 						file = file.getParentFile();
@@ -123,7 +148,7 @@ public class ProjectsFrame extends JFrame implements CommandListener {
 			}
 			
 		});
-		addProjectButton.addActionListener(new ActionListener() {
+		openProjectButton.addActionListener(new ActionListener() {
 
 			@Override
 			public final void actionPerformed(final ActionEvent event) {
@@ -179,7 +204,9 @@ public class ProjectsFrame extends JFrame implements CommandListener {
 					buildCommand.interrupt();
 				}
 				catch(final Exception ex) {
+					ex.printStackTrace(guiPrintStream);
 					ex.printStackTrace();
+					JOptionPane.showMessageDialog(ProjectsFrame.this, String.format(Constants.GUI_DIALOG_ERROR_MESSAGE, ex.getMessage()), ex.getClass().getName(), JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			
@@ -201,9 +228,6 @@ public class ProjectsFrame extends JFrame implements CommandListener {
 			
 		});
 		
-		final JScrollPane scrollPane = new JScrollPane(logTextArea);
-		scrollPane.setBorder(projectsList.getBorder());
-		
 		final JPanel menuPanel = new JPanel();
 		this.getContentPane().add(menuPanel, BorderLayout.SOUTH);
 		
@@ -221,10 +245,10 @@ public class ProjectsFrame extends JFrame implements CommandListener {
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addGroup(menuPanelLayout.createParallelGroup(Alignment.LEADING)
 								.addComponent(serveProjectButton, 0, BUTTONS_WIDTH, Short.MAX_VALUE)
-								.addComponent(addProjectButton, 0, BUTTONS_WIDTH, Short.MAX_VALUE))
+								.addComponent(openProjectButton, 0, BUTTONS_WIDTH, Short.MAX_VALUE))
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addComponent(removeProjectButton, 0, BUTTONS_WIDTH, Short.MAX_VALUE))
-						.addComponent(scrollPane, Alignment.TRAILING, 0, BUTTONS_WIDTH * 3 + 20, Short.MAX_VALUE))
+						.addComponent(logScrollPane, Alignment.TRAILING, 0, BUTTONS_WIDTH * 3 + 20, Short.MAX_VALUE))
 					.addContainerGap())
 		);
 		menuPanelLayout.setVerticalGroup(
@@ -235,14 +259,14 @@ public class ProjectsFrame extends JFrame implements CommandListener {
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(menuPanelLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(createProjectButton)
-						.addComponent(addProjectButton)
+						.addComponent(openProjectButton)
 						.addComponent(removeProjectButton))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(menuPanelLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(buildProjectButton)
 						.addComponent(serveProjectButton))
 					.addGap(18)
-					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, PROJECTS_PANEL_WIDTH / 4, GroupLayout.PREFERRED_SIZE)
+					.addComponent(logScrollPane, GroupLayout.PREFERRED_SIZE, PROJECTS_PANEL_WIDTH / 4, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		menuPanel.setLayout(menuPanelLayout);
@@ -308,11 +332,12 @@ public class ProjectsFrame extends JFrame implements CommandListener {
 			serveProjectButton.setText(Constants.GUI_BUTTON_SERVE);
 		}
 		removeProjectButton.setEnabled(true);
+		logTextArea.append(System.lineSeparator());
 	}
 	
 	@Override
 	public final void onCommandError(final Command command, final Throwable error) {
-		JOptionPane.showMessageDialog(this, String.format(Constants.GUI_DIALOG_ERROR_MESSAGE, error.getClass().getName()), Constants.GUI_DIALOG_ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(this, String.format(Constants.GUI_DIALOG_ERROR_MESSAGE, error.getMessage()), error.getClass().getName(), JOptionPane.ERROR_MESSAGE);
 	}
 	
 	private final List<Image> buildIconsList() {
@@ -328,6 +353,54 @@ public class ProjectsFrame extends JFrame implements CommandListener {
 		));
 		return Collections.unmodifiableList(icons);
 	}
+	
+	/**
+	 * Loads projects from the history.
+	 */
+	
+	public final void loadHistory() {
+		try {
+			final File history = new File(Utils.getParentFolder(), Constants.FILE_GUI_HISTORY);
+			if(!history.exists()) {
+				return;
+			}
+			for(final String path : Files.readLines(history, StandardCharsets.UTF_8)) {
+				final File projectData = new File(path, Constants.FILE_PROJECT_DATA);
+				if(!projectData.exists()) {
+					continue;
+				}
+				projectsModel.addElement(path);
+			}
+		}
+		catch(final Exception ex) {
+			ex.printStackTrace(guiPrintStream);
+			ex.printStackTrace();
+			JOptionPane.showMessageDialog(ProjectsFrame.this, String.format(Constants.GUI_DIALOG_ERROR_MESSAGE, ex.getMessage()), ex.getClass().getName(), JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	/**
+	 * Saves the projects history.
+	 */
+	
+	public final void saveHistory() {
+		try {
+			final StringBuilder builder = new StringBuilder();
+			for(int i = 0; i < projectsModel.size(); i++) {
+				builder.append(projectsModel.getElementAt(i) + System.lineSeparator());
+			}
+			Files.write(builder.toString(), new File(Utils.getParentFolder(), Constants.FILE_GUI_HISTORY), StandardCharsets.UTF_8);
+		}
+		catch(final Exception ex) {
+			ex.printStackTrace(guiPrintStream);
+			ex.printStackTrace();
+			JOptionPane.showMessageDialog(ProjectsFrame.this, String.format(Constants.GUI_DIALOG_ERROR_MESSAGE, ex.getMessage()), ex.getClass().getName(), JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	/**
+	 * Allows to forward an output stream to the GUI.
+	 */
 	
 	public class GUIPrintStream extends OutputStream {
 

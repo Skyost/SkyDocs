@@ -235,6 +235,12 @@ public class Constants {
 	public static final String FILE_PROJECT_DATA = "project.yml";
 	
 	/**
+	 * GUI history.
+	 */
+	
+	public static final String FILE_GUI_HISTORY = "history";
+	
+	/**
 	 * YAML menu data file prefix.
 	 */
 	
@@ -448,7 +454,7 @@ public class Constants {
 	 * The add button text.
 	 */
 	
-	public static final String GUI_BUTTON_ADD = "Add project...";
+	public static final String GUI_BUTTON_OPEN = "Open project...";
 	
 	/**
 	 * The remove button text.
@@ -479,12 +485,6 @@ public class Constants {
 	 */
 	
 	public static final String GUI_CHOOSER_DESCRIPTION = "Project data (" + FILE_PROJECT_DATA + ")";
-	
-	/**
-	 * The error dialog title.
-	 */
-	
-	public static final String GUI_DIALOG_ERROR_TITLE = "Error";
 	
 	/**
 	 * The error dialog message.
