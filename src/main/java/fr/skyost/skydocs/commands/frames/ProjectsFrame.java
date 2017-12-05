@@ -21,6 +21,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.text.DefaultCaret;
 
 import com.google.common.io.Files;
 
@@ -97,6 +98,7 @@ public class ProjectsFrame extends JFrame implements CommandListener {
 		
 		projectsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
+		((DefaultCaret)logTextArea.getCaret()).setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 		logTextArea.setEditable(false);
 		logTextArea.setFont(createProjectButton.getFont());
 		
@@ -277,6 +279,12 @@ public class ProjectsFrame extends JFrame implements CommandListener {
 			public final void valueChanged(final ListSelectionEvent event) {
 				final int index = event.getFirstIndex();
 				final boolean enabled = 0 <= index && index < projectsModel.size();
+				
+				for(final JButton button : new JButton[]{removeProjectButton, buildProjectButton, serveProjectButton}) {
+					if(button.getText().equals(Constants.GUI_BUTTON_STOP)) {
+						return;
+					}
+				}
 				removeProjectButton.setEnabled(enabled);
 				buildProjectButton.setEnabled(enabled);
 				serveProjectButton.setEnabled(enabled);
@@ -332,7 +340,8 @@ public class ProjectsFrame extends JFrame implements CommandListener {
 			serveProjectButton.setText(Constants.GUI_BUTTON_SERVE);
 		}
 		removeProjectButton.setEnabled(true);
-		logTextArea.append(System.lineSeparator());
+		command.blankLine();
+		logTextArea.setCaretPosition(logTextArea.getText().length());
 	}
 	
 	@Override

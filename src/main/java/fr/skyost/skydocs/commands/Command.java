@@ -267,7 +267,7 @@ public abstract class Command implements Runnable {
 	 * @param message The message.
 	 */
 	
-	void output(final String message) {
+	public void output(final String message) {
 		output(message, output);
 	}
 	
@@ -294,7 +294,7 @@ public abstract class Command implements Runnable {
 	 * @param message The message.
 	 */
 	
-	final void outputLine(final String message) {
+	public final void outputLine(final String message) {
 		outputLine(message, output);
 	}
 	
@@ -332,7 +332,7 @@ public abstract class Command implements Runnable {
 	 * Prints a blank line.
 	 */
 	
-	final void blankLine() {
+	public final void blankLine() {
 		if(!output) {
 			return;
 		}
@@ -348,8 +348,11 @@ public abstract class Command implements Runnable {
 	 * @param throwable The throwable.
 	 */
 	
-	final void printStackTrace(final Throwable throwable) {
+	public final void printStackTrace(final Throwable throwable) {
 		out.println();
+		if(out != System.out) {
+			System.out.println();
+		}
 		if(throwable instanceof InterruptionException) {
 			outputLine(throwable.getMessage());
 			return;
