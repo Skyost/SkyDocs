@@ -316,19 +316,6 @@ public abstract class Command implements Runnable {
 	}
 	
 	/**
-	 * Outputs a line only if the current PrintStream is System.out.
-	 * 
-	 * @param message The line.
-	 */
-	
-	final void standardOutputLine(final String message) {
-		if(!output || out != System.out) {
-			return;
-		}
-		out.println(message);
-	}
-	
-	/**
 	 * Prints a blank line.
 	 */
 	

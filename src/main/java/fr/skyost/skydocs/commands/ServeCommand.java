@@ -43,51 +43,66 @@ public class ServeCommand extends Command {
 	private final int port;
 	
 	/**
+	 * Enables manual rebuild via System.in.
+	 */
+	
+	private final boolean enableManualRebuild;
+	
+	/**
 	 * Last build time in millis.
 	 */
 	
 	private long lastBuild;
 	
+	/**
+	 * The current file monitor.
+	 */
+	
+	private final FileAlterationMonitor monitor = new FileAlterationMonitor(Constants.SERVE_FILE_POLLING_INTERVAL);
+	
+	/**
+	 * The nanohttpd server.
+	 */
+	
+	private final InternalServer server;
+	
 	public ServeCommand(final String... args) {
+		this(true, args);
+	}
+	
+	public ServeCommand(final boolean enableManualRebuild, final String... args) {
 		super(args);
 		this.port = args.length >= 2 && Utils.parseInt(args[1]) != null ? Utils.parseInt(args[1]) : Constants.DEFAULT_PORT;
+		this.enableManualRebuild = enableManualRebuild;
+		this.server = new InternalServer(port);
 	}
 	
 	@Override
 	public final void run() {
 		super.run();
 		try {
-			final InternalServer server = new InternalServer(port);
-			
 			final BuildCommand command = new BuildCommand(false, this.getOut(), this.getArguments());
 			command.setOutputing(false);
-			boolean firstBuild = true;
 			blankLine();
 			
+			if(!enableManualRebuild) {
+				newBuild(command, true);
+				firstBuild(command);
+				return;
+			}
+			
+			boolean firstBuild = true;
 			final Scanner scanner = new Scanner(System.in, StandardCharsets.UTF_8.name());
 			String line = "";
 			while(line.equals("")) {
 				newBuild(command, firstBuild);
 				if(firstBuild) {
-					registerFileListener(command);
-					buildDirectory = command.getCurrentBuildDirectory();
-					outputLine("You can point your browser to http://localhost:" + port + ".");
-					blankLine();
-					server.start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
-					if(Desktop.isDesktopSupported()) {
-						Desktop.getDesktop().browse(new URL("http://localhost:" + port).toURI());
-					}
+					firstBuild(command);
 				}
 				firstBuild = false;
-				standardOutputLine("Enter nothing to rebuild the website or enter something to stop the server (auto rebuild is enabled) :");
-				standardOutputLine("");
+				outputLine("Enter nothing to rebuild the website or enter something to stop the server (auto rebuild is enabled) :");
+				blankLine();
 				
-				if(isInterrupted()) {
-					break;
-				}
-				while(System.in.available() == 0 && !isInterrupted()) {
-					Thread.sleep(10);
-				}
 				if(isInterrupted()) {
 					break;
 				}
@@ -95,7 +110,6 @@ public class ServeCommand extends Command {
 				line = scanner.hasNextLine() && !isInterrupted() ? scanner.nextLine() : " ";
 			}
 			scanner.close();
-			server.stop();
 		}
 		catch(final Exception ex) {
 			printStackTrace(ex);
@@ -107,6 +121,39 @@ public class ServeCommand extends Command {
 	@Override
 	public final boolean isInterruptible() {
 		return true;
+	}
+	
+	@Override
+	public final void interrupt() {
+		try {
+			server.stop();
+			monitor.removeObserver(monitor.getObservers().iterator().next());
+			monitor.stop();
+		}
+		catch(final Exception ex) {
+			printStackTrace(ex);
+			broadcastCommandError(ex);
+		}
+		super.interrupt();
+	}
+	
+	/**
+	 * Triggers first build events.
+	 * 
+	 * @param command The current build command.
+	 * 
+	 * @throws Exception If an exception occurs.
+	 */
+	
+	private final void firstBuild(final BuildCommand command) throws Exception {
+		registerFileListener(command);
+		buildDirectory = command.getCurrentBuildDirectory();
+		outputLine("You can point your browser to http://localhost:" + port + ".");
+		blankLine();
+		server.start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
+		if(Desktop.isDesktopSupported()) {
+			Desktop.getDesktop().browse(new URL("http://localhost:" + port).toURI());
+		}
 	}
 	
 	/**
@@ -153,7 +200,6 @@ public class ServeCommand extends Command {
 		final DocsProject project = command.getProject();
 		
 		final FileAlterationObserver observer = new FileAlterationObserver(project.getDirectory());
-		final FileAlterationMonitor monitor = new FileAlterationMonitor(Constants.SERVE_FILE_POLLING_INTERVAL);
 		observer.addListener(new FileAlterationListenerAdaptor() {
 			
 			@Override

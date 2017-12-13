@@ -219,7 +219,7 @@ public class ProjectsFrame extends JFrame implements CommandListener {
 			@Override
 			public final void actionPerformed(final ActionEvent event) {
 				if(serveCommand == null) {
-					serveCommand = new ServeCommand(projectsModel.getElementAt(projectsList.getSelectedIndex()));
+					serveCommand = new ServeCommand(false, projectsModel.getElementAt(projectsList.getSelectedIndex()));
 					serveCommand.setOut(guiPrintStream);
 					serveCommand.addListener(ProjectsFrame.this);
 					new Thread(serveCommand).start();
