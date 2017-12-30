@@ -14,4 +14,4 @@ Allez dans le dossier _content_ et ouvrez le dossier correspondant à la langue 
 
 ## Vous voulez plus ?
 
-Si vous souhaitez modifier le thème, éditer le menu, apprendre à écrire en MarkDown, ... allez sur [la documentation de SkyDocs](https://skyost.github.io/SkyDocs).
+Si vous souhaitez modifier le thème, éditer le menu, apprendre à écrire en MarkDown, ... allez sur [la documentation de SkyDocs](https://skydocs.skyost.eu).

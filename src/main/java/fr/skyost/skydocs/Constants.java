@@ -22,7 +22,7 @@ public class Constants {
 	 * App's version.
 	 */
 	
-	public static final String APP_VERSION = "v0.5.1 Beta";
+	public static final String APP_VERSION = "v0.5.2 Beta";
 	
 	/**
 	 * App's authors.
@@ -34,7 +34,7 @@ public class Constants {
 	 * App's website.
 	 */
 	
-	public static final String APP_WEBSITE = "https://skyost.github.io/SkyDocs/";
+	public static final String APP_WEBSITE = "https://skydocs.skyost.eu";
 	
 	/**
 	 * ========
