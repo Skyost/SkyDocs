@@ -27,8 +27,9 @@ You can configure everything you want : themes, pages, menus, ...
 
 ## Documentation
 
-Everything you need to know is available on [the website](https://skyost.github.io/SkyDocs/).
+Everything you need to know is available on [the website](https://skydocs.skyost.eu).
 
 ## Download
 
-If you are interested, you can download SkyDocs on [this page](https://skyost.github.io/SkyDocs/en/documentation.html#downloading-installing).
+If you are interested, you can download SkyDocs on [this page](https://skydocs.skyost.eu/en/documentation.html#downloading-installing).
+You can also read the software's review on [Softpedia](http://www.softpedia.com/get/Others/SkyDocs.shtml).
