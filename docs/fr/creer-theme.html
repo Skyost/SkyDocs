@@ -70,6 +70,9 @@
 </ul>
 </li>
 <li>
+<a href="galerie-themes.html"><i class="fa fa-paint-brush" aria-hidden="true"></i> Galerie de thèmes</a>
+</li>
+<li>
 <a href="#"><i class="fa fa-question-circle" aria-hidden="true"></i> Aide</a>
 <ul>
 <li>
@@ -147,9 +150,9 @@ Souvenez-vous : SkyDocs utilise <a href="http://jtwig.org/documentation/referenc
 <tr><td><code>{{ page.getTitle() }}</code></td><td>Retourne le titre de la page (configuré dans l'en-tête du fichier MarkDown).</td></tr>
 <tr><td><code>{{ page.getLanguage() }}</code></td><td>Retourne la lange de la page (configuré dans l'en-tête du fichier MarkDown).</td></tr>
 <tr><td><code>{{ page.getContent() }}</code></td><td>Retourne le contenu de la page (une fois converti en HTML).</td></tr>
-<tr><td><code>{{ page.getRootRelativeURL() }}</code></td><td>Retourne une chaîne de caractères représentant l'adresse de la racine de votre site WEB relative à la page. Ainsi, si la page est située à <code>/en/creating-theme.html</code>, cette méthode renverra <code>../</code>.</td></tr>
 <tr><td><code>{{ page.getRawContent() }}</code></td><td>Retourne le contenu de la page.</td></tr>
-<tr><td><code>{{ page.getRelativeURL() }}</code></td><td>Retourne l'URL de la page.</td></tr>
+<tr><td><code>{{ page.getRootRelativeURL() }}</code></td><td>Retourne une chaîne de caractères représentant l'adresse de la racine de votre site WEB relative à la page. Ainsi, si la page est située à <code>/en/creating-theme.html</code>, cette méthode renverra <code>../</code>.</td></tr>
+<tr><td><code>{{ page.getPageRelativeURL() }}</code></td><td>Retourne l'URL de la page.</td></tr>
 <tr><td><code>{{ page.getMenu() }}</code></td><td>Retourne le menu relatif à cette page. Ce contenu sera parsé, vous pouvez donc utiliser les variables jtwig.</td></tr>
 <tr><td><code>{{ page.getLastModificationTime() }}</code></td><td>Retourne la dernière date de modification de la page formatée grâce à la langue du système.</td></tr>
 <tr><td><code>{{ page.getLastModificationTime(format) }}</code></td><td>Retourne la dernière date de modification de la page formated avec votre format. Veuillez accéder à <a href="https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html">cette page</a> pour connaître les différentes options de format.<br/>Par exemple, <code>{{ page.getLastModificationTime(&quot;yyyy-MM-dd&quot;) }}</code> peut afficher <em>2012-12-21</em>.</td></tr>
@@ -179,10 +182,10 @@ Une fois créé, ajoutez ce que vous souhaitez dedans : Scripts JS, du CSS et de
 <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/C6lzYBmoVxY?showinfo=0" allowfullscreen></iframe>
 </div>
 <section>
-<small class="date text-muted"><i class="fa fa-calendar" aria-hidden="true"></i> 28 août 2017 00:33:17</small>
+<small class="date text-muted"><i class="fa fa-calendar" aria-hidden="true"></i> 30 déc. 2017 15:37:00</small>
 <div class="paginator clearfix no-print">
 <a class="btn btn-secondary float-left" href="documentation.html" role="button"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
-<a class="btn btn-secondary float-right" href="a-propos.html" role="button"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+<a class="btn btn-secondary float-right" href="galerie-themes.html" role="button"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
 </div>
 </section>
 </article>

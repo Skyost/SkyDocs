@@ -70,6 +70,9 @@
 </ul>
 </li>
 <li>
+<a href="themes-gallery.html"><i class="fa fa-paint-brush" aria-hidden="true"></i> Themes gallery</a>
+</li>
+<li>
 <a href="#"><i class="fa fa-question-circle" aria-hidden="true"></i> Help</a>
 <ul>
 <li>
@@ -149,8 +152,8 @@ Remember : SkyDocs uses <a href="http://jtwig.org/documentation/reference/functi
 <tr><td><code>{{ page.getContent() }}</code></td><td>Gets the content of a page (once converted in HTML).</td></tr>
 <tr><td><code>{{ page.getRawContent() }}</code></td><td>Gets the content of a page.</td></tr>
 <tr><td><code>{{ page.getRootRelativeURL() }}</code></td><td>Gets a string that represents your website root address relative to a page. For instance, if the page is located at <code>/en/creating-theme.html</code>, this method will return <code>../</code>.</td></tr>
-<tr><td><code>{{ page.getRelativeURL() }}</code></td><td>Gets the relative URL of a page.</td></tr>
-<tr><td><code>{{ page.getMenu() }}</code></td><td>Gets the menu relative to a page. The content will be parsed therefore you can use jtwig variables.</td></tr>
+<tr><td><code>{{ page.getPageRelativeURL() }}</code></td><td>Gets the relative URL of a page.</td></tr>
+<tr><td><code>{{ page.getMenu() }}</code></td><td>Gets the menu relative to a page. The content will be parsed, therefore you can use jtwig variables.</td></tr>
 <tr><td><code>{{ page.getLastModificationTime() }}</code></td><td>Gets the last modification time of a page formatted with system's default locale.</td></tr>
 <tr><td><code>{{ page.getLastModificationTime(format) }}</code></td><td>Gets the last modification time of a page formatted with your format. Please check <a href="https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html">this page</a> to know available formatting options.<br/>For example, <code>{{ page.getLastModificationTime(&quot;yyyy-MM-dd&quot;) }}</code> can output <em>2012-12-21</em>.</td></tr>
 <tr><td><code>{{ page.getLastModificationTimeForLocale(locale) }}</code></td><td>Gets the last modification time of a page formatted with the specified locale. If the specified locale is not valid, the system's default locale will be used instead.</td></tr>
@@ -179,10 +182,10 @@ Once created, put everything you want in it : JS Scripts, some CSS and images, e
 <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/C6lzYBmoVxY?showinfo=0" allowfullscreen></iframe>
 </div>
 <section>
-<small class="date text-muted"><i class="fa fa-calendar" aria-hidden="true"></i> Aug 28, 2017 12:33:58 AM</small>
+<small class="date text-muted"><i class="fa fa-calendar" aria-hidden="true"></i> Dec 30, 2017 3:37:24 PM</small>
 <div class="paginator clearfix no-print">
 <a class="btn btn-secondary float-left" href="documentation.html" role="button"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
-<a class="btn btn-secondary float-right" href="about.html" role="button"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+<a class="btn btn-secondary float-right" href="themes-gallery.html" role="button"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
 </div>
 </section>
 </article>

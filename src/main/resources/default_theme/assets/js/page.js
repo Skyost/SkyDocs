@@ -21,7 +21,7 @@ $(document).ready(function() {
 	$('#navbar ul').addClass('navbar-nav mr-auto');
 	$('#navbar ul li').addClass('nav-item');
 	$('#navbar ul li > a').addClass('nav-link');
-	
+		
 	// THEME COLOR :
 	$('#theme-color').attr('content', rgb2hex($('header nav').css('background-color')));
 	
@@ -84,7 +84,9 @@ $(document).ready(function() {
 	if(("code[class^='language-']").length) {
 		$('head').append('<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/>');
 		$.getScript('https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js', function() {
-			hljs.initHighlightingOnLoad();
+			$('pre code').each(function(i, block) {
+				hljs.highlightBlock(block);
+			});
 		});
 	}
 	
@@ -143,9 +145,15 @@ function resetPosition(navigation) {
 }
 
 function localize(messages) {
-	$('header form input').attr('placeholder', messages['search-box-placeholder']);
-	
-	var links = $('.paginator a');
-	$(links[0]).html($(links[0]).html() + ' ' + messages['paginator-previous']);
-	$(links[1]).html(messages['paginator-next'] + ' ' + $(links[1]).html());
+	for(var selector in messages){
+		var target = selector.split('&');
+		switch(target[1].toLowerCase()) {
+			case 'html':
+			$(target[0]).html(messages[selector]);
+			break;
+			default:
+			$(target[0]).attr(target[1], messages[selector]);
+			break;
+		}
+	}
 }
