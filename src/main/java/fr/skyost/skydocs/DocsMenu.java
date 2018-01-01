@@ -158,19 +158,22 @@ public class DocsMenu {
 	 */
 	
 	protected final String toHTML(final DocsPage page) {
-		JtwigModel model = null;
-		EnvironmentConfiguration configuration = null;
-		if(page != null) {
-			model = page.getProject().getTemplate().createModel().with(Constants.VARIABLE_PAGE, page);
-			
-			final IncludeFileFunction includeFile = new IncludeFileFunction(page.getProject().getContentDirectory(), model, DocsTemplate.RANGE_FUNCTION);
-			configuration = EnvironmentConfigurationBuilder.configuration().functions().add(includeFile).add(DocsTemplate.RANGE_FUNCTION).and().build();
-		}
-		
 		final AutoLineBreakStringBuilder builder = new AutoLineBreakStringBuilder("<ul>");
 		orderMenuEntries(getEntries());
-		for(final DocsMenuEntry entry : getEntries()) {
-			builder.append(page == null ? entry.toHTML() : JtwigTemplate.inlineTemplate(entry.toHTML(), configuration).render(model));
+		if(page == null) {
+			for(final DocsMenuEntry entry : getEntries()) {
+				builder.append(entry.toHTML());
+			}
+		}
+		else {
+			final JtwigModel model = page.getProject().getTemplate().createModel().with(Constants.VARIABLE_PAGE, page);
+			
+			final IncludeFileFunction includeFile = new IncludeFileFunction(page.getProject().getContentDirectory(), model, DocsTemplate.RANGE_FUNCTION);
+			final EnvironmentConfiguration configuration = EnvironmentConfigurationBuilder.configuration().functions().add(includeFile).add(DocsTemplate.RANGE_FUNCTION).and().build();
+			
+			for(final DocsMenuEntry entry : getEntries()) {
+				builder.append(JtwigTemplate.inlineTemplate(entry.toHTML(), configuration).render(model));
+			}
 		}
 		builder.append(Utils.LINE_SEPARATOR + "</ul>");
 		return builder.toString();
@@ -197,7 +200,9 @@ public class DocsMenu {
 			
 			if(parts[0] != null) {
 				final Map<String, Object> headers = Utils.decodeFileHeader(parts[0]);
-				language = headers != null && headers.containsKey(Constants.KEY_HEADER_LANGUAGE) ? headers.get(Constants.KEY_HEADER_LANGUAGE).toString() : language;
+				if(headers != null && headers.containsKey(Constants.KEY_HEADER_LANGUAGE)) {
+					language = headers.get(Constants.KEY_HEADER_LANGUAGE).toString();
+				}
 			}
 			menu.setLanguage(language);
 			
@@ -256,7 +261,7 @@ public class DocsMenu {
 		 * If the link should be opened in a new tab.
 		 */
 		
-		private boolean wewTab;
+		private boolean newTab;
 		
 		/**
 		 * Children of this entry.
@@ -278,7 +283,7 @@ public class DocsMenu {
 			this.title = title;
 			this.link = link;
 			this.weight = weight;
-			this.wewTab = newTab;
+			this.newTab = newTab;
 			if(children != null) {
 				this.children.addAll(Arrays.asList(children));
 			}
@@ -356,7 +361,7 @@ public class DocsMenu {
 		 */
 		
 		public final boolean shouldOpenInNewTab() {
-			return wewTab;
+			return newTab;
 		}
 		
 		/**
@@ -366,7 +371,7 @@ public class DocsMenu {
 		 */
 		
 		public final void setOpenInNewTable(final boolean newTab) {
-			this.wewTab = newTab;
+			this.newTab = newTab;
 		}
 		
 		/**
@@ -458,25 +463,25 @@ public class DocsMenu {
 		
 		@SuppressWarnings("unchecked")
 		public static final DocsMenuEntry fromYAML(final Map<String, Object> yamlObject) throws InvalidMenuEntryException {
-			final DocsMenuEntry page = new DocsMenuEntry(null, null, 0, false);
+			final DocsMenuEntry page = new DocsMenuEntry(null, "#", 0, false);
 			
 			if(!yamlObject.containsKey(Constants.KEY_MENU_TITLE)) {
 				throw new InvalidMenuEntryException("Missing key \"" + Constants.KEY_MENU_TITLE + "\".");
 			}
 			page.setTitle(yamlObject.get(Constants.KEY_MENU_TITLE).toString());
 			
-			if(!yamlObject.containsKey(Constants.KEY_MENU_LINK)) {
-				throw new InvalidMenuEntryException("Missing key \"" + Constants.KEY_MENU_LINK + "\".");
+			if(yamlObject.containsKey(Constants.KEY_MENU_LINK)) {
+				page.setLink(yamlObject.get(Constants.KEY_MENU_LINK).toString());
 			}
-			page.setLink(yamlObject.get(Constants.KEY_MENU_LINK).toString());
 			
-			if(!yamlObject.containsKey(Constants.KEY_MENU_WEIGHT)) {
-				throw new InvalidMenuEntryException("Missing key \"" + Constants.KEY_MENU_WEIGHT + "\".");
+			if(yamlObject.containsKey(Constants.KEY_MENU_WEIGHT)) {
+				final Integer weight = Utils.parseInt(yamlObject.get(Constants.KEY_MENU_WEIGHT).toString());
+				page.setWeight(weight == null ? 0 : weight);
 			}
-			page.setWeight(Integer.parseInt(yamlObject.get(Constants.KEY_MENU_WEIGHT).toString()));
 			
 			if(yamlObject.containsKey(Constants.KEY_MENU_NEW_TAB)) {
-				page.setOpenInNewTable(Boolean.parseBoolean(yamlObject.get(Constants.KEY_MENU_NEW_TAB).toString()));
+				final Boolean newTab = Utils.parseBoolean(yamlObject.get(Constants.KEY_MENU_NEW_TAB).toString());
+				page.setOpenInNewTable(newTab == null ? false : newTab);
 			}
 			
 			if(yamlObject.containsKey(Constants.KEY_MENU_CHILDREN)) {

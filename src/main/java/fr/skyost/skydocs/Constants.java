@@ -337,7 +337,7 @@ public class Constants {
 	public static final String RESOURCE_NEW_PROJECT_DIRECTORY = "new_project";
 	
 	/**
-	 * The project's icon location. No need to use another icon as it is already stored in the application.
+	 * The project's icon location. No need to use another icon as it is already stored somewhere in the application.
 	 */
 	
 	public static final String RESOURCE_PROJECT_ICON = "/main/resources/default_theme/assets/img/icon.png";
@@ -437,12 +437,6 @@ public class Constants {
 	 */
 	
 	public static final String GUI_FRAME_TITLE = APP_NAME + " " + APP_VERSION + " - GUI";
-	
-	/**
-	 * The label text.
-	 */
-	
-	public static final String GUI_LABEL_MENU = "What do you want to do ?";
 	
 	/**
 	 * The create button text.

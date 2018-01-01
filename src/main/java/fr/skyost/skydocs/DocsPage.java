@@ -130,7 +130,7 @@ public class DocsPage implements Comparable<DocsPage> {
 		this.language = header != null && header.containsKey(Constants.KEY_HEADER_LANGUAGE) ? header.get(Constants.KEY_HEADER_LANGUAGE).toString() : project.getDefaultLanguage();
 		this.absolutePath = file.getPath();
 		this.path = absolutePath.replace(project.getContentDirectory().getPath(), "").replace(project.getBuildDirectory().getPath(), "");
-		this.relativeURL = getBuildDestination(project).getPath().replace(project.getBuildDirectory().getPath(), "").replace(File.separator, "/");
+		this.relativeURL = getBuildDestination().getPath().replace(project.getBuildDirectory().getPath(), "").replace(File.separator, "/");
 		
 		if(header != null) {
 			if(header.containsKey(Constants.KEY_HEADER_PREVIOUS)) {
@@ -472,11 +472,9 @@ public class DocsPage implements Comparable<DocsPage> {
 	
 	/**
 	 * Gets the build destination path of this page.
-	 * 
-	 * @param project The project this page belongs to.
 	 */
 	
-	public final String getBuildDestinationPath(final DocsProject project) {
+	public final String getBuildDestinationPath() {
 		return project.getBuildDirectory().getPath()
 				+ (path.split(Pattern.quote(File.separator))[1].equals(language) ? "" : File.separator + language)
 				+ path.substring(0, path.lastIndexOf(".")) + ".html";
@@ -488,8 +486,8 @@ public class DocsPage implements Comparable<DocsPage> {
 	 * @param project The project this page belongs to.
 	 */
 	
-	public final File getBuildDestination(final DocsProject project) {
-		return new File(getBuildDestinationPath(project));
+	public final File getBuildDestination() {
+		return new File(getBuildDestinationPath());
 	}
 	
 	/**

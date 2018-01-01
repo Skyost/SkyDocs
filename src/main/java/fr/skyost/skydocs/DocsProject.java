@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -61,7 +62,7 @@ public class DocsProject {
 	 * Creates a new DocsProject instance.
 	 * 
 	 * @param projectVariables The prject.yml variables.
-	 * @param directory The project's dirctory.
+	 * @param directory The project's directory.
 	 * 
 	 * @throws InvalidProjectDataException If the projectVariables supplied are invalid.
 	 * @throws IOException If an exception occurs while creating the template.
@@ -73,17 +74,31 @@ public class DocsProject {
 		if(projectVariables == null) {
 			throw new InvalidProjectDataException("Invalid project data.");
 		}
-		if(!projectVariables.containsKey(Constants.KEY_PROJECT_NAME)) {
-			throw new InvalidProjectDataException("Missing key \"" + Constants.KEY_PROJECT_NAME + "\".");
+		if(!this.projectVariables.containsKey(Constants.KEY_PROJECT_NAME)) {
+			this.projectVariables.put(Constants.KEY_PROJECT_NAME, "My Documentation");
+			
+			System.out.println();
+			System.out.println("No \"" + Constants.KEY_PROJECT_NAME + "\" in " + Constants.FILE_PROJECT_DATA + ". Default value is : \"" + this.projectVariables.get(Constants.KEY_PROJECT_NAME) + "\".");
 		}
-		if(!projectVariables.containsKey(Constants.KEY_PROJECT_DESCRIPTION)) {
-			throw new InvalidProjectDataException("Missing key \"" + Constants.KEY_PROJECT_DESCRIPTION + "\".");
+		if(!this.projectVariables.containsKey(Constants.KEY_PROJECT_DESCRIPTION)) {
+			this.projectVariables.put(Constants.KEY_PROJECT_DESCRIPTION, "Documentation built with " + Constants.APP_NAME + ".");
+
+			System.out.println();
+			System.out.println("No \"" + Constants.KEY_PROJECT_DESCRIPTION + "\" in " + Constants.FILE_PROJECT_DATA + ". Default value is : \"" + this.projectVariables.get(Constants.KEY_PROJECT_DESCRIPTION) + "\".");
 		}
-		if(!projectVariables.containsKey(Constants.KEY_PROJECT_URL)) {
-			throw new InvalidProjectDataException("Missing key \"" + Constants.KEY_PROJECT_URL + "\".");
+		if(!this.projectVariables.containsKey(Constants.KEY_PROJECT_URL)) {
+			this.projectVariables.put(Constants.KEY_PROJECT_URL, "https://skydocs.skyost.eu");
+			
+
+			System.out.println();
+			System.out.println("No \"" + Constants.KEY_PROJECT_URL + "\" in " + Constants.FILE_PROJECT_DATA + ". Default value is : \"" + this.projectVariables.get(Constants.KEY_PROJECT_URL) + "\".");
 		}
-		if(!projectVariables.containsKey(Constants.KEY_PROJECT_LANGUAGE)) {
-			throw new InvalidProjectDataException("Missing key \"" + Constants.KEY_PROJECT_LANGUAGE + "\".");
+		if(!this.projectVariables.containsKey(Constants.KEY_PROJECT_LANGUAGE)) {
+			this.projectVariables.put(Constants.KEY_PROJECT_LANGUAGE, Locale.ENGLISH.getLanguage());
+			
+
+			System.out.println();
+			System.out.println("No \"" + Constants.KEY_PROJECT_LANGUAGE + "\" in " + Constants.FILE_PROJECT_DATA + ". Default value is : \"" + this.projectVariables.get(Constants.KEY_PROJECT_LANGUAGE) + "\".");
 		}
 	}
 	
@@ -91,7 +106,7 @@ public class DocsProject {
 	 * Creates a new DocsProject instance.
 	 * 
 	 * @param projectVariables The project.yml variables.
-	 * @param directory The project's dirctory.
+	 * @param directory The project's directory.
 	 * @param pages Pages of this project.
 	 * @param menus Menus of this project.
 	 * @param template Template of this project.
@@ -424,7 +439,7 @@ public class DocsProject {
 	
 	public final Object getField(final String key) {
 		if(!projectVariables.containsKey(key)) {
-			return "The project.yml file does not contains the specified key \"" + key + "\".";
+			return "The \"" + Constants.FILE_PROJECT_DATA + "\" file does not contains the specified key \"" + key + "\".";
 		}
 		return projectVariables.get(key);
 	}
@@ -491,7 +506,7 @@ public class DocsProject {
 			}
 			if(FilenameUtils.getExtension(child.getName()).equalsIgnoreCase("md")) {
 				final DocsPage page = new DocsPage(this, child);
-				final String path = page.getBuildDestinationPath(this);
+				final String path = page.getBuildDestinationPath();
 				if(destinations.contains(path)) {
 					System.out.println();
 					System.out.println("The file \"" + child.getPath() + "\" has a file with the same name in its build directory \"" + path + "\". Therefore it will not be copied.");
@@ -566,7 +581,7 @@ public class DocsProject {
 			}
 			
 			if(project.getMenus().size() == 0) {
-				project.addMenus(new DocsMenu(project.getDefaultLanguage(), new DocsMenuEntry("No menu.yml found", "#", 0, false)));
+				project.addMenus(new DocsMenu(project.getDefaultLanguage(), new DocsMenuEntry("No \"" + Constants.FILE_MENU_PREFIX + Constants.FILE_MENU_SUFFIX + "\" found", "#", 0, false)));
 			}
 			if(project.getMenuByLanguage(project.getDefaultLanguage()) == null) {
 				final DocsMenu defaultMenu = project.getMenus().iterator().next();

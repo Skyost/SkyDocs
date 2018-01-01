@@ -9,7 +9,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.regex.Pattern;
 
 import com.eclipsesource.json.Json;
-import com.eclipsesource.json.JsonArray;
+import com.eclipsesource.json.JsonObject;
 
 /**
  * An update checker based on Github releases.
@@ -20,7 +20,7 @@ import com.eclipsesource.json.JsonArray;
 public class GithubUpdater extends Thread {
 	
 	public static final String UPDATER_NAME = "GithubUpdater";
-	public static final String UPDATER_VERSION = "0.1.1";
+	public static final String UPDATER_VERSION = "0.1.2";
 	
 	public static final String UPDATER_GITHUB_USERNAME = "Skyost";
 	public static final String UPDATER_GITHUB_REPO = "SkyDocs";
@@ -44,25 +44,21 @@ public class GithubUpdater extends Thread {
 	public final void run() {
 		caller.updaterStarted();
 		try {
-			final HttpURLConnection connection = (HttpURLConnection)new URL("https://api.github.com/repos/" + UPDATER_GITHUB_USERNAME + "/" + UPDATER_GITHUB_REPO + "/releases").openConnection();
-			connection.addRequestProperty("User-Agent", UPDATER_NAME + " by " + UPDATER_GITHUB_USERNAME + " v" + UPDATER_VERSION);
+			final HttpURLConnection connection = (HttpURLConnection)new URL("https://api.github.com/repos/" + UPDATER_GITHUB_USERNAME + "/" + UPDATER_GITHUB_REPO + "/releases/latest").openConnection();
+			connection.addRequestProperty("User-Agent", UPDATER_NAME + " v" + UPDATER_VERSION);
+			
 			final String response = connection.getResponseCode() + " " + connection.getResponseMessage();
 			caller.updaterResponse(response);
-			if(!response.startsWith("2")) {
-				throw new Exception("Invalid response : " + response);
-			}
-			final InputStream input = connection.getInputStream();
+			
+			final InputStream input = response.startsWith("2") ? connection.getInputStream() : connection.getErrorStream();
 			final InputStreamReader inputStreamReader = new InputStreamReader(input, StandardCharsets.UTF_8);
 			final BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-			final JsonArray releases = Json.parse(bufferedReader.readLine()).asArray();
-			if(releases.size() < 1) {
-				caller.updaterNoUpdate(localVersion, localVersion);
-				return;
-			}
+			final JsonObject latest = Json.parse(bufferedReader.readLine()).asObject();
 			input.close();
 			inputStreamReader.close();
 			bufferedReader.close();
-			final String remoteVersion = releases.get(0).asObject().get("tag_name").asString().substring(1);
+			
+			final String remoteVersion = latest.getString("tag_name", "v0").substring(1);
 			if(compareVersions(remoteVersion, localVersion)) {
 				caller.updaterUpdateAvailable(localVersion, remoteVersion);
 			}
@@ -71,6 +67,7 @@ public class GithubUpdater extends Thread {
 			}
 		}
 		catch(final Exception ex) {
+			ex.printStackTrace();
 			caller.updaterException(ex);
 		}
 	}

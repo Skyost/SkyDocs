@@ -35,6 +35,9 @@ public class HelpCommand extends Command {
 		case Constants.COMMAND_HELP:
 			outputLine(Constants.COMMAND_HELP_SYNTAX);
 			break;
+		case Constants.COMMAND_GUI:
+			outputLine(Constants.COMMAND_GUI_SYNTAX);
+			break;
 		default:
 			outputLine(Constants.APP_NAME + " " + Constants.APP_VERSION + " by " + Constants.APP_AUTHORS);
 			outputLine("Commands :");

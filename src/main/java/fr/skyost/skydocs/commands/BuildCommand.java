@@ -109,7 +109,7 @@ public class BuildCommand extends Command {
 					continue;
 				}
 				
-				final File destination = page.getBuildDestination(project);
+				final File destination = page.getBuildDestination();
 				if(!destination.getParentFile().exists()) {
 					destination.getParentFile().mkdirs();
 				}
@@ -139,7 +139,7 @@ public class BuildCommand extends Command {
 			
 			final File contentDirectory = Utils.createFileIfNotExist(project.getContentDirectory());
 			for(final File content : contentDirectory.listFiles()) {
-				copy(copied, content, buildDirectory);
+				copyFile(copied, content, buildDirectory);
 			}
 			Utils.extract(Constants.RESOURCE_REDIRECT_LANGUAGE_PATH, Constants.RESOURCE_REDIRECT_LANGUAGE_FILE, buildDirectory);
 			
@@ -153,7 +153,7 @@ public class BuildCommand extends Command {
 				output("Copying assets directory...");
 				firstTime();
 				
-				copyAssets(assetsDirectory, new File(buildDirectory, Constants.FILE_ASSETS_DIRECTORY));
+				copyAsset(assetsDirectory, new File(buildDirectory, Constants.FILE_ASSETS_DIRECTORY));
 				
 				secondTime();
 				printTimeElapsed();
@@ -252,7 +252,7 @@ public class BuildCommand extends Command {
 	 * @throws InterruptionException If the operation should be aborted.
 	 */
 	
-	public final void copy(final HashSet<File> copied, final File file, File destination) throws IOException, InterruptionException {
+	public final void copyFile(final HashSet<File> copied, final File file, File destination) throws IOException, InterruptionException {
 		exitIfInterrupted();
 		
 		if(copied.contains(file) || (file.isFile() && FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("md"))) {
@@ -275,12 +275,12 @@ public class BuildCommand extends Command {
 		}
 		destination.mkdirs();
 		for(final File child : file.listFiles()) {
-			copy(copied, child, new File(destination.getPath() + File.separator + file.getName()));
+			copyFile(copied, child, new File(destination.getPath() + File.separator + file.getName()));
 		}
 	}
 	
 	/**
-	 * Copies needed assets.
+	 * Copies an asset (file or directory).
 	 * 
 	 * @param directory The assets directory.
 	 * @param destination The destination.
@@ -289,7 +289,7 @@ public class BuildCommand extends Command {
 	 * @throws InterruptionException If the operation should be aborted.
 	 */
 	
-	public final void copyAssets(final File directory, final File destination) throws IOException, InterruptionException {
+	public final void copyAsset(final File directory, final File destination) throws IOException, InterruptionException {
 		exitIfInterrupted();
 		
 		if(directory.isFile()) {
@@ -321,7 +321,7 @@ public class BuildCommand extends Command {
 		}
 		destination.mkdirs();
 		for(final File file : directory.listFiles()) {
-			copyAssets(file, new File(destination, file.getName()));
+			copyAsset(file, new File(destination, file.getName()));
 		}
 	}
 	

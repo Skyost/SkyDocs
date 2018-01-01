@@ -42,7 +42,7 @@ public class UpdateCommand extends Command implements GithubUpdaterResultListene
 	@Override
 	public final void updaterUpdateAvailable(final String localVersion, final String remoteVersion) {
 		outputLine("An update is available : v" + remoteVersion + " !");
-		outputLine("Heads to https://github.com/" + GithubUpdater.UPDATER_GITHUB_USERNAME + "/" + GithubUpdater.UPDATER_GITHUB_REPO + "/releases to download it !");
+		outputLine("Head to https://github.com/" + GithubUpdater.UPDATER_GITHUB_USERNAME + "/" + GithubUpdater.UPDATER_GITHUB_REPO + "/releases/latest to download it !");
 	}
 
 	@Override

@@ -13,7 +13,22 @@ import fr.skyost.skydocs.commands.UpdateCommand;
 import fr.skyost.skydocs.commands.frames.ProjectsFrame;
 import fr.skyost.skydocs.exceptions.LoadException;
 
+/**
+ * Executable class of SkyDocs.
+ */
+
 public class SkyDocs {
+	
+	/**
+	 * Main method of SkyDocs.
+	 * 
+	 * @param args Arguments to pass.
+	 * 
+	 * @throws ClassNotFoundException If an error occurs while finding the default look and feel.
+	 * @throws InstantiationException If an error occurs while instantiating the default look and feel.
+	 * @throws IllegalAccessException If an error occurs while accessing the default look and feel.
+	 * @throws UnsupportedLookAndFeelException If an error occurs while applying the default look and feel.
+	 */
 	
 	public static final void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
 		if(args.length == 0) {
@@ -48,7 +63,9 @@ public class SkyDocs {
 			break;
 		case Constants.COMMAND_GUI:
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new ProjectsFrame().setVisible(true);
+			final ProjectsFrame projectsFrame = new ProjectsFrame();
+			projectsFrame.setVisible(true);
+			projectsFrame.checkForUpdates();
 			break;
 		default:
 			new HelpCommand(Arrays.copyOfRange(args, 1, args.length)).run();

@@ -29,11 +29,14 @@ import fr.skyost.skydocs.Constants;
 import fr.skyost.skydocs.commands.BuildCommand;
 import fr.skyost.skydocs.commands.Command;
 import fr.skyost.skydocs.commands.Command.CommandListener;
+import fr.skyost.skydocs.utils.GithubUpdater.GithubUpdaterResultListener;
+import fr.skyost.skydocs.utils.GithubUpdater;
 import fr.skyost.skydocs.utils.Utils;
 import fr.skyost.skydocs.commands.NewCommand;
 import fr.skyost.skydocs.commands.ServeCommand;
 
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -44,10 +47,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import javax.swing.border.EmptyBorder;
@@ -57,7 +59,7 @@ import java.awt.Toolkit;
  * SkyDocs' GUI.
  */
 
-public class ProjectsFrame extends JFrame implements CommandListener {
+public class ProjectsFrame extends JFrame implements CommandListener, GithubUpdaterResultListener {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -90,6 +92,15 @@ public class ProjectsFrame extends JFrame implements CommandListener {
 
 			@Override
 			public final void windowClosing(final WindowEvent event) {
+				if(newCommand != null) {
+					newCommand.interrupt();
+				}
+				else if(buildCommand != null) {
+					buildCommand.interrupt();
+				}
+				else if(serveCommand != null) {
+					serveCommand.interrupt();
+				}
 				saveHistory();
 				System.exit(0);
 			}
@@ -122,7 +133,7 @@ public class ProjectsFrame extends JFrame implements CommandListener {
 		);
 		projectsPanel.setLayout(projectsPanelLayout);
 		
-		final JLabel lblGlobalMenu = new JLabel(Constants.GUI_LABEL_MENU);
+		final JLabel lblGlobalMenu = new JLabel("What do you want to do ?");
 		lblGlobalMenu.setFont(lblGlobalMenu.getFont().deriveFont(Font.ITALIC));
 		
 		createProjectButton.addActionListener(new ActionListener() {
@@ -349,18 +360,59 @@ public class ProjectsFrame extends JFrame implements CommandListener {
 		JOptionPane.showMessageDialog(this, String.format(Constants.GUI_DIALOG_ERROR_MESSAGE, error.getMessage()), error.getClass().getName(), JOptionPane.ERROR_MESSAGE);
 	}
 	
+	@Override
+	public final void updaterStarted() {}
+
+	@Override
+	public final void updaterException(final Exception ex) {}
+
+	@Override
+	public final void updaterResponse(final String response) {}
+
+	@Override
+	public final void updaterUpdateAvailable(final String localVersion, final String remoteVersion) {
+		final String link = "https://github.com/" + GithubUpdater.UPDATER_GITHUB_USERNAME + "/" + GithubUpdater.UPDATER_GITHUB_REPO + "/releases/latest";
+		if(JOptionPane.showConfirmDialog(this, "<html>An update is available : v" + remoteVersion + " !<br/>" + "Would you like to visit " + link + " to download it ?</html>", Constants.APP_NAME, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+			try {
+				if(Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+					Desktop.getDesktop().browse(new URI(link));
+				}
+			}
+			catch(final Exception ex) {
+				ex.printStackTrace(guiPrintStream);
+				ex.printStackTrace();
+				JOptionPane.showMessageDialog(ProjectsFrame.this, String.format(Constants.GUI_DIALOG_ERROR_MESSAGE, ex.getMessage()), ex.getClass().getName(), JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
+
+	@Override
+	public final void updaterNoUpdate(final String localVersion, final String remoteVersion) {}
+	
+	/**
+	 * Builds a list of icons to use with Swing.
+	 * 
+	 * @return A list of icons to use with Swing.
+	 */
+	
 	private final List<Image> buildIconsList() {
-		final List<Image> icons = new ArrayList<Image>();
 		final Image icon = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource(Constants.RESOURCE_PROJECT_ICON));
-		icons.addAll(Arrays.asList(
+		return Arrays.asList(
 			icon.getScaledInstance(16, 16, Image.SCALE_SMOOTH),
 			icon.getScaledInstance(32, 32, Image.SCALE_SMOOTH),
 			icon.getScaledInstance(64, 64, Image.SCALE_SMOOTH),
 			icon.getScaledInstance(128, 128, Image.SCALE_SMOOTH),
 			icon.getScaledInstance(256, 256, Image.SCALE_SMOOTH),
 			icon//.getScaledInstance(512, 512, Image.SCALE_SMOOTH) // Already in 512x512.
-		));
-		return Collections.unmodifiableList(icons);
+		);
+	}
+	
+	/**
+	 * Checks for updates.
+	 */
+	
+	public final void checkForUpdates() {
+		new GithubUpdater(Constants.APP_VERSION.split(" ")[0].substring(1), this).start();
 	}
 	
 	/**

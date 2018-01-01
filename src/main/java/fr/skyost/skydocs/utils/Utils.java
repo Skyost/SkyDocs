@@ -99,6 +99,22 @@ public class Utils {
 	}
 	
 	/**
+	 * Tries to parse a Boolean from a String.
+	 * 
+	 * @param string The String.
+	 * 
+	 * @return The Boolean or null.
+	 */
+	
+	public static final Boolean parseBoolean(final String string) {
+		try {
+			return Boolean.parseBoolean(string);
+		}
+		catch(final Exception ex) {}
+		return null;
+	}
+	
+	/**
 	 * Gets the JAR file.
 	 * 
 	 * @return The JAR file.
