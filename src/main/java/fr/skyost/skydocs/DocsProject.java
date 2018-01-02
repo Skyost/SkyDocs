@@ -21,6 +21,7 @@ import fr.skyost.skydocs.exceptions.InvalidProjectDataException;
 import fr.skyost.skydocs.exceptions.InvalidTemplateException;
 import fr.skyost.skydocs.exceptions.LoadException;
 import fr.skyost.skydocs.utils.Utils;
+import fr.skyost.skydocs.utils.Utils.Pair;
 
 /**
  * Represents a project.
@@ -64,7 +65,7 @@ public class DocsProject {
 	 * @param projectVariables The prject.yml variables.
 	 * @param directory The project's directory.
 	 * 
-	 * @throws InvalidProjectDataException If the projectVariables supplied are invalid.
+	 * @throws InvalidProjectDataException If the supplied project variables are invalid.
 	 * @throws IOException If an exception occurs while creating the template.
 	 * @throws InvalidTemplateException If an exception occurs while creating the template.
 	 */
@@ -73,32 +74,6 @@ public class DocsProject {
 		this(projectVariables, directory, null, null, null);
 		if(projectVariables == null) {
 			throw new InvalidProjectDataException("Invalid project data.");
-		}
-		if(!this.projectVariables.containsKey(Constants.KEY_PROJECT_NAME)) {
-			this.projectVariables.put(Constants.KEY_PROJECT_NAME, "My Documentation");
-			
-			System.out.println();
-			System.out.println("No \"" + Constants.KEY_PROJECT_NAME + "\" in " + Constants.FILE_PROJECT_DATA + ". Default value is : \"" + this.projectVariables.get(Constants.KEY_PROJECT_NAME) + "\".");
-		}
-		if(!this.projectVariables.containsKey(Constants.KEY_PROJECT_DESCRIPTION)) {
-			this.projectVariables.put(Constants.KEY_PROJECT_DESCRIPTION, "Documentation built with " + Constants.APP_NAME + ".");
-
-			System.out.println();
-			System.out.println("No \"" + Constants.KEY_PROJECT_DESCRIPTION + "\" in " + Constants.FILE_PROJECT_DATA + ". Default value is : \"" + this.projectVariables.get(Constants.KEY_PROJECT_DESCRIPTION) + "\".");
-		}
-		if(!this.projectVariables.containsKey(Constants.KEY_PROJECT_URL)) {
-			this.projectVariables.put(Constants.KEY_PROJECT_URL, "https://skydocs.skyost.eu");
-			
-
-			System.out.println();
-			System.out.println("No \"" + Constants.KEY_PROJECT_URL + "\" in " + Constants.FILE_PROJECT_DATA + ". Default value is : \"" + this.projectVariables.get(Constants.KEY_PROJECT_URL) + "\".");
-		}
-		if(!this.projectVariables.containsKey(Constants.KEY_PROJECT_LANGUAGE)) {
-			this.projectVariables.put(Constants.KEY_PROJECT_LANGUAGE, Locale.ENGLISH.getLanguage());
-			
-
-			System.out.println();
-			System.out.println("No \"" + Constants.KEY_PROJECT_LANGUAGE + "\" in " + Constants.FILE_PROJECT_DATA + ". Default value is : \"" + this.projectVariables.get(Constants.KEY_PROJECT_LANGUAGE) + "\".");
 		}
 	}
 	
@@ -111,7 +86,7 @@ public class DocsProject {
 	 * @param menus Menus of this project.
 	 * @param template Template of this project.
 	 * 
-	 * @throws InvalidProjectDataException If the projectVariables supplied are invalid.
+	 * @throws InvalidProjectDataException If the supplied project variables are invalid.
 	 * @throws IOException If an exception occurs while creating the template.
 	 * @throws InvalidTemplateException If an exception occurs while creating the template.
 	 */
@@ -137,6 +112,9 @@ public class DocsProject {
 	 */
 	
 	public final String getName() {
+		if(!projectVariables.containsKey(Constants.KEY_PROJECT_NAME)) {
+			setName("My Documentation");
+		}
 		return projectVariables.get(Constants.KEY_PROJECT_NAME).toString();
 	}
 	
@@ -157,6 +135,9 @@ public class DocsProject {
 	 */
 	
 	public final String getDescription() {
+		if(!projectVariables.containsKey(Constants.KEY_PROJECT_DESCRIPTION)) {
+			setDescription("Documentation built with " + Constants.APP_NAME + ".");
+		}
 		return projectVariables.get(Constants.KEY_PROJECT_DESCRIPTION).toString();
 	}
 	
@@ -177,6 +158,9 @@ public class DocsProject {
 	 */
 	
 	public final String getURL() {
+		if(!projectVariables.containsKey(Constants.KEY_PROJECT_URL)) {
+			setURL(Constants.APP_WEBSITE);
+		}
 		return projectVariables.get(Constants.KEY_PROJECT_URL).toString();
 	}
 	
@@ -197,6 +181,9 @@ public class DocsProject {
 	 */
 	
 	public final String getDefaultLanguage() {
+		if(!projectVariables.containsKey(Constants.KEY_PROJECT_LANGUAGE)) {
+			setDefaultLanguage(Locale.ENGLISH.getLanguage());
+		}
 		return projectVariables.get(Constants.KEY_PROJECT_LANGUAGE).toString();
 	}
 	
@@ -217,7 +204,7 @@ public class DocsProject {
 	 */
 	
 	public final boolean hasLunrSearch() {
-		return projectVariables.containsKey(Constants.KEY_PROJECT_LUNR_SEARCH) && Boolean.valueOf(projectVariables.get(Constants.KEY_PROJECT_LUNR_SEARCH).toString());
+		return projectVariables.containsKey(Constants.KEY_PROJECT_LUNR_SEARCH) && Boolean.TRUE.equals(Utils.parseBoolean(projectVariables.get(Constants.KEY_PROJECT_LUNR_SEARCH).toString()));
 	}
 	
 	/**
@@ -237,7 +224,7 @@ public class DocsProject {
 	 */
 	
 	public final boolean isDefaultOrderAlphabetical() {
-		return projectVariables.containsKey(Constants.KEY_PROJECT_DEFAULT_ORDER_ALPHABETICAL) && Boolean.valueOf(projectVariables.get(Constants.KEY_PROJECT_DEFAULT_ORDER_ALPHABETICAL).toString());
+		return projectVariables.containsKey(Constants.KEY_PROJECT_DEFAULT_ORDER_ALPHABETICAL) && Boolean.TRUE.equals(Utils.parseBoolean(projectVariables.get(Constants.KEY_PROJECT_DEFAULT_ORDER_ALPHABETICAL).toString()));
 	}
 	
 	/**
@@ -479,11 +466,13 @@ public class DocsProject {
 	 * 
 	 * @param directory The directory.
 	 * 
+	 * @return A set of files that are not going to be copied because they already exist in the destination.
+	 * 
 	 * @throws LoadException If the specified file is not a directory.
 	 */
 	
-	private final void loadPages(final File directory) throws LoadException {
-		loadPages(directory, new HashSet<String>());
+	private final HashSet<String> loadPages(final File directory) throws LoadException {
+		return loadPages(directory, new HashSet<String>());
 	}
 	
 	/**
@@ -492,13 +481,16 @@ public class DocsProject {
 	 * @param directory The directory.
 	 * @param destinations Already added pages destinations.
 	 * 
+	 * @return A set of files that are not going to be copied because they already exist in the destination.
+	 * 
 	 * @throws LoadException If the specified file is not a directory.
 	 */
 	
-	private final void loadPages(final File directory, final HashSet<String> destinations) throws LoadException {
+	private final HashSet<String> loadPages(final File directory, final HashSet<String> destinations) throws LoadException {
 		if(!directory.isDirectory()) {
 			throw new LoadException("The file \"" + directory + "\" is not a directory.");
 		}
+		final HashSet<String> alreadyExist = new HashSet<String>();
 		for(final File child : directory.listFiles()) {
 			if(child.isDirectory()) {
 				loadPages(child, destinations);
@@ -508,14 +500,14 @@ public class DocsProject {
 				final DocsPage page = new DocsPage(this, child);
 				final String path = page.getBuildDestinationPath();
 				if(destinations.contains(path)) {
-					System.out.println();
-					System.out.println("The file \"" + child.getPath() + "\" has a file with the same name in its build directory \"" + path + "\". Therefore it will not be copied.");
+					alreadyExist.add(path);
 					continue;
 				}
 				destinations.add(path);
 				addPages(page);
 			}
 		}
+		return alreadyExist;
 	}
 	
 	/**
@@ -523,12 +515,12 @@ public class DocsProject {
 	 * 
 	 * @param directory The directory.
 	 * 
-	 * @return The loaded project.
+	 * @return 0 : The loaded project. 1 : A HashSet<String> of pages that can't be copied.
 	 * 
 	 * @throws LoadException If an exception occurs while loading the project.
 	 */
 	
-	public static final DocsProject loadFromDirectory(final File directory) throws LoadException {
+	public static final Pair<DocsProject, Set<String>> loadFromDirectory(final File directory) throws LoadException {
 		try {
 			if(!directory.exists()) {
 				throw new LoadException("The directory \"" + directory + "\" does not exist.");
@@ -558,7 +550,7 @@ public class DocsProject {
 				}
 			}
 			
-			project.loadPages(project.getContentDirectory());
+			final HashSet<String> alreadyExist = project.loadPages(project.getContentDirectory());
 			if(project.isDefaultOrderAlphabetical()) {
 				final List<DocsPage> pages = new ArrayList<DocsPage>(project.getPages());
 				Collections.sort(pages);
@@ -590,7 +582,7 @@ public class DocsProject {
 			
 			Utils.createFileIfNotExist(project.getContentDirectory());
 			
-			return project;
+			return new Pair<DocsProject, Set<String>>(project, alreadyExist);
 		}
 		catch(final Exception ex) {
 			throw new LoadException(ex);

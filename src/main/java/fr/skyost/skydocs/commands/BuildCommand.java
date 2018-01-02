@@ -12,6 +12,7 @@ import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.commons.io.FilenameUtils;
 import org.jtwig.JtwigModel;
@@ -26,6 +27,7 @@ import fr.skyost.skydocs.DocsProject;
 import fr.skyost.skydocs.DocsTemplate;
 import fr.skyost.skydocs.exceptions.LoadException;
 import fr.skyost.skydocs.utils.Utils;
+import fr.skyost.skydocs.utils.Utils.Pair;
 
 /**
  * "build" command.
@@ -127,7 +129,7 @@ public class BuildCommand extends Command {
 				copied.add(file);
 			}
 			
-			if(lunr && lunrContent.length() != 0) {
+			if(lunr && lunrContent.length() > 0) {
 				final String lunrContentString = lunrContent.toString();
 				Utils.extract(Constants.RESOURCE_SEARCH_PAGE_PATH, Constants.RESOURCE_SEARCH_PAGE_FILE, buildDirectory);
 				
@@ -194,7 +196,18 @@ public class BuildCommand extends Command {
 		output("Loading project from directory \"" + directoryPath + "\" and loading theme... ");
 		firstTime();
 		
-		project = DocsProject.loadFromDirectory(new File(directoryPath));
+		final Pair<DocsProject, Set<String>> result = DocsProject.loadFromDirectory(new File(directoryPath));
+		
+		if(result.b.size() > 0) {
+			blankLine();
+			outputLine("These files are not going to be copied because a file with the same name will already be copied in the destination folder :");
+			for(final String alreadyExists : result.b) {
+				outputLine("* " + alreadyExists);
+			}
+			blankLine();
+		}
+		
+		project = result.a;
 		setCurrentBuildDirectory(project);
 		
 		secondTime();

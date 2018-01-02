@@ -42,18 +42,18 @@ public class Utils {
 		builder.append("<script type=\"text/javascript\">");
 		builder.append("var lastRefresh = new Date().getTime();");
 		builder.append("function httpGetAsync() {");
-		builder.append("	var xmlHttp = new XMLHttpRequest();");
-		builder.append("	xmlHttp.onreadystatechange = function() { ");
-		builder.append("		if(xmlHttp.readyState == 4) {");
-		builder.append("			if(xmlHttp.status == 200 && lastRefresh < xmlHttp.responseText) {");
+		builder.append("	var request = new XMLHttpRequest();");
+		builder.append("	request.onreadystatechange = function() { ");
+		builder.append("		if(request.readyState == 4) {");
+		builder.append("			if(request.status == 200 && lastRefresh < request.responseText) {");
 		builder.append("				location.reload();");
 		builder.append("				return;");
 		builder.append("			}");
 		builder.append("			setTimeout(httpGetAsync, " + Constants.SERVE_FILE_POLLING_INTERVAL + ");");
 		builder.append("		}");
 		builder.append("	}");
-		builder.append("	xmlHttp.open('GET', '/" + Constants.SERVE_LASTBUILD_URL + "', true);");
-		builder.append("	xmlHttp.send(null);");
+		builder.append("	request.open('GET', '/" + Constants.SERVE_LASTBUILD_URL + "', true);");
+		builder.append("	request.send(null);");
 		builder.append("}");
 		builder.append("httpGetAsync();");
 		builder.append("</script>");
@@ -372,6 +372,24 @@ public class Utils {
 			return builder.toString();
 		}
 		
+	}
+	
+	/**
+	 * Represents a Pair of two elements.
+	 *
+	 * @param <A> Element A.
+	 * @param <B> Element B.
+	 */
+	
+	public static class Pair<A,B> {
+		
+		public final A a;
+		public final B b;
+
+		public Pair(A a, B b) {
+			this.a = a;
+			this.b = b;
+		}
 	}
 	
 }
