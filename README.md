@@ -36,6 +36,6 @@ You can also read the software's review on [Softpedia](http://www.softpedia.com/
 
 ## Contributions
 
-There are some options if you would like to contribute to this project. You can [follow its advancement](subscription), star it (it helps having better visibility) or [fork it](fork) on Github.
+There are some options if you would like to contribute to this project. You can [follow its advancement](https://github.com/Skyost/SkyDocs/subscription), star it (it helps having better visibility) or [fork it](https://github.com/Skyost/SkyDocs/fork) on Github.
 
 Oh and if you really like this project, please consider [buying me a coffee](https://ko-fi.com/Skyost). I would really appreciate it.
