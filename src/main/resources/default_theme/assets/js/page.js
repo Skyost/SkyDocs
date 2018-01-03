@@ -73,11 +73,11 @@ $(document).ready(function() {
 	});
 	
 	if(window.location.hash.length > 0) {
-		goToHash(undefined, window.location.hash);
+		goToHash(undefined, decodeURI(window.location.hash));
 	}
 	
 	$('a[href*=\\#]').on('click', function(event) {
-		goToHash(event, this.hash);
+		goToHash(event, decodeURI(this.hash));
 	});
 	
 	// SYNTAX HIGHLIGHTING :

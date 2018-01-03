@@ -1,40 +1,40 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<launch4jConfig>
-  <dontWrapJar>false</dontWrapJar>
-  <headerType>console</headerType>
-  <jar>SkyDocs-v0.5.2.jar</jar>
-  <outfile>SkyDocs-v0.5.2.exe</outfile>
-  <errTitle></errTitle>
-  <cmdLine></cmdLine>
-  <chdir>.</chdir>
-  <priority>normal</priority>
-  <downloadUrl>http://java.com/download</downloadUrl>
-  <supportUrl></supportUrl>
-  <stayAlive>false</stayAlive>
-  <restartOnCrash>false</restartOnCrash>
-  <manifest></manifest>
-  <icon>icon.ico</icon>
-  <jre>
-    <path></path>
-    <bundledJre64Bit>false</bundledJre64Bit>
-    <bundledJreAsFallback>false</bundledJreAsFallback>
-    <minVersion>1.7.0</minVersion>
-    <maxVersion></maxVersion>
-    <jdkPreference>preferJre</jdkPreference>
-    <runtimeBits>64/32</runtimeBits>
-  </jre>
-  <versionInfo>
-    <fileVersion>0.5.2.0</fileVersion>
-    <txtFileVersion>v0.5.2</txtFileVersion>
-    <fileDescription>SkyDocs v0.5.2 Beta</fileDescription>
-    <copyright>This product is licensed under GNU GPL v3. Please check https://skydocs.skyost.eu for more informations.</copyright>
-    <productVersion>0.5.2.0</productVersion>
-    <txtProductVersion>v0.5.2</txtProductVersion>
-    <productName>SkyDocs v0.5.2 Beta</productName>
-    <companyName>Skyost</companyName>
-    <internalName>SkyDocs</internalName>
-    <originalFilename>SkyDocs-v0.5.2.exe</originalFilename>
-    <trademarks></trademarks>
-    <language>ENGLISH_US</language>
-  </versionInfo>
-</launch4jConfig>
+<?xml version="1.0" encoding="UTF-8"?> 
+<launch4jConfig> 
+  <dontWrapJar>false</dontWrapJar> 
+  <headerType>console</headerType> 
+  <jar>SkyDocs-v0.5.2.jar</jar> 
+  <outfile>SkyDocs-v0.5.2.exe</outfile> 
+  <errTitle></errTitle> 
+  <cmdLine></cmdLine> 
+  <chdir>.</chdir> 
+  <priority>normal</priority> 
+  <downloadUrl>http://java.com/download</downloadUrl> 
+  <supportUrl></supportUrl> 
+  <stayAlive>false</stayAlive> 
+  <restartOnCrash>false</restartOnCrash> 
+  <manifest></manifest> 
+  <icon>icon.ico</icon> 
+  <jre> 
+    <path></path> 
+    <bundledJre64Bit>false</bundledJre64Bit> 
+    <bundledJreAsFallback>false</bundledJreAsFallback> 
+    <minVersion>1.7.0</minVersion> 
+    <maxVersion></maxVersion> 
+    <jdkPreference>preferJre</jdkPreference> 
+    <runtimeBits>64/32</runtimeBits> 
+  </jre> 
+  <versionInfo> 
+    <fileVersion>0.5.2.0</fileVersion> 
+    <txtFileVersion>v0.5.2</txtFileVersion> 
+    <fileDescription>SkyDocs v0.5.2 Beta</fileDescription> 
+    <copyright>This product is licensed under GNU GPL v3. Please check https://skydocs.skyost.eu for more informations.</copyright> 
+    <productVersion>0.5.2.0</productVersion> 
+    <txtProductVersion>v0.5.2</txtProductVersion> 
+    <productName>SkyDocs v0.5.2 Beta</productName> 
+    <companyName>Skyost</companyName> 
+    <internalName>SkyDocs</internalName> 
+    <originalFilename>SkyDocs-v0.5.2.exe</originalFilename> 
+    <trademarks></trademarks> 
+    <language>ENGLISH_US</language> 
+  </versionInfo> 
+</launch4jConfig> 

@@ -6,7 +6,7 @@
 
 <meta name="description" content="SkyDocs is a lightweight static documentation builder with MarkDown."/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<meta name="generator" content="SkyDocs v0.5.1 Beta"/>
+<meta name="generator" content="SkyDocs v0.5.2 Beta"/>
 
 <meta property="og:type" content="website"/>
 <meta property="og:title" content="Documentation - SkyDocs"/>
@@ -50,7 +50,7 @@
 <a href="documentation.html"><i class="fa fa-book" aria-hidden="true"></i> Documentation</a>
 <ul>
 <li>
-<a href="documentation.html#downloading--installing">Downloading & installing</a>
+<a href="documentation.html#downloading--installing">Downloading &amp; installing</a>
 </li>
 <li>
 <a href="documentation.html#configuration">Configuration</a>
@@ -110,7 +110,7 @@
 </div>
 <article class="col-md-7">
 <h1 id="documentation">Documentation</h1>
-<p>This documentation has been created for <strong>SkyDocs v0.5.1 Beta</strong>. Don't forget to update it (there is a guide below) !</p>
+<p>This documentation has been created for <strong>SkyDocs v0.5.2 Beta</strong>. Don't forget to update it (there is a guide below) !</p>
 <h2 id="downloading--installing">Downloading &amp; installing</h2>
 <p>Here are the steps to download and install the software.</p>
 <h3 id="downloading">Downloading</h3>
@@ -135,15 +135,15 @@ That's it !</p>
 Here are the different keys with their corresponding description :</p>
 <table>
 <thead>
-<tr><th>Key</th><th>Type</th><th>Required</th><th>Description</th></tr>
+<tr><th>Key</th><th>Type</th><th>Required</th><th>Default value</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr><td>project_name</td><td>string</td><td>yes</td><td>Your documentation title.</td></tr>
-<tr><td>project_description</td><td>string</td><td>yes</td><td>Your documentation description.</td></tr>
-<tr><td>project_url</td><td>string</td><td>yes</td><td>Your documentation hosted URL address.</td></tr>
-<tr><td>default_language</td><td>string</td><td>yes</td><td>Your documentation default language.</td></tr>
-<tr><td>lunr_search</td><td>boolean</td><td>no</td><td>If you set this value to <em>true</em>, SkyDocs will include a <em>search.html</em> page which takes a <em>GET</em> parameter named <em>keywords</em>.<br>You have to send your keywords to this page, and <a href="https://lunrjs.com/">lunr</a> will process it and will show you a list of accurate pages.</td></tr>
-<tr><td>default_order_alphabetical</td><td>boolean</td><td>no</td><td>If you set this value to <em>true</em>, the software will order your page alphabetically (according to their file name). <code>page.getPreviousPage()</code> and <code>page.getNextPage()</code> will return values according to this order (if the corresponding header keys are not set).</td></tr>
+<tr><td>project_name</td><td>string</td><td>no (but advised)</td><td><code>My Documentation</code></td><td>Your documentation title.</td></tr>
+<tr><td>project_description</td><td>string</td><td>no (but advised)</td><td><code>Documentation built with SkyDocs</code></td><td>Your documentation description.</td></tr>
+<tr><td>project_url</td><td>string</td><td>no (but advised)</td><td><code>https://skydocs.skyost.eu</code></td><td>Your hosted documentation URL address.</td></tr>
+<tr><td>default_language</td><td>string</td><td>no</td><td><code>en</code></td><td>Your documentation default language.</td></tr>
+<tr><td>lunr_search</td><td>boolean</td><td>no</td><td><code>false</code></td><td>If you set this value to <em>true</em>, SkyDocs will include a <em>search.html</em> page which takes a <em>GET</em> parameter named <em>keywords</em>.<br>You have to send your keywords to this page, and <a href="https://lunrjs.com/">lunr</a> will process it and will show you a list of accurate pages.</td></tr>
+<tr><td>default_order_alphabetical</td><td>boolean</td><td>no</td><td><code>false</code></td><td>If you set this value to <em>true</em>, the software will order your page alphabetically (according to their file name). <code>page.getPreviousPage()</code> and <code>page.getNextPage()</code> will return values according to this order (if the corresponding header keys are not set).</td></tr>
 </tbody>
 </table>
 <p>Next, open the file <em>menu.yml</em>. It contains some menu entries :</p>
@@ -153,10 +153,10 @@ Here are the different keys with their corresponding description :</p>
 </thead>
 <tbody>
 <tr><td>title</td><td>string</td><td>yes</td><td>Title of the entry.</td></tr>
-<tr><td>link</td><td>string</td><td>yes</td><td>Link attached to the menu.</td></tr>
-<tr><td>weight</td><td>integer</td><td>yes</td><td>A page with a lower weight will be put before a page with a higher weight.</td></tr>
+<tr><td>link</td><td>string</td><td>no</td><td>Link attached to the menu.</td></tr>
+<tr><td>weight</td><td>integer</td><td>no</td><td>A page with a lower weight will be put before a page with a higher weight.</td></tr>
 <tr><td>new_tab</td><td>boolean</td><td>no</td><td>If sets to <em>true</em>, <code>target=&quot;_blank&quot;</code> will be appended to the link.</td></tr>
-<tr><td>children</td><td>list of menu entries</td><td>no</td><td>Contains the sub-menus of this menu entry.</td></tr>
+<tr><td>children</td><td>list of menu entries</td><td>no</td><td>Contains the sub-entries of this menu entry.</td></tr>
 </tbody>
 </table>
 <h2 id="adding-pages">Adding pages</h2>
@@ -191,7 +191,7 @@ SkyDocs will try to build the project contained in the current directory). The d
 <p>The table below lists the available commands in SkyDocs. You can use them with the JAR <code>java -jar SkyDocs.jar commande &lt;arguments&gt;</code> or the executable <code>SkyDocs commande &lt;arguments&gt;</code>.</p>
 <table>
 <thead>
-<tr><th>Syntax</th><th>Default values</th><th>Description</th></tr>
+<tr><th>Syntax</th><th>Default value</th><th>Description</th></tr>
 </thead>
 <tbody>
 <tr><td><code>new [directory]</code></td><td><strong>directory :</strong> current directory</td><td>Creates a new documentation in the specified directory.</td></tr>
@@ -207,7 +207,7 @@ SkyDocs will try to build the project contained in the current directory). The d
 <p><img src="../files/gui.png" alt="GUI"/></p>
 <p>As of v0.5, SkyDocs comes with a <em>GUI</em> ! As you can see, it is pretty self-explanatory : you can open your projects, build them, serve them, etc...</p>
 <section>
-<small class="date text-muted"><i class="fa fa-calendar" aria-hidden="true"></i> Dec 29, 2017 4:59:03 PM</small>
+<small class="date text-muted"><i class="fa fa-calendar" aria-hidden="true"></i> Jan 3, 2018 8:43:21 PM</small>
 <div class="paginator clearfix no-print">
 <a class="btn btn-secondary float-left" href="index.html" role="button"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
 <a class="btn btn-secondary float-right" href="creating-theme.html" role="button"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
@@ -219,7 +219,7 @@ SkyDocs will try to build the project contained in the current directory). The d
 <footer>
 <p class="text-muted">
 <i class="fa fa-file-text" aria-hidden="true"></i> Documentation theme created with <i class="fa fa-heart pulse" aria-hidden="true"></i> by <a href="https://www.skyost.eu">Skyost</a>.
-Powered by <a href="https://skydocs.skyost.eu">SkyDocs</a> v0.5.1 Beta.
+Powered by <a href="https://skydocs.skyost.eu">SkyDocs</a> v0.5.2 Beta.
 </p>
 </footer>
 

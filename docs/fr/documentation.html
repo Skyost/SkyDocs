@@ -6,7 +6,7 @@
 
 <meta name="description" content="SkyDocs is a lightweight static documentation builder with MarkDown."/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<meta name="generator" content="SkyDocs v0.5.1 Beta"/>
+<meta name="generator" content="SkyDocs v0.5.2 Beta"/>
 
 <meta property="og:type" content="website"/>
 <meta property="og:title" content="Documentation - SkyDocs"/>
@@ -50,7 +50,7 @@
 <a href="documentation.html"><i class="fa fa-book" aria-hidden="true"></i> Documentation</a>
 <ul>
 <li>
-<a href="documentation.html#téléchargement--installation">Téléchargement & installation</a>
+<a href="documentation.html#téléchargement--installation">Téléchargement &amp; installation</a>
 </li>
 <li>
 <a href="documentation.html#configuration">Configuration</a>
@@ -110,7 +110,7 @@
 </div>
 <article class="col-md-7">
 <h1 id="documentation">Documentation</h1>
-<p>Cette documentation a été écrite pour <strong>SkyDocs v0.5.1 Beta</strong>. N'oubliez pas de le mettre à jour (un guide est disponible ci-dessous) !</p>
+<p>Cette documentation a été écrite pour <strong>SkyDocs v0.5.2 Beta</strong>. N'oubliez pas de le mettre à jour (un guide est disponible ci-dessous) !</p>
 <h2 id="téléchargement--installation">Téléchargement &amp; installation</h2>
 <p>Voici les étapes pour télécharger et installer le logiciel.</p>
 <h3 id="téléchargement">Téléchargement</h3>
@@ -135,15 +135,15 @@ C'est tout !</p>
 Voici les différentes clés ainsi que leur description :</p>
 <table>
 <thead>
-<tr><th>Clé</th><th>Type</th><th>Requis</th><th>Description</th></tr>
+<tr><th>Clé</th><th>Type</th><th>Requis</th><th>Valeur par défault</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr><td>project_name</td><td>chaîne</td><td>oui</td><td>Le titre de votre documentation.</td></tr>
-<tr><td>project_description</td><td>chaîne</td><td>oui</td><td>La description de votre documentation.</td></tr>
-<tr><td>project_url</td><td>chaîne</td><td>oui</td><td>L'adresse URL de votre documentation.</td></tr>
-<tr><td>default_language</td><td>chaîne</td><td>oui</td><td>La language par défaut de votre documentation.</td></tr>
-<tr><td>lunr_search</td><td>booléen</td><td>non</td><td>Si vous passez cette valeur à <em>true</em>, SkyDocs va inclure une page <em>search.html</em> qui prend <em>keywords</em> comme paramètre <em>GET</em>.<br>Vous devez envoyer vos mots clés à cette page, et <a href="https://lunrjs.com/">lunr</a> va les traiter et renvoyer la liste des pages correspondantes.</td></tr>
-<tr><td>default_order_alphabetical</td><td>booléen</td><td>non</td><td>Si vous passez cette valeur à <em>true</em>, le logiciel classera les pages par ordre alphabétique (suivant leur nom de fichier). <code>page.getPreviousPage()</code> et <code>page.getNextPage()</code> retourneront les valeurs correspondantes à ce classement (si les en-têtes correspondantes ne sont pas définies).</td></tr>
+<tr><td>project_name</td><td>chaîne</td><td>non (mais conseillé)</td><td><code>My Documentation</code></td><td>Le titre de votre documentation.</td></tr>
+<tr><td>project_description</td><td>chaîne</td><td>non (mais conseillé)</td><td><code>Documentation built with SkyDocs</code></td><td>La description de votre documentation.</td></tr>
+<tr><td>project_url</td><td>chaîne</td><td>non (mais conseillé)</td><td><code>https://skydocs.skyost.eu</code></td><td>L'adresse URL de votre documentation.</td></tr>
+<tr><td>default_language</td><td>chaîne</td><td>non</td><td><code>en</code></td><td>La language par défaut de votre documentation.</td></tr>
+<tr><td>lunr_search</td><td>booléen</td><td>non</td><td><code>false</code></td><td>Si vous passez cette valeur à <em>true</em>, SkyDocs va inclure une page <em>search.html</em> qui prend <em>keywords</em> comme paramètre <em>GET</em>.<br>Vous devez envoyer vos mots clés à cette page, et <a href="https://lunrjs.com/">lunr</a> va les traiter et renvoyer la liste des pages correspondantes.</td></tr>
+<tr><td>default_order_alphabetical</td><td>booléen</td><td>non</td><td><code>false</code></td><td>Si vous passez cette valeur à <em>true</em>, le logiciel classera les pages par ordre alphabétique (suivant leur nom de fichier). <code>page.getPreviousPage()</code> et <code>page.getNextPage()</code> retourneront les valeurs correspondantes à ce classement (si les en-têtes correspondantes ne sont pas définies).</td></tr>
 </tbody>
 </table>
 <p>Maintenant, ouvrez le fichier <em>menu.yml</em>. Il contient quelques entrées de menu :</p>
@@ -153,8 +153,8 @@ Voici les différentes clés ainsi que leur description :</p>
 </thead>
 <tbody>
 <tr><td>title</td><td>chaîne</td><td>oui</td><td>Titre de l'entée.</td></tr>
-<tr><td>link</td><td>chaîne</td><td>oui</td><td>Lien ajouté au menu.</td></tr>
-<tr><td>weight</td><td>entier</td><td>oui</td><td>Une page avec une petite weight se situera devant une autre page avec une plus grande weight.</td></tr>
+<tr><td>link</td><td>chaîne</td><td>non</td><td>Lien ajouté au menu.</td></tr>
+<tr><td>weight</td><td>entier</td><td>non</td><td>Une page avec une petite weight se situera devant une autre page avec une plus grande weight.</td></tr>
 <tr><td>new_tab</td><td>booléen</td><td>non</td><td>Si vous passez cette valeur à <em>true</em>, <code>target=&quot;_blank&quot;</code> sera ajouté au lien.</td></tr>
 <tr><td>children</td><td>liste d'entrées de menu</td><td>non</td><td>Contient les sous-menus de cette entrée.</td></tr>
 </tbody>
@@ -191,7 +191,7 @@ SkyDocs va essayer de générer le projet contenu dans le dossier courant). Le p
 <p>Le tableau ci-dessous liste les commandes disponibles dans SkyDocs. Vous pouvez les utiliser avec le JAR <code>java -jar SkyDocs.jar commande &lt;arguments&gt;</code> ou l'exécutable <code>SkyDocs commande &lt;arguments&gt;</code>.</p>
 <table>
 <thead>
-<tr><th>Syntaxe</th><th>Valeurs par défaut</th><th>Description</th></tr>
+<tr><th>Syntaxe</th><th>Valeur par défaut</th><th>Description</th></tr>
 </thead>
 <tbody>
 <tr><td><code>new [directory]</code></td><td><strong>directory :</strong> dossier courant</td><td>Créé une nouvelle documentation dans le dossier spécifié.</td></tr>
@@ -208,7 +208,7 @@ SkyDocs va essayer de générer le projet contenu dans le dossier courant). Le p
 <p>À partir de la version v0.5, SkyDocs possède un <em>IHM</em> ! Comme vous pouvez le voir c'est plutôt explicite : vous pouvez ouvrir vos projets, les compiler, les servir sur le réseau, etc...</p>
 <p><strong>Attention !</strong> Tout est en anglais cependant.</p>
 <section>
-<small class="date text-muted"><i class="fa fa-calendar" aria-hidden="true"></i> 29 déc. 2017 16:58:57</small>
+<small class="date text-muted"><i class="fa fa-calendar" aria-hidden="true"></i> 2 janv. 2018 15:08:42</small>
 <div class="paginator clearfix no-print">
 <a class="btn btn-secondary float-left" href="index.html" role="button"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
 <a class="btn btn-secondary float-right" href="creer-theme.html" role="button"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
@@ -220,7 +220,7 @@ SkyDocs va essayer de générer le projet contenu dans le dossier courant). Le p
 <footer>
 <p class="text-muted">
 <i class="fa fa-file-text" aria-hidden="true"></i> Documentation theme created with <i class="fa fa-heart pulse" aria-hidden="true"></i> by <a href="https://www.skyost.eu">Skyost</a>.
-Powered by <a href="https://skydocs.skyost.eu">SkyDocs</a> v0.5.1 Beta.
+Powered by <a href="https://skydocs.skyost.eu">SkyDocs</a> v0.5.2 Beta.
 </p>
 </footer>
 
