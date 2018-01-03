@@ -35,9 +35,7 @@ public class UpdateCommand extends Command implements GithubUpdaterResultListene
 	}
 
 	@Override
-	public final void updaterResponse(final String response) {
-		outputLine("Bad response while checking for updates : " + response);
-	}
+	public final void updaterResponse(final String response) {}
 
 	@Override
 	public final void updaterUpdateAvailable(final String localVersion, final String remoteVersion) {

@@ -5,6 +5,7 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.net.BindException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -111,9 +112,14 @@ public class ServeCommand extends Command {
 			}
 			scanner.close();
 		}
-		catch(final Exception ex) {
-			printStackTrace(ex);
-			broadcastCommandError(ex);
+		catch(final BindException bindException) {
+			printStackTrace(bindException);
+			outputLine("A binding error occurred. Maybe the port " + port + " is already in use ?");
+			broadcastCommandError(bindException);
+		}
+		catch(final Exception exception) {
+			printStackTrace(exception);
+			broadcastCommandError(exception);
 		}
 		exitIfNeeded();
 	}
@@ -142,7 +148,7 @@ public class ServeCommand extends Command {
 	 * 
 	 * @param command The current build command.
 	 * 
-	 * @throws Exception If an exception occurs.
+	 * @throws Exception If any exception occurs.
 	 */
 	
 	private final void firstBuild(final BuildCommand command) throws Exception {
@@ -151,7 +157,7 @@ public class ServeCommand extends Command {
 		outputLine("You can point your browser to http://localhost:" + port + ".");
 		blankLine();
 		server.start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
-		if(Desktop.isDesktopSupported()) {
+		if(Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
 			Desktop.getDesktop().browse(new URL("http://localhost:" + port).toURI());
 		}
 	}
