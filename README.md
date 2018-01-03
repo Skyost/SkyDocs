@@ -33,3 +33,9 @@ Everything you need to know is available on [the website](https://skydocs.skyost
 
 If you are interested, you can download SkyDocs on [this page](https://skydocs.skyost.eu/en/documentation.html#downloading-installing).
 You can also read the software's review on [Softpedia](http://www.softpedia.com/get/Others/SkyDocs.shtml).
+
+## Contributions
+
+There are some options if you would like to contribute to this project. You can [follow its advancement](subscription), star it (it helps having better visibility) or [fork it](fork) on Github.
+
+Oh and if you really like this project, please consider [buying me a coffee](https://ko-fi.com/Skyost). I would really appreciate it.
