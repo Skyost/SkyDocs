@@ -18,6 +18,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 import com.google.common.base.Ascii;
+import com.inet.lib.less.Less;
 import com.yahoo.platform.yui.compressor.CssCompressor;
 import com.yahoo.platform.yui.compressor.JavaScriptCompressor;
 
@@ -302,30 +303,40 @@ public class BuildCommand extends Command {
 	 * @throws InterruptionException If the operation should be aborted.
 	 */
 	
-	public final void copyAsset(final File directory, final File destination) throws IOException, InterruptionException {
+	public final void copyAsset(final File directory, File destination) throws IOException, InterruptionException {
 		exitIfInterrupted();
 		
 		if(directory.isFile()) {
 			final String extension = FilenameUtils.getExtension(directory.getName());
-			if(prod && (extension.equalsIgnoreCase("css") || extension.equalsIgnoreCase("js"))) {
+			final boolean hasMinification = prod && project.hasMinification();
+			if(extension.equalsIgnoreCase("less") && project.hasLess()) {
+				destination = new File(FilenameUtils.removeExtension(destination.getPath()) + ".css");
+				
+				Files.write(destination.toPath(), Less.compile(directory, hasMinification).getBytes(StandardCharsets.UTF_8));
+				return;
+			}
+			else if(hasMinification && (extension.equalsIgnoreCase("css") || extension.equalsIgnoreCase("js"))) {
 				try {
 					final InputStreamReader input = new InputStreamReader(new FileInputStream(directory), StandardCharsets.UTF_8);
 					final OutputStreamWriter output = new OutputStreamWriter(new FileOutputStream(destination), StandardCharsets.UTF_8);
+					
 					if(extension.equalsIgnoreCase("css")) {
 						final CssCompressor compressor = new CssCompressor(input);
 						compressor.compress(output, -1);
 					}
+					
 					else {
 						final JavaScriptCompressor compressor = new JavaScriptCompressor(input, null);
 						compressor.compress(output, -1, true, false, false, false);
 					}
+					
 					input.close();
 					output.close();
 					return;
 				}
 				catch(final Exception ex) {
 					printStackTrace(ex);
-					outputLine("Failed to minify \"" + directory.getPath() + "\" !");
+					outputLine("Failed to compile / minify \"" + directory.getPath() + "\" !");
 					broadcastCommandError(ex);
 				}
 			}

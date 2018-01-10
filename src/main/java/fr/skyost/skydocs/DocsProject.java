@@ -198,26 +198,6 @@ public class DocsProject {
 	}
 	
 	/**
-	 * Gets if lunr search should be enabled for this project.
-	 * 
-	 * @return If lunr search should be enabled for this project.
-	 */
-	
-	public final boolean hasLunrSearch() {
-		return projectVariables.containsKey(Constants.KEY_PROJECT_LUNR_SEARCH) && Boolean.TRUE.equals(Utils.parseBoolean(projectVariables.get(Constants.KEY_PROJECT_LUNR_SEARCH).toString()));
-	}
-	
-	/**
-	 * Sets the lunr search variable of this project.
-	 * 
-	 * @param lunrSearch The search variable of this project.
-	 */
-	
-	public final void setLunrSearch(final boolean lunrSearch) {
-		projectVariables.put(Constants.KEY_PROJECT_LUNR_SEARCH, lunrSearch);
-	}
-	
-	/**
 	 * Gets if the default order should be alphabetical for this project.
 	 * 
 	 * @return If the default order should be alphabetical for this project.
@@ -235,6 +215,81 @@ public class DocsProject {
 	
 	public final void setDefaultOrderAlphabetical(final boolean defaultOrderAlphabetical) {
 		projectVariables.put(Constants.KEY_PROJECT_DEFAULT_ORDER_ALPHABETICAL, defaultOrderAlphabetical);
+	}
+	
+	/**
+	 * Gets if lunr search should be enabled for this project.
+	 * 
+	 * @return If lunr search should be enabled for this project.
+	 */
+	
+	@SuppressWarnings("deprecation")
+	public final boolean hasLunrSearch() {
+		if(projectVariables.containsKey(Constants.KEY_PROJECT_LUNR_SEARCH)) {
+			return !Boolean.FALSE.equals(Utils.parseBoolean(projectVariables.get(Constants.KEY_PROJECT_LUNR_SEARCH).toString()));
+		}
+		if(projectVariables.containsKey(Constants.KEY_PROJECT_ENABLE_LUNR)) {
+			return !Boolean.FALSE.equals(Utils.parseBoolean(projectVariables.get(Constants.KEY_PROJECT_ENABLE_LUNR).toString()));
+		}
+		return true;
+	}
+	
+	/**
+	 * Sets if lunr search should be enabled for this project.
+	 * 
+	 * @param lunrSearch If lunr search should be enabled for this project.
+	 */
+	
+	@SuppressWarnings("deprecation")
+	public final void setLunrSearch(final boolean enable) {
+		projectVariables.put(Constants.KEY_PROJECT_LUNR_SEARCH, enable);
+		projectVariables.put(Constants.KEY_PROJECT_ENABLE_LUNR, enable);
+	}
+	
+	/**
+	 * Gets if minification in production mode should be enabled for this project.
+	 * 
+	 * @return If minification in production mode should be enabled for this project.
+	 */
+	
+	public final boolean hasMinification() {
+		if(projectVariables.containsKey(Constants.KEY_PROJECT_ENABLE_MINIFICATION)) {
+			return !Boolean.FALSE.equals(Utils.parseBoolean(projectVariables.get(Constants.KEY_PROJECT_ENABLE_MINIFICATION).toString()));
+		}
+		return true;
+	}
+	
+	/**
+	 * Sets if minification in production mode should be enabled for this project.
+	 * 
+	 * @param lunrSearch If minification in production mode should be enabled for this project.
+	 */
+	
+	public final void setMinification(final boolean enable) {
+		projectVariables.put(Constants.KEY_PROJECT_ENABLE_MINIFICATION, enable);
+	}
+	
+	/**
+	 * Gets if less compilation should be enabled for this project.
+	 * 
+	 * @return If less compilation should be enabled for this project.
+	 */
+	
+	public final boolean hasLess() {
+		if(projectVariables.containsKey(Constants.KEY_PROJECT_ENABLE_LESS)) {
+			return !Boolean.FALSE.equals(Utils.parseBoolean(projectVariables.get(Constants.KEY_PROJECT_ENABLE_LESS).toString()));
+		}
+		return true;
+	}
+	
+	/**
+	 * Sets if less compilation should be enabled for this project.
+	 * 
+	 * @param lunrSearch If less compilation should be enabled for this project.
+	 */
+	
+	public final void setLess(final boolean enable) {
+		projectVariables.put(Constants.KEY_PROJECT_ENABLE_LESS, enable);
 	}
 	
 	/**

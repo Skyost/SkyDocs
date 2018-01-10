@@ -5,7 +5,7 @@
  <modelVersion>4.0.0</modelVersion>
  <groupId>fr.skyost</groupId>
  <artifactId>skydocs</artifactId>
- <version>0.5.2</version>
+ <version>0.6</version>
  <name>SkyDocs</name>
  <description>SkyDocs is a lightweight static documentation builder with MarkDown.</description>
  <build>
@@ -138,6 +138,11 @@
    <groupId>com.github.hazendaz</groupId>
    <artifactId>htmlcompressor</artifactId>
    <version>1.6.4</version>
+  </dependency>
+  <dependency>
+   <groupId>de.inetsoftware</groupId>
+   <artifactId>jlessc</artifactId>
+   <version>1.5</version>
   </dependency>
  </dependencies>
 </project>

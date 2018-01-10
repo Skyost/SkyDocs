@@ -1,4 +1,5 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 	<head>
 		<title>Redirecting... - {{ project.getName() }}</title>
 		<meta http-equiv="refresh" content="0; url={{ redirectionUrl }}" />
@@ -7,6 +8,6 @@
 		</script>
 	</head>
 	<body>
-		<p>Redirecting you to the homepage of <a href="{{ redirectionUrl }}">{{ project.getName() }}</a>... If you are not redirected, please click on the previous link.</p>
+		<p>Redirecting you to the homepage of {{ project.getName() }}... If you are not redirected, please click <a href="{{ redirectionUrl }}">here</a>.</p>
 	</body>
 </html>

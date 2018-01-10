@@ -22,7 +22,7 @@ public class Constants {
 	 * App's version.
 	 */
 	
-	public static final String APP_VERSION = "v0.5.2 Beta";
+	public static final String APP_VERSION = "v0.6 Beta";
 	
 	/**
 	 * App's authors.
@@ -211,16 +211,35 @@ public class Constants {
 	public static final String KEY_PROJECT_LANGUAGE = "default_language";
 	
 	/**
-	 * lunr search key.
-	 */
-	
-	public static final String KEY_PROJECT_LUNR_SEARCH = "lunr_search";
-	
-	/**
 	 * Whether the default order should be alphabetical.
 	 */
 	
 	public static final String KEY_PROJECT_DEFAULT_ORDER_ALPHABETICAL = "default_order_alphabetical";
+	
+	/**
+	 * Whether lunr search is enabled.
+	 */
+	
+	public static final String KEY_PROJECT_ENABLE_LUNR = "enable_lunr";
+	
+	/**
+	 * Whether minification is enabled in production mode.
+	 */
+	
+	public static final String KEY_PROJECT_ENABLE_MINIFICATION = "enable_minification";
+	
+	/**
+	 * Whether less compilation is enabled.
+	 */
+	
+	public static final String KEY_PROJECT_ENABLE_LESS = "enable_less";
+	
+	/**
+	 * lunr search key.
+	 */
+	
+	@Deprecated
+	public static final String KEY_PROJECT_LUNR_SEARCH = "lunr_search";
 	
 	/**
 	 * =============================
