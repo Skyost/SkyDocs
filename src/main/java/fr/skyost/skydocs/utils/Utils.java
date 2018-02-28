@@ -1,10 +1,10 @@
 package fr.skyost.skydocs.utils;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import fr.skyost.skydocs.Constants;
+import fr.skyost.skydocs.SkyDocs;
+import org.yaml.snakeyaml.Yaml;
+
+import java.io.*;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -13,11 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-
-import org.yaml.snakeyaml.Yaml;
-
-import fr.skyost.skydocs.Constants;
-import fr.skyost.skydocs.SkyDocs;
 
 /**
  * Contains a lot of useful functions.
@@ -70,7 +65,7 @@ public class Utils {
 	 * @throws IOException If an error occurs while trying to create the file.
 	 */
 	
-	public static final File createFileIfNotExist(final File file) throws IOException {
+	public static File createFileIfNotExist(final File file) throws IOException {
 		if(!file.exists()) {
 			if(file.isDirectory()) {
 				file.mkdirs();
@@ -90,7 +85,7 @@ public class Utils {
 	 * @return The Integer or null.
 	 */
 	
-	public static final Integer parseInt(final String string) {
+	public static Integer parseInt(final String string) {
 		try {
 			return Integer.parseInt(string);
 		}
@@ -106,7 +101,7 @@ public class Utils {
 	 * @return The Boolean or null.
 	 */
 	
-	public static final Boolean parseBoolean(final String string) {
+	public static Boolean parseBoolean(final String string) {
 		try {
 			return Boolean.parseBoolean(string);
 		}
@@ -120,7 +115,7 @@ public class Utils {
 	 * @return The JAR file.
 	 */
 	
-	public static final File getJARFile() {
+	public static File getJARFile() {
 		try {
 			return new File(SkyDocs.class.getProtectionDomain().getCodeSource().getLocation().toURI());
 		}
@@ -136,7 +131,7 @@ public class Utils {
 	 * @return The JAR parent folder.
 	 */
 	
-	public static final File getParentFolder() {
+	public static File getParentFolder() {
 		final File jar = Utils.getJARFile();
 		if(jar == null) {
 			return null;
@@ -152,7 +147,7 @@ public class Utils {
 	 * @return A String array, index 0 is the header and index 1 is the content.
 	 */
 	
-	public static final String[] separateFileHeader(final File file) {
+	public static String[] separateFileHeader(final File file) {
 		try {
 			final List<String> lines = Files.readAllLines(file.toPath(), StandardCharsets.UTF_8);
 			if(lines.size() == 0) {
@@ -180,7 +175,7 @@ public class Utils {
 		catch(final Exception ex) {
 			ex.printStackTrace();
 		}
-		return null;
+		return new String[]{null, null};
 	}
 	
 	/**
@@ -192,7 +187,7 @@ public class Utils {
 	 */
 	
 	@SuppressWarnings("unchecked")
-	public static final Map<String, Object> decodeFileHeader(final String header) {
+	public static Map<String, Object> decodeFileHeader(final String header) {
 		if(header == null) {
 			return null;
 		}
@@ -209,7 +204,7 @@ public class Utils {
 	 * @throws IOException If an error occurs while trying to create the directory.
 	 */
 	
-	public static final void copyDirectory(final File directory, final File destination) throws IOException {
+	public static void copyDirectory(final File directory, final File destination) throws IOException {
 		if(directory.isFile()) {
 			Files.copy(directory.toPath(), destination.toPath());
 			return;
@@ -226,7 +221,7 @@ public class Utils {
 	 * @param directory The directory.
 	 */
 	
-	public static final void deleteDirectory(final File directory) {
+	public static void deleteDirectory(final File directory) {
 		if(directory.isFile()) {
 			directory.delete();
 			return;
@@ -248,14 +243,14 @@ public class Utils {
 	 * @throws URISyntaxException If an exception occurs when trying to locate the file on disk.
 	 */
 	
-	public static final void extract(final String path, final String toExtract, File destination) throws IOException, URISyntaxException {
+	public static void extract(final String path, final String toExtract, File destination) throws IOException, URISyntaxException {
 		final File appLocation = new File(SkyDocs.class.getProtectionDomain().getCodeSource().getLocation().toURI());
 		if(appLocation.isFile()) {
 			final JarFile jar = new JarFile(appLocation);
 			final Enumeration<JarEntry> enumEntries = jar.entries();
 			
 			while(enumEntries.hasMoreElements()) {
-				final JarEntry file = (JarEntry)enumEntries.nextElement();
+				final JarEntry file = enumEntries.nextElement();
 				if(file.isDirectory() || !file.getName().contains(path + toExtract)) {
 					continue;
 				}
@@ -301,7 +296,7 @@ public class Utils {
 	 * @return The String without HTML.
 	 */
 	
-	public static final String stripHTML(final String string) {
+	public static String stripHTML(final String string) {
 		return string.replaceAll("\\<.*?\\>", "").replace("\n", "").replace("\r", "");
 	}
 	
@@ -314,7 +309,7 @@ public class Utils {
 	 * @return The joined list.
 	 */
 
-	public static final String join(final String joiner, final List<String> list) {
+	public static String join(final String joiner, final List<String> list) {
 		return join(joiner, list.toArray(new String[list.size()]));
 	}
 	
@@ -327,7 +322,7 @@ public class Utils {
 	 * @return The joined array.
 	 */
 
-	public static final String join(final String joiner, final String... strings) {
+	public static String join(final String joiner, final String... strings) {
 		if(strings.length == 1) {
 			return strings[0];
 		}

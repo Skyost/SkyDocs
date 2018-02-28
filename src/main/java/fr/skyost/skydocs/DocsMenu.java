@@ -1,24 +1,18 @@
 package fr.skyost.skydocs;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import fr.skyost.skydocs.exceptions.InvalidMenuDataException;
+import fr.skyost.skydocs.exceptions.InvalidMenuEntryException;
+import fr.skyost.skydocs.utils.IncludeFileFunction;
+import fr.skyost.skydocs.utils.Utils;
+import fr.skyost.skydocs.utils.Utils.AutoLineBreakStringBuilder;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 import org.jtwig.environment.EnvironmentConfiguration;
 import org.jtwig.environment.EnvironmentConfigurationBuilder;
 import org.yaml.snakeyaml.Yaml;
 
-import fr.skyost.skydocs.exceptions.InvalidMenuDataException;
-import fr.skyost.skydocs.exceptions.InvalidMenuEntryException;
-import fr.skyost.skydocs.utils.IncludeFileFunction;
-import fr.skyost.skydocs.utils.Utils;
-import fr.skyost.skydocs.utils.Utils.AutoLineBreakStringBuilder;
+import java.io.File;
+import java.util.*;
 
 /**
  * Represents a menu.
@@ -36,7 +30,7 @@ public class DocsMenu {
 	 * Menu entries.
 	 */
 	
-	private final List<DocsMenuEntry> entries = new ArrayList<DocsMenuEntry>();
+	private final List<DocsMenuEntry> entries = new ArrayList<>();
 	
 	/**
 	 * Creates a new DocsMenu instance.
@@ -191,7 +185,7 @@ public class DocsMenu {
 	 */
 	
 	@SuppressWarnings("unchecked")
-	public static final DocsMenu createFromFile(final DocsProject project, final File menuData) throws InvalidMenuDataException {
+	public static DocsMenu createFromFile(final DocsProject project, final File menuData) throws InvalidMenuDataException {
 		try {
 			final DocsMenu menu = new DocsMenu(project.getDefaultLanguage());
 			
@@ -207,7 +201,7 @@ public class DocsMenu {
 			menu.setLanguage(language);
 			
 			final Yaml yaml = new Yaml();
-			final List<?> children = (List<?>)yaml.load(parts[1]);
+			final List<?> children = yaml.load(parts[1]);
 			for(final Object child : children) {
 				if(!(child instanceof HashMap)) {
 					throw new InvalidMenuDataException("Invalid menu item (" + child.toString() + ").");
@@ -229,7 +223,7 @@ public class DocsMenu {
 	 * @param entries Entries to order.
 	 */
 	
-	public static final void orderMenuEntries(final List<DocsMenuEntry> entries) {
+	public static void orderMenuEntries(final List<DocsMenuEntry> entries) {
 		Collections.sort(entries);
 	}
 	
@@ -267,7 +261,7 @@ public class DocsMenu {
 		 * Children of this entry.
 		 */
 		
-		private final List<DocsMenuEntry> children = new ArrayList<DocsMenuEntry>();
+		private final List<DocsMenuEntry> children = new ArrayList<>();
 		
 		/**
 		 * Creates a new DocsMenuEntry instance.

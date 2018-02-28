@@ -1,13 +1,6 @@
 package fr.skyost.skydocs.utils;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.util.Arrays;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import fr.skyost.skydocs.Constants;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 import org.jtwig.environment.EnvironmentConfiguration;
@@ -16,7 +9,13 @@ import org.jtwig.functions.FunctionRequest;
 import org.jtwig.functions.JtwigFunction;
 import org.jtwig.functions.SimpleJtwigFunction;
 
-import fr.skyost.skydocs.Constants;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * The includeFile(file) function.
@@ -72,7 +71,6 @@ public class IncludeFileFunction extends SimpleJtwigFunction {
 	 * @param directory Where to find files.
 	 * @param model The jtwig model.
 	 * @param render If the file should be entirely rendered.
-	 * @param constructDependencyMap If the includeFile function should construct a dependency map of files or no.
 	 * @param functions The functions (used to render).
 	 */
 	

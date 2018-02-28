@@ -1,27 +1,18 @@
 package fr.skyost.skydocs;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-
-import org.apache.commons.io.FilenameUtils;
-import org.yaml.snakeyaml.Yaml;
-
 import fr.skyost.skydocs.DocsMenu.DocsMenuEntry;
 import fr.skyost.skydocs.exceptions.InvalidProjectDataException;
 import fr.skyost.skydocs.exceptions.InvalidTemplateException;
 import fr.skyost.skydocs.exceptions.LoadException;
 import fr.skyost.skydocs.utils.Utils;
 import fr.skyost.skydocs.utils.Utils.Pair;
+import org.apache.commons.io.FilenameUtils;
+import org.yaml.snakeyaml.Yaml;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * Represents a project.
@@ -39,13 +30,13 @@ public class DocsProject {
 	 * Pages of this project.
 	 */
 	
-	private final HashSet<DocsPage> pages = new HashSet<DocsPage>();
+	private final HashSet<DocsPage> pages = new HashSet<>();
 	
 	/**
 	 * Menus of this project.
 	 */
 	
-	private final HashSet<DocsMenu> menus = new HashSet<DocsMenu>();
+	private final HashSet<DocsMenu> menus = new HashSet<>();
 	
 	/**
 	 * Template of this project.
@@ -57,7 +48,7 @@ public class DocsProject {
 	 * Other variables of this project.
 	 */
 	
-	private final HashMap<String, Object> projectVariables = new HashMap<String, Object>();
+	private final HashMap<String, Object> projectVariables = new HashMap<>();
 	
 	/**
 	 * Creates a new DocsProject instance.
@@ -86,12 +77,11 @@ public class DocsProject {
 	 * @param menus Menus of this project.
 	 * @param template Template of this project.
 	 * 
-	 * @throws InvalidProjectDataException If the supplied project variables are invalid.
 	 * @throws IOException If an exception occurs while creating the template.
 	 * @throws InvalidTemplateException If an exception occurs while creating the template.
 	 */
 	
-	private DocsProject(final Map<String, Object> projectVariables, final File directory, final Set<DocsPage> pages, final Set<DocsMenu> menus, final DocsTemplate template) throws InvalidProjectDataException, InvalidTemplateException, IOException {
+	private DocsProject(final Map<String, Object> projectVariables, final File directory, final Set<DocsPage> pages, final Set<DocsMenu> menus, final DocsTemplate template) throws InvalidTemplateException, IOException {
 		this.directoryPath = directory == null ? System.getProperty("user.dir") : directory.getPath();
 		if(pages != null) {
 			this.pages.addAll(pages);
@@ -210,7 +200,7 @@ public class DocsProject {
 	/**
 	 * Sets if the default order should be alphabetical for this project.
 	 * 
-	 * @param defaultLanguage Whether the default order should be alphabetical for this project.
+	 * @param defaultOrderAlphabetical Whether the default order should be alphabetical for this project.
 	 */
 	
 	public final void setDefaultOrderAlphabetical(final boolean defaultOrderAlphabetical) {
@@ -228,16 +218,13 @@ public class DocsProject {
 		if(projectVariables.containsKey(Constants.KEY_PROJECT_LUNR_SEARCH)) {
 			return !Boolean.FALSE.equals(Utils.parseBoolean(projectVariables.get(Constants.KEY_PROJECT_LUNR_SEARCH).toString()));
 		}
-		if(projectVariables.containsKey(Constants.KEY_PROJECT_ENABLE_LUNR)) {
-			return !Boolean.FALSE.equals(Utils.parseBoolean(projectVariables.get(Constants.KEY_PROJECT_ENABLE_LUNR).toString()));
-		}
-		return true;
+		return !projectVariables.containsKey(Constants.KEY_PROJECT_ENABLE_LUNR) || !Boolean.FALSE.equals(Utils.parseBoolean(projectVariables.get(Constants.KEY_PROJECT_ENABLE_LUNR).toString()));
 	}
 	
 	/**
 	 * Sets if lunr search should be enabled for this project.
 	 * 
-	 * @param lunrSearch If lunr search should be enabled for this project.
+	 * @param enable If lunr search should be enabled for this project.
 	 */
 	
 	@SuppressWarnings("deprecation")
@@ -262,7 +249,7 @@ public class DocsProject {
 	/**
 	 * Sets if minification in production mode should be enabled for this project.
 	 * 
-	 * @param lunrSearch If minification in production mode should be enabled for this project.
+	 * @param enable If minification in production mode should be enabled for this project.
 	 */
 	
 	public final void setMinification(final boolean enable) {
@@ -276,16 +263,13 @@ public class DocsProject {
 	 */
 	
 	public final boolean hasLess() {
-		if(projectVariables.containsKey(Constants.KEY_PROJECT_ENABLE_LESS)) {
-			return !Boolean.FALSE.equals(Utils.parseBoolean(projectVariables.get(Constants.KEY_PROJECT_ENABLE_LESS).toString()));
-		}
-		return true;
+		return !projectVariables.containsKey(Constants.KEY_PROJECT_ENABLE_LESS) || !Boolean.FALSE.equals(Utils.parseBoolean(projectVariables.get(Constants.KEY_PROJECT_ENABLE_LESS).toString()));
 	}
 	
 	/**
 	 * Sets if less compilation should be enabled for this project.
 	 * 
-	 * @param lunrSearch If less compilation should be enabled for this project.
+	 * @param enable If less compilation should be enabled for this project.
 	 */
 	
 	public final void setLess(final boolean enable) {
@@ -331,7 +315,7 @@ public class DocsProject {
 	 */
 	
 	public final Set<DocsPage> getPages(final String language) {
-		final HashSet<DocsPage> pages = new HashSet<DocsPage>();
+		final HashSet<DocsPage> pages = new HashSet<>();
 		for(final DocsPage page : this.pages) {
 			if(!page.getLanguage().equals(language)) {
 				continue;
@@ -401,6 +385,10 @@ public class DocsProject {
 		DocsMenu menu = getMenuByLanguage(language);
 		if(menu == null) {
 			menu = getMenuByLanguage(getDefaultLanguage());
+
+			if(menu == null) {
+				return null;
+			}
 		}
 		return menu.toHTML();
 	}
@@ -526,7 +514,7 @@ public class DocsProject {
 	 * @throws LoadException If the specified file is not a directory.
 	 */
 	
-	private final HashSet<String> loadPages(final File directory) throws LoadException {
+	private HashSet<String> loadPages(final File directory) throws LoadException {
 		return loadPages(directory, new HashSet<String>());
 	}
 	
@@ -541,7 +529,7 @@ public class DocsProject {
 	 * @throws LoadException If the specified file is not a directory.
 	 */
 	
-	private final HashSet<String> loadPages(final File directory, final HashSet<String> destinations) throws LoadException {
+	private HashSet<String> loadPages(final File directory, final HashSet<String> destinations) throws LoadException {
 		if(!directory.isDirectory()) {
 			throw new LoadException("The file \"" + directory + "\" is not a directory.");
 		}
@@ -575,7 +563,7 @@ public class DocsProject {
 	 * @throws LoadException If an exception occurs while loading the project.
 	 */
 	
-	public static final Pair<DocsProject, Set<String>> loadFromDirectory(final File directory) throws LoadException {
+	public static Pair<DocsProject, Set<String>> loadFromDirectory(final File directory) throws LoadException {
 		try {
 			if(!directory.exists()) {
 				throw new LoadException("The directory \"" + directory + "\" does not exist.");
@@ -607,7 +595,7 @@ public class DocsProject {
 			
 			final HashSet<String> alreadyExist = project.loadPages(project.getContentDirectory());
 			if(project.isDefaultOrderAlphabetical()) {
-				final List<DocsPage> pages = new ArrayList<DocsPage>(project.getPages());
+				final List<DocsPage> pages = new ArrayList<>(project.getPages());
 				Collections.sort(pages);
 				final int size = pages.size();
 				for(int i = 0; i != pages.size(); i++) {
@@ -653,11 +641,10 @@ public class DocsProject {
 	 * @throws InvalidProjectDataException If the YAML file is invalid.
 	 */
 	
-	private static final DocsProject createFromFile(final File file) throws InvalidProjectDataException {
+	private static DocsProject createFromFile(final File file) throws InvalidProjectDataException {
 		try {
 			final Yaml yaml = new Yaml();
-			@SuppressWarnings("unchecked")
-			final HashMap<String, Object> data = (HashMap<String, Object>)yaml.load(new FileInputStream(file));
+			final HashMap<String, Object> data = yaml.load(new FileInputStream(file));
 
 			return new DocsProject(data, file.getParentFile());
 		}

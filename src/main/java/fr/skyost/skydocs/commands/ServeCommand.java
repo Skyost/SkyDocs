@@ -1,6 +1,18 @@
 package fr.skyost.skydocs.commands;
 
-import java.awt.Desktop;
+import fi.iki.elonen.NanoHTTPD;
+import fi.iki.elonen.NanoHTTPD.Response.Status;
+import fr.skyost.skydocs.Constants;
+import fr.skyost.skydocs.DocsProject;
+import fr.skyost.skydocs.exceptions.LoadException;
+import fr.skyost.skydocs.utils.Utils;
+import fr.skyost.skydocs.utils.Utils.AutoLineBreakStringBuilder;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.monitor.FileAlterationListenerAdaptor;
+import org.apache.commons.io.monitor.FileAlterationMonitor;
+import org.apache.commons.io.monitor.FileAlterationObserver;
+
+import java.awt.*;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,19 +23,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.util.Scanner;
-
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.monitor.FileAlterationListenerAdaptor;
-import org.apache.commons.io.monitor.FileAlterationMonitor;
-import org.apache.commons.io.monitor.FileAlterationObserver;
-
-import fi.iki.elonen.NanoHTTPD;
-import fi.iki.elonen.NanoHTTPD.Response.Status;
-import fr.skyost.skydocs.Constants;
-import fr.skyost.skydocs.DocsProject;
-import fr.skyost.skydocs.exceptions.LoadException;
-import fr.skyost.skydocs.utils.Utils;
-import fr.skyost.skydocs.utils.Utils.AutoLineBreakStringBuilder;
 
 /**
  * "serve" command.
@@ -41,7 +40,7 @@ public class ServeCommand extends Command {
 	 * The server's port.
 	 */
 	
-	private final int port;
+	private Integer port = null;
 	
 	/**
 	 * Enables manual rebuild via System.in.
@@ -73,7 +72,15 @@ public class ServeCommand extends Command {
 	
 	public ServeCommand(final boolean enableManualRebuild, final String... args) {
 		super(args);
-		this.port = args.length >= 2 && Utils.parseInt(args[1]) != null ? Utils.parseInt(args[1]) : Constants.DEFAULT_PORT;
+
+		if(args.length >= 2) {
+			this.port = Utils.parseInt(args[1]);
+		}
+
+		if(this.port == null) {
+			this.port = Constants.DEFAULT_PORT;
+		}
+
 		this.enableManualRebuild = enableManualRebuild;
 		this.server = new InternalServer(port);
 	}
@@ -151,7 +158,7 @@ public class ServeCommand extends Command {
 	 * @throws Exception If any exception occurs.
 	 */
 	
-	private final void firstBuild(final BuildCommand command) throws Exception {
+	private void firstBuild(final BuildCommand command) throws Exception {
 		registerFileListener(command);
 		buildDirectory = command.getCurrentBuildDirectory();
 		outputLine("You can point your browser to http://localhost:" + port + ".");
@@ -171,7 +178,7 @@ public class ServeCommand extends Command {
 	 * @throws LoadException If an error occurs while loading the project.
 	 */
 	
-	private final void newBuild(final BuildCommand command, final boolean firstBuild) throws LoadException {
+	private void newBuild(final BuildCommand command, final boolean firstBuild) throws LoadException {
 		output("Running build command...");
 		firstTime();
 		
@@ -202,7 +209,7 @@ public class ServeCommand extends Command {
 	 * @throws Exception If any exception occurs.
 	 */
 	
-	private final void registerFileListener(final BuildCommand command) throws Exception {
+	private void registerFileListener(final BuildCommand command) throws Exception {
 		final DocsProject project = command.getProject();
 		
 		final FileAlterationObserver observer = new FileAlterationObserver(project.getDirectory());
@@ -230,7 +237,7 @@ public class ServeCommand extends Command {
 	 * @param file The file that has changed.
 	 */
 	
-	private final void rebuildIfNeeded(final BuildCommand command, final File file) {
+	private void rebuildIfNeeded(final BuildCommand command, final File file) {
 		final String path = file.getPath().replace(command.getProject().getDirectory().getPath(), "").substring(1);
 		boolean reBuild = false;
 		for(final String toRebuild : Constants.SERVE_REBUILD_PREFIX) {
@@ -269,7 +276,7 @@ public class ServeCommand extends Command {
 	
 	private class InternalServer extends NanoHTTPD {
 		
-		public InternalServer(final int port) {
+		private InternalServer(final int port) {
 			super(port);
 		}
 		

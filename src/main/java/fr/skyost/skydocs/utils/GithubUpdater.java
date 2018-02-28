@@ -1,5 +1,8 @@
 package fr.skyost.skydocs.utils;
 
+import com.eclipsesource.json.Json;
+import com.eclipsesource.json.JsonObject;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -7,9 +10,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.regex.Pattern;
-
-import com.eclipsesource.json.Json;
-import com.eclipsesource.json.JsonObject;
 
 /**
  * An update checker based on Github releases.
@@ -82,7 +82,7 @@ public class GithubUpdater extends Thread {
 	 * <br><b>false</b> If <b>versionTo</b> is superior or equals to <b>versionWith</b>.
 	 */
 	
-	private static final boolean compareVersions(final String versionTo, final String versionWith) {
+	private static boolean compareVersions(final String versionTo, final String versionWith) {
 		return normalisedVersion(versionTo, ".", 4).compareTo(normalisedVersion(versionWith, ".", 4)) > 0;
 	}
 	
@@ -99,7 +99,7 @@ public class GithubUpdater extends Thread {
 	 * @author Peter Lawrey.
 	 */
 
-	private static final String normalisedVersion(final String version, final String separator, final int maxWidth) {
+	private static String normalisedVersion(final String version, final String separator, final int maxWidth) {
 		final StringBuilder stringBuilder = new StringBuilder();
 		for(final String normalised : Pattern.compile(separator, Pattern.LITERAL).split(version)) {
 			stringBuilder.append(String.format("%" + maxWidth + 's', normalised));

@@ -1,16 +1,7 @@
 package fr.skyost.skydocs;
 
-import java.io.File;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.regex.Pattern;
-
+import fr.skyost.skydocs.utils.IncludeFileFunction;
+import fr.skyost.skydocs.utils.Utils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.LocaleUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -26,8 +17,11 @@ import org.jtwig.JtwigTemplate;
 import org.jtwig.environment.EnvironmentConfiguration;
 import org.jtwig.environment.EnvironmentConfigurationBuilder;
 
-import fr.skyost.skydocs.utils.IncludeFileFunction;
-import fr.skyost.skydocs.utils.Utils;
+import java.io.File;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * Represent a MarkDown or HTML page.
@@ -105,20 +99,18 @@ public class DocsPage implements Comparable<DocsPage> {
 	 * The page's header.
 	 */
 	
-	private final HashMap<String, Object> header = new HashMap<String, Object>();
+	private final HashMap<String, Object> header = new HashMap<>();
 	
 	/**
 	 * Additional variables (when parsing).
 	 */
 	
-	private final HashMap<String, Object> additionalVariables = new HashMap<String, Object>();
+	private final HashMap<String, Object> additionalVariables = new HashMap<>();
 	
 	/**
 	 * Creates a new DocsPage instance.
 	 * 
 	 * @param project The project this page belongs to.
-	 * @param title The title of this page.
-	 * @param language The language of this page.
 	 * @param file The file (HTML or MarkDown) that represents the content of this page.
 	 */
 	
@@ -251,7 +243,7 @@ public class DocsPage implements Comparable<DocsPage> {
 	/**
 	 * Sets the next page.
 	 * 
-	 * @param previous The next page.
+	 * @param next The next page.
 	 */
 	
 	public final void setNextPage(final String next) {
@@ -482,8 +474,6 @@ public class DocsPage implements Comparable<DocsPage> {
 	
 	/**
 	 * Gets the build destination of this page.
-	 * 
-	 * @param project The project this page belongs to.
 	 */
 	
 	public final File getBuildDestination() {
@@ -497,7 +487,12 @@ public class DocsPage implements Comparable<DocsPage> {
 	 */
 	
 	public final String getMenu() {
-		return project.getMenuByLanguage(language).toHTML(this);
+		final DocsMenu menu = project.getMenuByLanguage(language);
+		if(menu == null) {
+			return "No menu available for this project.";
+		}
+
+		return menu.toHTML(this);
 	}
 	
 }

@@ -43,7 +43,7 @@ public abstract class Command implements Runnable {
 	 * Whether this command has been interrupted.
 	 */
 	
-	boolean isInterrupted = false;
+	private boolean isInterrupted = false;
 	
 	/**
 	 * The command listeners.
@@ -63,8 +63,18 @@ public abstract class Command implements Runnable {
 	 * @param args The arguments.
 	 */
 	
-	public Command(final String... args) {
+	Command(final String... args) {
 		this.args = args;
+	}
+
+	/**
+	 * Runs the command.
+	 */
+
+	@Override
+	public void run() {
+		isInterrupted = false;
+		broadcastCommandStarted();
 	}
 	
 	/**
@@ -139,7 +149,7 @@ public abstract class Command implements Runnable {
 	 * Registers the first time point.
 	 */
 	
-	public final void firstTime() {
+	final void firstTime() {
 		firstTime = System.currentTimeMillis();
 	}
 	
@@ -147,7 +157,7 @@ public abstract class Command implements Runnable {
 	 * Registers the second time point.
 	 */
 	
-	public final void secondTime() {
+	final void secondTime() {
 		secondTime = System.currentTimeMillis();
 	}
 	
@@ -155,18 +165,8 @@ public abstract class Command implements Runnable {
 	 * Prints "Done in x seconds !" with x being the time between the first and the second point.
 	 */
 	
-	public final void printTimeElapsed() {
+	final void printTimeElapsed() {
 		outputLine("Done in " + ((float)((secondTime - firstTime) / 1000f)) + " seconds !");
-	}
-	
-	/**
-	 * Run the command.
-	 */
-	
-	@Override
-	public void run() {
-		isInterrupted = false;
-		broadcastCommandStarted();
 	}
 	
 	/**
@@ -386,10 +386,10 @@ public abstract class Command implements Runnable {
 	
 	public interface CommandListener {
 		
-		public void onCommandStarted(final Command command);
-		public void onCommandFinished(final Command command);
-		public void onCommandError(final Command command, final Throwable error);
-		
+		void onCommandStarted(final Command command);
+		void onCommandFinished(final Command command);
+		void onCommandError(final Command command, final Throwable error);
+
 	}
 	
 	/**

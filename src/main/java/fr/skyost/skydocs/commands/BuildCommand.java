@@ -1,27 +1,9 @@
 package fr.skyost.skydocs.commands;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintStream;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.FileAlreadyExistsException;
-import java.nio.file.Files;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
-
-import org.apache.commons.io.FilenameUtils;
-import org.jtwig.JtwigModel;
-import org.jtwig.JtwigTemplate;
 import com.google.common.base.Ascii;
 import com.inet.lib.less.Less;
 import com.yahoo.platform.yui.compressor.CssCompressor;
 import com.yahoo.platform.yui.compressor.JavaScriptCompressor;
-
 import fr.skyost.skydocs.Constants;
 import fr.skyost.skydocs.DocsPage;
 import fr.skyost.skydocs.DocsProject;
@@ -29,6 +11,17 @@ import fr.skyost.skydocs.DocsTemplate;
 import fr.skyost.skydocs.exceptions.LoadException;
 import fr.skyost.skydocs.utils.Utils;
 import fr.skyost.skydocs.utils.Utils.Pair;
+import org.apache.commons.io.FilenameUtils;
+import org.jtwig.JtwigModel;
+import org.jtwig.JtwigTemplate;
+
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.Files;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * "build" command.
@@ -50,8 +43,6 @@ public class BuildCommand extends Command {
 	
 	/**
 	 * The project's build directory.
-	 * 
-	 * @throws LoadException If the project can't be loaded from the specified directory.
 	 */
 	
 	private File buildDirectory;
@@ -134,7 +125,7 @@ public class BuildCommand extends Command {
 				final String lunrContentString = lunrContent.toString();
 				Utils.extract(Constants.RESOURCE_SEARCH_PAGE_PATH, Constants.RESOURCE_SEARCH_PAGE_FILE, buildDirectory);
 				
-				final HashMap<String, Object> pageVariables = new HashMap<String, Object>();
+				final HashMap<String, Object> pageVariables = new HashMap<>();
 				pageVariables.put(Constants.VARIABLE_LUNR_DATA, "var pages = {" + (lunrContentString.length() > 0 ? lunrContentString.substring(0, lunrContentString.length() - 2) : "") + "};");
 				
 				template.applyTemplate(new File(buildDirectory, Constants.RESOURCE_SEARCH_PAGE_FILE), prod, null, pageVariables);
@@ -228,7 +219,7 @@ public class BuildCommand extends Command {
 	/**
 	 * Sets the current project.
 	 * 
-	 * @return project The new project.
+	 * @param project The new project.
 	 */
 	
 	public final void setProject(final DocsProject project) {

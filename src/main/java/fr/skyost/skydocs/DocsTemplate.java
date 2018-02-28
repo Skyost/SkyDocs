@@ -1,23 +1,21 @@
 package fr.skyost.skydocs;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.util.HashMap;
-import java.util.Map;
-
+import com.googlecode.htmlcompressor.compressor.HtmlCompressor;
+import fr.skyost.skydocs.exceptions.InvalidTemplateException;
+import fr.skyost.skydocs.utils.IncludeFileFunction;
+import fr.skyost.skydocs.utils.RangeFunction;
 import org.apache.commons.io.FilenameUtils;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 import org.jtwig.environment.EnvironmentConfiguration;
 import org.jtwig.environment.EnvironmentConfigurationBuilder;
 
-import com.googlecode.htmlcompressor.compressor.HtmlCompressor;
-
-import fr.skyost.skydocs.exceptions.InvalidTemplateException;
-import fr.skyost.skydocs.utils.IncludeFileFunction;
-import fr.skyost.skydocs.utils.RangeFunction;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Represents a theme / template.
@@ -53,7 +51,7 @@ public class DocsTemplate {
 	 * Variables to put by default in the template.
 	 */
 	
-	private final HashMap<String, Object> variables = new HashMap<String, Object>();
+	private final HashMap<String, Object> variables = new HashMap<>();
 	
 	/**
 	 * The project this template belongs to.
@@ -105,6 +103,24 @@ public class DocsTemplate {
 	
 	public final void putVariables(final Map<String, Object> variables) {
 		this.variables.putAll(variables);
+	}
+
+	/**
+	 * Removes a variable of this template.
+	 *
+	 * @param variable The variable.
+	 */
+
+	public final void removeVariable(final String variable) {
+		variables.remove(variable);
+	}
+
+	/**
+	 * Clears all variables of this template.
+	 */
+
+	public final void clearVariables() {
+		variables.clear();
 	}
 	
 	/**
@@ -199,7 +215,7 @@ public class DocsTemplate {
 	 */
 	
 	public final JtwigModel createModel(final Map<String, Object> otherVariables) {
-		final HashMap<String, Object> variables = new HashMap<String, Object>(this.variables);
+		final HashMap<String, Object> variables = new HashMap<>(this.variables);
 		if(otherVariables != null) {
 			variables.putAll(otherVariables);
 		}

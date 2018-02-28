@@ -1,17 +1,11 @@
 package fr.skyost.skydocs;
 
-import java.util.Arrays;
-
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-
-import fr.skyost.skydocs.commands.BuildCommand;
-import fr.skyost.skydocs.commands.HelpCommand;
-import fr.skyost.skydocs.commands.NewCommand;
-import fr.skyost.skydocs.commands.ServeCommand;
-import fr.skyost.skydocs.commands.UpdateCommand;
+import fr.skyost.skydocs.commands.*;
 import fr.skyost.skydocs.commands.frames.ProjectsFrame;
 import fr.skyost.skydocs.exceptions.LoadException;
+
+import javax.swing.*;
+import java.util.Arrays;
 
 /**
  * Executable class of SkyDocs.
@@ -30,7 +24,7 @@ public class SkyDocs {
 	 * @throws UnsupportedLookAndFeelException If an error occurs while applying the default look and feel.
 	 */
 	
-	public static final void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+	public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
 		if(args.length == 0) {
 			args = new String[]{Constants.COMMAND_GUI};
 		}

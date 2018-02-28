@@ -1,59 +1,37 @@
 package fr.skyost.skydocs.commands.frames;
 
-import javax.swing.JFrame;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
+import com.google.common.io.Files;
+import fr.skyost.skydocs.Constants;
+import fr.skyost.skydocs.commands.BuildCommand;
+import fr.skyost.skydocs.commands.Command;
+import fr.skyost.skydocs.commands.Command.CommandListener;
+import fr.skyost.skydocs.commands.NewCommand;
+import fr.skyost.skydocs.commands.ServeCommand;
+import fr.skyost.skydocs.utils.GithubUpdater;
+import fr.skyost.skydocs.utils.GithubUpdater.GithubUpdaterResultListener;
+import fr.skyost.skydocs.utils.Utils;
 
-import java.awt.BorderLayout;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.DefaultListModel;
-import javax.swing.GroupLayout;
+import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JLabel;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.ListSelectionModel;
-import javax.swing.SwingUtilities;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.text.DefaultCaret;
-
-import com.google.common.io.Files;
-
-import fr.skyost.skydocs.Constants;
-import fr.skyost.skydocs.commands.BuildCommand;
-import fr.skyost.skydocs.commands.Command;
-import fr.skyost.skydocs.commands.Command.CommandListener;
-import fr.skyost.skydocs.utils.GithubUpdater.GithubUpdaterResultListener;
-import fr.skyost.skydocs.utils.GithubUpdater;
-import fr.skyost.skydocs.utils.Utils;
-import fr.skyost.skydocs.commands.NewCommand;
-import fr.skyost.skydocs.commands.ServeCommand;
-
-import java.awt.Color;
-import java.awt.Desktop;
-import java.awt.Font;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.swing.border.EmptyBorder;
-import java.awt.Toolkit;
 
 /**
  * SkyDocs' GUI.
@@ -68,8 +46,8 @@ public class ProjectsFrame extends JFrame implements CommandListener, GithubUpda
 	
 	private final PrintStream guiPrintStream = new PrintStream(new GUIPrintStream());
 	
-	private final DefaultListModel<String> projectsModel = new DefaultListModel<String>();
-	private final JList<String> projectsList = new JList<String>(projectsModel);
+	private final DefaultListModel<String> projectsModel = new DefaultListModel<>();
+	private final JList<String> projectsList = new JList<>(projectsModel);
 	
 	private final JButton createProjectButton = new JButton(Constants.GUI_BUTTON_CREATE);
 	private final JButton openProjectButton = new JButton(Constants.GUI_BUTTON_OPEN);
@@ -395,7 +373,7 @@ public class ProjectsFrame extends JFrame implements CommandListener, GithubUpda
 	 * @return A list of icons to use with Swing.
 	 */
 	
-	private final List<Image> buildIconsList() {
+	private List<Image> buildIconsList() {
 		final Image icon = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource(Constants.RESOURCE_PROJECT_ICON));
 		return Arrays.asList(
 			icon.getScaledInstance(16, 16, Image.SCALE_SMOOTH),
@@ -446,9 +424,9 @@ public class ProjectsFrame extends JFrame implements CommandListener, GithubUpda
 	
 	public final void saveHistory() {
 		try {
-			final StringBuilder builder = new StringBuilder();
+			final Utils.AutoLineBreakStringBuilder builder = new Utils.AutoLineBreakStringBuilder();
 			for(int i = 0; i < projectsModel.size(); i++) {
-				builder.append(projectsModel.getElementAt(i) + System.lineSeparator());
+				builder.append(projectsModel.getElementAt(i));
 			}
 			Files.write(builder.toString(), new File(Utils.getParentFolder(), Constants.FILE_GUI_HISTORY), StandardCharsets.UTF_8);
 		}
@@ -466,7 +444,7 @@ public class ProjectsFrame extends JFrame implements CommandListener, GithubUpda
 	public class GUIPrintStream extends OutputStream {
 
 		@Override
-		public final void write(final byte[] buffer, final int offset, final int length) throws IOException {
+		public final void write(final byte[] buffer, final int offset, final int length) {
 			final String text = new String(buffer, offset, length);
 			SwingUtilities.invokeLater(new Runnable() {
 				
@@ -479,7 +457,7 @@ public class ProjectsFrame extends JFrame implements CommandListener, GithubUpda
 		}
 		
 		@Override
-		public final void write(final int b) throws IOException {
+		public final void write(final int b) {
 			write(new byte []{(byte)b}, 0, 1);
 		}
 		
