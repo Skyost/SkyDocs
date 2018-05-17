@@ -47,5 +47,10 @@ public class UpdateCommand extends Command implements GithubUpdaterResultListene
 	public final void updaterNoUpdate(final String localVersion, final String remoteVersion) {
 		outputLine("No update available.");
 	}
+
+	@Override
+	public final Object getArguments() {
+		return null;
+	}
 	
 }

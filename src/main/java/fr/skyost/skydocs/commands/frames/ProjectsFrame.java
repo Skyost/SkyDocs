@@ -208,7 +208,7 @@ public class ProjectsFrame extends JFrame implements CommandListener, GithubUpda
 			@Override
 			public final void actionPerformed(final ActionEvent event) {
 				if(serveCommand == null) {
-					serveCommand = new ServeCommand(false, projectsModel.getElementAt(projectsList.getSelectedIndex()));
+					serveCommand = new ServeCommand("-directory", projectsModel.getElementAt(projectsList.getSelectedIndex()), "-manualRebuild", "false");
 					serveCommand.setOut(guiPrintStream);
 					serveCommand.addListener(ProjectsFrame.this);
 					new Thread(serveCommand).start();
@@ -311,7 +311,7 @@ public class ProjectsFrame extends JFrame implements CommandListener, GithubUpda
 		final boolean enabled = 0 <= index && index < projectsModel.size();
 		if(command instanceof NewCommand) {
 			newCommand = null;
-			projectsModel.addElement(command.getArguments()[0]);
+			projectsModel.addElement(((NewCommand)command).getArguments().directory);
 			createProjectButton.setEnabled(true);
 			buildProjectButton.setEnabled(enabled);
 			serveProjectButton.setEnabled(enabled);

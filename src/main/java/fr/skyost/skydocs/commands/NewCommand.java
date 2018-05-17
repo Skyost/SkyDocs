@@ -1,5 +1,6 @@
 package fr.skyost.skydocs.commands;
 
+import com.beust.jcommander.Parameter;
 import fr.skyost.skydocs.Constants;
 import fr.skyost.skydocs.exceptions.ProjectAlreadyExistsException;
 import fr.skyost.skydocs.utils.Utils;
@@ -15,6 +16,12 @@ import java.nio.file.Files;
  */
 
 public class NewCommand extends Command {
+
+	/**
+	 * The command arguments.
+	 */
+
+	private Arguments arguments;
 	
 	public NewCommand(final String... args) {
 		super(args);
@@ -24,8 +31,7 @@ public class NewCommand extends Command {
 	public final void run() {
 		super.run();
 		try {
-			final String[] args = this.getArguments();
-			final File directory = new File(args.length > 0 && args[0].length() > 0 ? args[0] : System.getProperty("user.dir"));
+			final File directory = new File(arguments.directory);
 			
 			if(new File(directory, Constants.FILE_PROJECT_DATA).exists()) {
 				throw new ProjectAlreadyExistsException("A project already exists in that location !");
@@ -60,6 +66,15 @@ public class NewCommand extends Command {
 	public final boolean isInterruptible() {
 		return true;
 	}
+
+	@Override
+	public final Arguments getArguments() {
+		if(arguments == null) {
+			arguments = new Arguments();
+		}
+
+		return arguments;
+	}
 	
 	/**
 	 * Creates a file, content will be formatted with JAR's file location.
@@ -73,6 +88,17 @@ public class NewCommand extends Command {
 	
 	private void createFile(final String jarPath, final File file, final String content) throws IOException {
 		Files.write(file.toPath(), String.format(content, jarPath).getBytes(StandardCharsets.UTF_8));
+	}
+
+	/**
+	 * Command arguments.
+	 */
+
+	public class Arguments {
+
+		@Parameter(names = {"-directory", "-d"}, description = "Sets the new project directory.")
+		public String directory = System.getProperty("user.dir");
+
 	}
 	
 }

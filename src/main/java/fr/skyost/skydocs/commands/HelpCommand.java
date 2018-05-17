@@ -1,5 +1,6 @@
 package fr.skyost.skydocs.commands;
 
+import com.beust.jcommander.Parameter;
 import fr.skyost.skydocs.Constants;
 
 /**
@@ -7,6 +8,12 @@ import fr.skyost.skydocs.Constants;
  */
 
 public class HelpCommand extends Command {
+
+	/**
+	 * The command arguments.
+	 */
+
+	private Arguments arguments;
 	
 	public HelpCommand(final String... args) {
 		super(args);
@@ -15,11 +22,7 @@ public class HelpCommand extends Command {
 	@Override
 	public final void run() {
 		super.run();
-		String[] args = this.getArguments();
-		if(args.length == 0) {
-			args = new String[]{""};
-		}
-		switch(args[0].toLowerCase()) {
+		switch(arguments.command == null ? "" : arguments.command) {
 		case Constants.COMMAND_NEW:
 			outputLine(Constants.COMMAND_NEW_SYNTAX);
 			break;
@@ -52,6 +55,26 @@ public class HelpCommand extends Command {
 	@Override
 	public final boolean isInterruptible() {
 		return false;
+	}
+
+	@Override
+	public final Arguments getArguments() {
+		if(arguments == null) {
+			arguments = new Arguments();
+		}
+
+		return arguments;
+	}
+
+	/**
+	 * Command arguments.
+	 */
+
+	public class Arguments {
+
+		@Parameter(names = {"command", "c"}, description = "Shows the help of a specific command.")
+		public String command;
+
 	}
 	
 }

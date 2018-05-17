@@ -1,6 +1,10 @@
 package fr.skyost.skydocs.commands;
 
+import com.beust.jcommander.JCommander;
+import com.beust.jcommander.ParameterException;
+
 import java.io.PrintStream;
+import java.util.Arrays;
 import java.util.HashSet;
 
 /**
@@ -8,12 +12,6 @@ import java.util.HashSet;
  */
 
 public abstract class Command implements Runnable {
-	
-	/**
-	 * Arguments sent to this command.
-	 */
-	
-	private String[] args;
 	
 	/**
 	 * If the JVM should exit when the command has been ran.
@@ -64,7 +62,19 @@ public abstract class Command implements Runnable {
 	 */
 	
 	Command(final String... args) {
-		this.args = args;
+		getArguments(); // Commands usually lazily create arguments. This will allow arguments to almost never be null.
+
+		if(args != null && args.length > 0) {
+			try {
+				JCommander.newBuilder().addObject(getArguments()).build().parse(args);
+			}
+			catch(final ParameterException ex) {
+				ex.usage();
+			}
+			catch(final Exception ex) {
+				ex.printStackTrace();
+			}
+		}
 	}
 
 	/**
@@ -76,26 +86,14 @@ public abstract class Command implements Runnable {
 		isInterrupted = false;
 		broadcastCommandStarted();
 	}
-	
+
 	/**
-	 * Gets the arguments of this command.
-	 * 
-	 * @return The arguments.
+	 * Gets the JCommander class.
+	 *
+	 * @return The JCommander class.
 	 */
-	
-	public final String[] getArguments() {
-		return args;
-	}
-	
-	/**
-	 * Sets the arguments of this command.
-	 * 
-	 * @param args The arguments.
-	 */
-	
-	public final void setArguments(final String... args) {
-		this.args = args;
-	}
+
+	abstract Object getArguments();
 	
 	/**
 	 * Checks if this command is interruptible.
@@ -128,7 +126,7 @@ public abstract class Command implements Runnable {
 	/**
 	 * Gets if this command should use System.out.print(...).
 	 * 
-	 * @return Whether this command should output informations.
+	 * @return Whether this command should output data.
 	 */
 	
 	public final boolean isOutputing() {
@@ -138,7 +136,7 @@ public abstract class Command implements Runnable {
 	/**
 	 * Sets whether this command should use System.out.print(...).
 	 * 
-	 * @param output Whether this command should output informations.
+	 * @param output Whether this command should output data.
 	 */
 	
 	public final void setOutputing(final boolean output) {
@@ -379,7 +377,7 @@ public abstract class Command implements Runnable {
 			listener.onCommandError(this, throwable);
 		}
 	}
-	
+
 	/**
 	 * The command listener interface.
 	 */

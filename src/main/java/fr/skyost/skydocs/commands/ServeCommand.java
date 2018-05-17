@@ -1,5 +1,6 @@
 package fr.skyost.skydocs.commands;
 
+import com.beust.jcommander.Parameter;
 import fi.iki.elonen.NanoHTTPD;
 import fi.iki.elonen.NanoHTTPD.Response.Status;
 import fr.skyost.skydocs.Constants;
@@ -31,22 +32,16 @@ import java.util.Scanner;
 public class ServeCommand extends Command {
 	
 	/**
-	 * The project's build directory.
+	 * The command arguments.
 	 */
-	
+
+	private Arguments arguments;
+
+	/**
+	 * Current build directory.
+	 */
+
 	private File buildDirectory;
-	
-	/**
-	 * The server's port.
-	 */
-	
-	private Integer port = null;
-	
-	/**
-	 * Enables manual rebuild via System.in.
-	 */
-	
-	private final boolean enableManualRebuild;
 	
 	/**
 	 * Last build time in millis.
@@ -67,33 +62,20 @@ public class ServeCommand extends Command {
 	private final InternalServer server;
 	
 	public ServeCommand(final String... args) {
-		this(true, args);
-	}
-	
-	public ServeCommand(final boolean enableManualRebuild, final String... args) {
 		super(args);
 
-		if(args.length >= 2) {
-			this.port = Utils.parseInt(args[1]);
-		}
-
-		if(this.port == null) {
-			this.port = Constants.DEFAULT_PORT;
-		}
-
-		this.enableManualRebuild = enableManualRebuild;
-		this.server = new InternalServer(port);
+		this.server = new InternalServer(arguments.port);
 	}
 	
 	@Override
 	public final void run() {
 		super.run();
 		try {
-			final BuildCommand command = new BuildCommand(false, this.getOut(), this.getArguments());
+			final BuildCommand command = new BuildCommand(false, this.getOut(), arguments.directory == null ? null : new String[]{"-directory", arguments.directory});
 			command.setOutputing(false);
 			blankLine();
 			
-			if(!enableManualRebuild) {
+			if(!arguments.manualRebuild) {
 				newBuild(command, true);
 				firstBuild(command);
 				return;
@@ -121,7 +103,7 @@ public class ServeCommand extends Command {
 		}
 		catch(final BindException bindException) {
 			printStackTrace(bindException);
-			outputLine("A binding error occurred. Maybe the port " + port + " is already in use ?");
+			outputLine("A binding error occurred. Maybe the port " + arguments.port + " is already in use ?");
 			broadcastCommandError(bindException);
 		}
 		catch(final Exception exception) {
@@ -149,6 +131,15 @@ public class ServeCommand extends Command {
 		}
 		super.interrupt();
 	}
+
+	@Override
+	public final Arguments getArguments() {
+		if(arguments == null) {
+			arguments = new Arguments();
+		}
+
+		return arguments;
+	}
 	
 	/**
 	 * Triggers first build events.
@@ -161,11 +152,11 @@ public class ServeCommand extends Command {
 	private void firstBuild(final BuildCommand command) throws Exception {
 		registerFileListener(command);
 		buildDirectory = command.getCurrentBuildDirectory();
-		outputLine("You can point your browser to http://localhost:" + port + ".");
+		outputLine("You can point your browser to http://localhost:" + arguments.port + ".");
 		blankLine();
 		server.start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
 		if(Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
-			Desktop.getDesktop().browse(new URL("http://localhost:" + port).toURI());
+			Desktop.getDesktop().browse(new URL("http://localhost:" + arguments.port).toURI());
 		}
 	}
 	
@@ -261,16 +252,6 @@ public class ServeCommand extends Command {
 	}
 	
 	/**
-	 * Gets the current port of this serve command.
-	 * 
-	 * @return The current port of this serve command.
-	 */
-	
-	public final int getPort() {
-		return port;
-	}
-	
-	/**
 	 * The SkyDocs internal server.
 	 */
 	
@@ -344,6 +325,23 @@ public class ServeCommand extends Command {
 			}
 		}
 		
+	}
+
+	/**
+	 * Command arguments.
+	 */
+
+	public class Arguments {
+
+		@Parameter(names = {"-directory", "-d"}, description = "Sets the current serve directory.")
+		public String directory;
+
+		@Parameter(names = {"-port", "-p"}, description = "Sets the server port.")
+		public int port =  Constants.DEFAULT_PORT;
+
+		@Parameter(names = {"-manualRebuild", "-mr"}, description = "Toggles the manual rebuild.")
+		public boolean manualRebuild = true;
+
 	}
 	
 }

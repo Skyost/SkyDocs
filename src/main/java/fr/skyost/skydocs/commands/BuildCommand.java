@@ -1,5 +1,6 @@
 package fr.skyost.skydocs.commands;
 
+import com.beust.jcommander.Parameter;
 import com.google.common.base.Ascii;
 import com.inet.lib.less.Less;
 import com.yahoo.platform.yui.compressor.CssCompressor;
@@ -36,10 +37,10 @@ public class BuildCommand extends Command {
 	private final boolean prod;
 	
 	/**
-	 * The project's directory path.
+	 * The command arguments.
 	 */
 	
-	private final String directoryPath;
+	private Arguments arguments;
 	
 	/**
 	 * The project's build directory.
@@ -64,7 +65,6 @@ public class BuildCommand extends Command {
 		if(out != null) {
 			this.setOut(out);
 		}
-		directoryPath = args.length > 0 && args[0].length() > 0 ? args[0] : System.getProperty("user.dir");
 		reloadProject();
 	}
 	
@@ -167,6 +167,15 @@ public class BuildCommand extends Command {
 	public final boolean isInterruptible() {
 		return true;
 	}
+
+	@Override
+	public final Arguments getArguments() {
+		if(arguments == null) {
+			arguments = new Arguments();
+		}
+
+		return arguments;
+	}
 	
 	/**
 	 * Checks if the command is in prod mode.
@@ -185,10 +194,10 @@ public class BuildCommand extends Command {
 	 */
 	
 	public final void reloadProject() throws LoadException {
-		output("Loading project from directory \"" + directoryPath + "\" and loading theme... ");
+		output("Loading project from directory \"" + arguments.directory + "\" and loading theme... ");
 		firstTime();
 		
-		final Pair<DocsProject, Set<String>> result = DocsProject.loadFromDirectory(new File(directoryPath));
+		final Pair<DocsProject, Set<String>> result = DocsProject.loadFromDirectory(new File(arguments.directory));
 		
 		if(result.b.size() > 0) {
 			blankLine();
@@ -338,6 +347,17 @@ public class BuildCommand extends Command {
 		for(final File file : directory.listFiles()) {
 			copyAsset(file, new File(destination, file.getName()));
 		}
+	}
+
+	/**
+	 * Command arguments.
+	 */
+
+	public class Arguments {
+
+		@Parameter(names = {"-directory", "-d"}, description = "Sets the current build directory.")
+		public String directory = System.getProperty("user.dir");
+
 	}
 	
 }

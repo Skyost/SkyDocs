@@ -52,7 +52,7 @@ public class Constants {
 	 * The new command syntax.
 	 */
 	
-	public static final String COMMAND_NEW_SYNTAX = COMMAND_NEW + " [directory] - Creates a new documentation in the specified directory.";
+	public static final String COMMAND_NEW_SYNTAX = COMMAND_NEW + " -directory [directory] - Creates a new documentation in the specified directory.";
 	
 	/**
 	 * The build a project command.
@@ -64,7 +64,7 @@ public class Constants {
 	 * The build command syntax.
 	 */
 	
-	public static final String COMMAND_BUILD_SYNTAX = COMMAND_BUILD + " [directory] - Builds the documentation located in the specified directory.";
+	public static final String COMMAND_BUILD_SYNTAX = COMMAND_BUILD + " -directory [directory] - Builds the documentation located in the specified directory.";
 	
 	/**
 	 * The serve a project command.
@@ -76,7 +76,7 @@ public class Constants {
 	 * The serve command syntax.
 	 */
 	
-	public static final String COMMAND_SERVE_SYNTAX = COMMAND_SERVE + " [directory] [port] - Builds the documentation located in the specified directory and serve it on localhost with the specified port.";
+	public static final String COMMAND_SERVE_SYNTAX = COMMAND_SERVE + " -directory [directory] -port [port] -manualRebuild [true|false] - Builds the documentation located in the specified directory and serve it on localhost with the specified port.";
 	
 	/**
 	 * The update app command.
@@ -100,7 +100,7 @@ public class Constants {
 	 * The help command syntax.
 	 */
 	
-	public static final String COMMAND_HELP_SYNTAX = COMMAND_HELP + " [command] - Shows the available commands with their description.";
+	public static final String COMMAND_HELP_SYNTAX = COMMAND_HELP + " -command [command] - Shows the available commands with their description.";
 	
 	/**
 	 * The GUI command.
