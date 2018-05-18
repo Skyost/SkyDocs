@@ -109,12 +109,11 @@ public class BuildCommand extends Command {
 				}
 				
 				if(lunr) {
-					final String title = page.getTitle();
 					String content = Utils.stripHTML(page.getContent());
 					if(content.length() >= 140) {
 						content = Ascii.truncate(content, 140, "...");
 					}
-					lunrContent.append("'" + title.toLowerCase().replace(".", "-").replace("'", "\\'") + "': {" + "title: '" + Utils.stripHTML(title).replace("'", "\\'") + "', " + "content: '" + content.replace("'", "\\'") + "', " + "url: '" + page.getPageRelativeURL().substring(1) + "'" + "}, ");
+					lunrContent.append("'" + page.getPageRelativeURL().replace('/', '-') + "': {" + "title: '" + Utils.stripHTML(page.getTitle()).replace("'", "\\'") + "', " + "content: '" + content.replace("'", "\\'") + "', " + "url: '" + page.getPageRelativeURL().substring(1) + "'" + "}, ");
 				}
 				
 				template.applyTemplate(destination, prod, page, null);
@@ -126,7 +125,7 @@ public class BuildCommand extends Command {
 				Utils.extract(Constants.RESOURCE_SEARCH_PAGE_PATH, Constants.RESOURCE_SEARCH_PAGE_FILE, buildDirectory);
 				
 				final HashMap<String, Object> pageVariables = new HashMap<>();
-				pageVariables.put(Constants.VARIABLE_LUNR_DATA, "var pages = {" + (lunrContentString.length() > 0 ? lunrContentString.substring(0, lunrContentString.length() - 2) : "") + "};");
+				pageVariables.put(Constants.VARIABLE_LUNR_DATA, "const PAGES = {" + (lunrContentString.length() > 0 ? lunrContentString.substring(0, lunrContentString.length() - 2) : "") + "};");
 				
 				template.applyTemplate(new File(buildDirectory, Constants.RESOURCE_SEARCH_PAGE_FILE), prod, null, pageVariables);
 			}

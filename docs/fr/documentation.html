@@ -6,7 +6,7 @@
 
 <meta name="description" content="SkyDocs is a lightweight static documentation builder with MarkDown."/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<meta name="generator" content="SkyDocs v0.5.2 Beta"/>
+<meta name="generator" content="SkyDocs v0.6 Beta"/>
 
 <meta property="og:type" content="website"/>
 <meta property="og:title" content="Documentation - SkyDocs"/>
@@ -26,13 +26,8 @@
 <meta id="theme-color" name="theme-color" content="#292b2c"/>
 <link rel="icon" type="image/png" href="../assets/img/icon.png"/>
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
-<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta.2/css/bootstrap.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.min.css"/>
 <link rel="stylesheet" type="text/css" href="../assets/css/page.css"/>
-<link rel="stylesheet" type="text/css" href="../assets/css/themes/blue.css"/>
-
-
-
-
 </head>
 <body>
 <header>
@@ -110,7 +105,7 @@
 </div>
 <article class="col-md-7">
 <h1 id="documentation">Documentation</h1>
-<p>Cette documentation a été écrite pour <strong>SkyDocs v0.5.2 Beta</strong>. N'oubliez pas de le mettre à jour (un guide est disponible ci-dessous) !</p>
+<p>Cette documentation a été écrite pour <strong>SkyDocs v0.6 Beta</strong>. N'oubliez pas de le mettre à jour (un guide est disponible ci-dessous) !</p>
 <h2 id="téléchargement--installation">Téléchargement &amp; installation</h2>
 <p>Voici les étapes pour télécharger et installer le logiciel.</p>
 <h3 id="téléchargement">Téléchargement</h3>
@@ -194,11 +189,11 @@ SkyDocs va essayer de générer le projet contenu dans le dossier courant). Le p
 <tr><th>Syntaxe</th><th>Valeur par défaut</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr><td><code>new [directory]</code></td><td><strong>directory :</strong> dossier courant</td><td>Créé une nouvelle documentation dans le dossier spécifié.</td></tr>
-<tr><td><code>build [directory]</code></td><td><strong>directory :</strong> dossier courant</td><td>Génère la documentation contenue dans le dossier spécifié. HTML, CSS et JS seront minifiés, le temps de compilation sera donc plus long qu'avec <code>serve</code>.</td></tr>
-<tr><td><code>serve [directory] [port]</code></td><td><strong>directory :</strong> dossier courant<br><strong>port :</strong> 4444</td><td>Génère la documentation contenue dans le dossier spécifié et la sert sur localhost avec le port spécifié. Pas de minification.</td></tr>
+<tr><td><code>new -directory [directory]</code></td><td><strong>directory :</strong> dossier courant</td><td>Créé une nouvelle documentation dans le dossier spécifié.</td></tr>
+<tr><td><code>build -directory [directory]</code></td><td><strong>directory :</strong> dossier courant</td><td>Génère la documentation contenue dans le dossier spécifié. HTML, CSS et JS seront minifiés, le temps de compilation sera donc plus long qu'avec <code>serve</code>.</td></tr>
+<tr><td><code>serve -directory [directory] -port [port] -manualRebuild [true/false]</code></td><td><strong>directory :</strong> dossier courant<br><strong>port :</strong> 4444<br><strong>manualRebuild :</strong> true</td><td>Génère la documentation contenue dans le dossier spécifié et la sert sur localhost avec le port spécifié. Pas de minification.</td></tr>
 <tr><td><code>update</code></td><td></td><td>Vérifie si des mises à jours sont disponibles.</td></tr>
-<tr><td><code>help [command]</code></td><td><strong>command :</strong> toutes</td><td>Affiche une liste des commandes disponibles avec leur description.</td></tr>
+<tr><td><code>help -command [command]</code></td><td><strong>command :</strong> toutes</td><td>Affiche une liste des commandes disponibles avec leur description.</td></tr>
 <tr><td><code>gui</code> (ou rien)</td><td></td><td>Permet de lancer l'<a href="#ihm">IHM</a>.</td></tr>
 </tbody>
 </table>
@@ -208,10 +203,10 @@ SkyDocs va essayer de générer le projet contenu dans le dossier courant). Le p
 <p>À partir de la version v0.5, SkyDocs possède un <em>IHM</em> ! Comme vous pouvez le voir c'est plutôt explicite : vous pouvez ouvrir vos projets, les compiler, les servir sur le réseau, etc...</p>
 <p><strong>Attention !</strong> Tout est en anglais cependant.</p>
 <section>
-<small class="date text-muted"><i class="fa fa-calendar" aria-hidden="true"></i> 2 janv. 2018 15:08:42</small>
-<div class="paginator clearfix no-print">
-<a class="btn btn-secondary float-left" href="index.html" role="button"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
-<a class="btn btn-secondary float-right" href="creer-theme.html" role="button"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+<small class="date text-muted"><i class="fa fa-calendar" aria-hidden="true"></i> 17 mai 2018 17:58:14</small>
+<div class="pagination clearfix no-print">
+<a href="index.html" class="text-muted previous"><i class="fa fa-caret-left" aria-hidden="true"></i> Previous</a>
+<a href="creer-theme.html" class="text-muted next">Next <i class="fa fa-caret-right" aria-hidden="true"></i></a>
 </div>
 </section>
 </article>
@@ -220,17 +215,17 @@ SkyDocs va essayer de générer le projet contenu dans le dossier courant). Le p
 <footer>
 <p class="text-muted">
 <i class="fa fa-file-text" aria-hidden="true"></i> Documentation theme created with <i class="fa fa-heart pulse" aria-hidden="true"></i> by <a href="https://www.skyost.eu">Skyost</a>.
-Powered by <a href="https://skydocs.skyost.eu">SkyDocs</a> v0.5.2 Beta.
+Powered by <a href="https://skydocs.skyost.eu">SkyDocs</a> v0.6 Beta.
 </p>
 </footer>
 
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.13.0/umd/popper.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jQuery.print/1.5.1/jQuery.print.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/is-in-viewport/3.0.0/isInViewport.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/is-in-viewport/3.0.3/isInViewport.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.0.0/tocbot.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.3.2/tocbot.min.js"></script>
 <script type="text/javascript" src="../assets/js/page.js"></script>
 <script type="text/javascript" src="../assets/localization/fr.js"></script>
 </body>

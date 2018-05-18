@@ -18,9 +18,14 @@
 				<section>
 					<small class="date text-muted"><i class="fa fa-calendar" aria-hidden="true"></i> {{ page.getLastModificationTimeForLocale(page.getLanguage()) }}</small>
 					{% if page.hasPreviousPage() or page.hasNextPage() %}
-						<div class="paginator clearfix no-print">
-							<a class="btn btn-secondary float-left{% if page.hasPreviousPage() %}" href="{{ page.getPreviousPage() }}"{% else %} disabled" aria-disabled="true" href="#"{% endif %} role="button"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>							
-							<a class="btn btn-secondary float-right{% if page.hasNextPage() %}" href="{{ page.getNextPage() }}"{% else %} disabled" aria-disabled="true" href="#"{% endif %} role="button"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>							
+						<div class="pagination clearfix no-print">
+							{% if page.hasPreviousPage() %}
+								<a href="{{ page.getPreviousPage() }}" class="text-muted previous"><i class="fa fa-caret-left" aria-hidden="true"></i> Previous</a>
+							{% endif %}
+							
+							{% if page.hasNextPage() %}
+								<a href="{{ page.getNextPage() }}" class="text-muted next">Next <i class="fa fa-caret-right" aria-hidden="true"></i></a>
+							{% endif %}							
 						</div>
 					{% endif %}
 				</section>

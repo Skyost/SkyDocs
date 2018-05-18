@@ -5,4 +5,4 @@ HOW TO GET A MAC APP ?
 1. Get a JAR (either you compile it or you download it). 
 2. Download jar2app (https://github.com/Jorl17/jar2app). 
 3. Run the following command in the jar2app folder : 
-   jar2app "<Location of the JAR>" "SkyDocs" -b "fr.skyost.skydocs.SkyDocs" -d "SkyDocs" -n "SkyDocs v0.5.2 Beta" -i "icon.icns" -v "v0.5.2 Beta" -c "This product is licensed under GNU GPL v3. Please check https://skydocs.skyost.eu for more informations." 
+   jar2app "<Location of the JAR>" "SkyDocs" -b "fr.skyost.skydocs.SkyDocs" -d "SkyDocs" -n "SkyDocs v0.6 Beta" -i "icon.icns" -v "v0.6 Beta" -c "This product is licensed under GNU GPL v3. Please check https://skydocs.skyost.eu for more informations." 

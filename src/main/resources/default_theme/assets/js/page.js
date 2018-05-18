@@ -92,9 +92,7 @@ $(document).ready(function() {
 	
 	// OTHERS :
 	$('table').each(function() {
-		if(!$(this).hasClass('.table')) {
-			$(this).addClass('table table-bordered table-responsive');
-		}
+		$(this).replaceWith('<div class="table-responsive"><table class="table table-bordered">' + this.innerHTML + '</table></div>');
 	});
 });
 

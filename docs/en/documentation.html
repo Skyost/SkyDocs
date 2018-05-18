@@ -6,7 +6,7 @@
 
 <meta name="description" content="SkyDocs is a lightweight static documentation builder with MarkDown."/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<meta name="generator" content="SkyDocs v0.5.2 Beta"/>
+<meta name="generator" content="SkyDocs v0.6 Beta"/>
 
 <meta property="og:type" content="website"/>
 <meta property="og:title" content="Documentation - SkyDocs"/>
@@ -26,13 +26,8 @@
 <meta id="theme-color" name="theme-color" content="#292b2c"/>
 <link rel="icon" type="image/png" href="../assets/img/icon.png"/>
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
-<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta.2/css/bootstrap.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.min.css"/>
 <link rel="stylesheet" type="text/css" href="../assets/css/page.css"/>
-<link rel="stylesheet" type="text/css" href="../assets/css/themes/blue.css"/>
-
-
-
-
 </head>
 <body>
 <header>
@@ -110,7 +105,7 @@
 </div>
 <article class="col-md-7">
 <h1 id="documentation">Documentation</h1>
-<p>This documentation has been created for <strong>SkyDocs v0.5.2 Beta</strong>. Don't forget to update it (there is a guide below) !</p>
+<p>This documentation has been created for <strong>SkyDocs v0.6 Beta</strong>. Don't forget to update it (there is a guide below) !</p>
 <h2 id="downloading--installing">Downloading &amp; installing</h2>
 <p>Here are the steps to download and install the software.</p>
 <h3 id="downloading">Downloading</h3>
@@ -131,7 +126,7 @@ That's it !</p>
 </div>
 <h2 id="configuration">Configuration</h2>
 <p>Once created, you have to configure your new project. Here's how to do it.</p>
-<p>First, open the file <em>project.yml</em>, it contains your project data under an <a href="https://fr.wikipedia.org/wiki/YAML">Yaml syntax</a>.
+<p>First, open the file <em>project.yml</em>, it contains your project data under an <a href="https://en.wikipedia.org/wiki/YAML">Yaml syntax</a>.
 Here are the different keys with their corresponding description :</p>
 <table>
 <thead>
@@ -188,17 +183,17 @@ the project contained in the current directory).</p>
 <p>To manually <strong>serve your documentation</strong> on localhost, run this command : <code>java -jar SkyDocs.jar serve [directory] [port]</code> (as always, if you omit the directory,
 SkyDocs will try to build the project contained in the current directory). The default port is 4444.</p>
 <h2 id="commands">Commands</h2>
-<p>The table below lists the available commands in SkyDocs. You can use them with the JAR <code>java -jar SkyDocs.jar commande &lt;arguments&gt;</code> or the executable <code>SkyDocs commande &lt;arguments&gt;</code>.</p>
+<p>The table below lists the available commands in SkyDocs. You can use them with the JAR <code>java -jar SkyDocs.jar command &lt;arguments&gt;</code> or the executable <code>SkyDocs command &lt;arguments&gt;</code>.</p>
 <table>
 <thead>
 <tr><th>Syntax</th><th>Default value</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr><td><code>new [directory]</code></td><td><strong>directory :</strong> current directory</td><td>Creates a new documentation in the specified directory.</td></tr>
-<tr><td><code>build [directory]</code></td><td><strong>directory :</strong> current directory</td><td>Builds the documentation located in the specified directory. HTML, CSS and JS will be minified, therefore compil time will be bigger than with <code>serve</code>.</td></tr>
-<tr><td><code>serve [directory] [port]</code></td><td><strong>directory :</strong> current directory<br><strong>port :</strong> 4444</td><td>Builds the documentation located in the specified directory and serve it on localhost with the specified port. No minification.</td></tr>
+<tr><td><code>new -directory [directory]</code></td><td><strong>directory :</strong> current directory</td><td>Creates a new documentation in the specified directory.</td></tr>
+<tr><td><code>build -directory [directory]</code></td><td><strong>directory :</strong> current directory</td><td>Builds the documentation located in the specified directory. HTML, CSS and JS will be minified, therefore compil time will be bigger than with <code>serve</code>.</td></tr>
+<tr><td><code>serve -directory [directory] -port [port] -manualRebuild [true/false]</code></td><td><strong>directory :</strong> current directory<br><strong>port :</strong> 4444<br><strong>manualRebuild :</strong> true</td><td>Builds the documentation located in the specified directory and serve it on localhost with the specified port. No minification.</td></tr>
 <tr><td><code>update</code></td><td></td><td>Checks for updates.</td></tr>
-<tr><td><code>help [command]</code></td><td><strong>command :</strong> all</td><td>Shows the available commands with their description.</td></tr>
+<tr><td><code>help -command [command]</code></td><td><strong>command :</strong> all</td><td>Shows the available commands with their description.</td></tr>
 <tr><td><code>gui</code> (or nothing)</td><td></td><td>Launches the <a href="#gui">GUI</a>.</td></tr>
 </tbody>
 </table>
@@ -207,10 +202,10 @@ SkyDocs will try to build the project contained in the current directory). The d
 <p><img src="../files/gui.png" alt="GUI"/></p>
 <p>As of v0.5, SkyDocs comes with a <em>GUI</em> ! As you can see, it is pretty self-explanatory : you can open your projects, build them, serve them, etc...</p>
 <section>
-<small class="date text-muted"><i class="fa fa-calendar" aria-hidden="true"></i> Jan 3, 2018 8:43:21 PM</small>
-<div class="paginator clearfix no-print">
-<a class="btn btn-secondary float-left" href="index.html" role="button"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
-<a class="btn btn-secondary float-right" href="creating-theme.html" role="button"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+<small class="date text-muted"><i class="fa fa-calendar" aria-hidden="true"></i> May 17, 2018 5:55:07 PM</small>
+<div class="pagination clearfix no-print">
+<a href="index.html" class="text-muted previous"><i class="fa fa-caret-left" aria-hidden="true"></i> Previous</a>
+<a href="creating-theme.html" class="text-muted next">Next <i class="fa fa-caret-right" aria-hidden="true"></i></a>
 </div>
 </section>
 </article>
@@ -219,17 +214,17 @@ SkyDocs will try to build the project contained in the current directory). The d
 <footer>
 <p class="text-muted">
 <i class="fa fa-file-text" aria-hidden="true"></i> Documentation theme created with <i class="fa fa-heart pulse" aria-hidden="true"></i> by <a href="https://www.skyost.eu">Skyost</a>.
-Powered by <a href="https://skydocs.skyost.eu">SkyDocs</a> v0.5.2 Beta.
+Powered by <a href="https://skydocs.skyost.eu">SkyDocs</a> v0.6 Beta.
 </p>
 </footer>
 
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.13.0/umd/popper.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jQuery.print/1.5.1/jQuery.print.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/is-in-viewport/3.0.0/isInViewport.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/is-in-viewport/3.0.3/isInViewport.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.0.0/tocbot.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.3.2/tocbot.min.js"></script>
 <script type="text/javascript" src="../assets/js/page.js"></script>
 <script type="text/javascript" src="../assets/localization/en.js"></script>
 </body>
