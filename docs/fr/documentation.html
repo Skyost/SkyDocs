@@ -138,7 +138,7 @@ Voici les différentes clés ainsi que leur description :</p>
 <tr><td>project_url</td><td>chaîne</td><td>non (mais conseillé)</td><td><code>https://skydocs.skyost.eu</code></td><td>L'adresse URL de votre documentation.</td></tr>
 <tr><td>default_language</td><td>chaîne</td><td>non</td><td><code>en</code></td><td>La language par défaut de votre documentation.</td></tr>
 <tr><td>enable_lunr</td><td>booléen</td><td>non</td><td><code>false</code></td><td>Si vous passez cette valeur à <em>true</em>, SkyDocs va inclure une page <em>search.html</em> qui prend <em>keywords</em> comme paramètre <em>GET</em>.<br>Vous devez envoyer vos mots clés à cette page, et <a href="https://lunrjs.com/">lunr</a> va les traiter et renvoyer la liste des pages correspondantes.</td></tr>
-<tr><td>enable_less</td><td>boolean</td><td>non</td><td><code>true</code></td><td>Si vous passez cette valeur à <em>true</em>, SkyDocs va analyser et convertir les <a href="http://lesscss.org/">fichiers LESS</a>. Cela peut affecter le temps de génération de manière significative !</td></tr>
+<tr><td>enable_less</td><td>boolean</td><td>non</td><td><code>true</code></td><td>Si vous passez cette valeur à <em>true</em>, SkyDocs va analyser et convertir les <a href="http://lesscss.org/">fichiers LESS</a>. Si activé, plus vous avez de fichiers LESS, plus le temps de génération de votre projet sera long.</td></tr>
 <tr><td>default_order_alphabetical</td><td>booléen</td><td>non</td><td><code>false</code></td><td>Si vous passez cette valeur à <em>true</em>, le logiciel classera les pages par ordre alphabétique (suivant leur nom de fichier). <code>page.getPreviousPage()</code> et <code>page.getNextPage()</code> retourneront les valeurs correspondantes à ce classement (si les en-têtes correspondantes ne sont pas définies).</td></tr>
 </tbody>
 </table>
@@ -204,7 +204,7 @@ SkyDocs va essayer de générer le projet contenu dans le dossier courant). Le p
 <p>À partir de la version v0.5, SkyDocs possède un <em>IHM</em> ! Comme vous pouvez le voir c'est plutôt explicite : vous pouvez ouvrir vos projets, les compiler, les servir sur le réseau, etc...</p>
 <p><strong>Attention !</strong> Tout est en anglais cependant.</p>
 <section>
-<small class="date text-muted"><i class="fa fa-calendar" aria-hidden="true"></i> 4 juil. 2018 00:04:13</small>
+<small class="date text-muted"><i class="fa fa-calendar" aria-hidden="true"></i> 4 juil. 2018 01:08:02</small>
 <div class="pagination clearfix no-print">
 <a href="index.html" class="text-muted previous"><i class="fa fa-caret-left" aria-hidden="true"></i> Previous</a>
 <a href="creer-theme.html" class="text-muted next">Next <i class="fa fa-caret-right" aria-hidden="true"></i></a>
