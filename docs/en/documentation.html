@@ -137,7 +137,8 @@ Here are the different keys with their corresponding description :</p>
 <tr><td>project_description</td><td>string</td><td>no (but advised)</td><td><code>Documentation built with SkyDocs</code></td><td>Your documentation description.</td></tr>
 <tr><td>project_url</td><td>string</td><td>no (but advised)</td><td><code>https://skydocs.skyost.eu</code></td><td>Your hosted documentation URL address.</td></tr>
 <tr><td>default_language</td><td>string</td><td>no</td><td><code>en</code></td><td>Your documentation default language.</td></tr>
-<tr><td>lunr_search</td><td>boolean</td><td>no</td><td><code>false</code></td><td>If you set this value to <em>true</em>, SkyDocs will include a <em>search.html</em> page which takes a <em>GET</em> parameter named <em>keywords</em>.<br>You have to send your keywords to this page, and <a href="https://lunrjs.com/">lunr</a> will process it and will show you a list of accurate pages.</td></tr>
+<tr><td>enable_lunr</td><td>boolean</td><td>no</td><td><code>false</code></td><td>If you set this value to <em>true</em>, SkyDocs will include a <em>search.html</em> page which takes a <em>GET</em> parameter named <em>keywords</em>.<br>You have to send your keywords to this page, and <a href="https://lunrjs.com/">lunr</a> will process it and will show you a list of accurate pages.</td></tr>
+<tr><td>enable_less</td><td>boolean</td><td>no</td><td><code>true</code></td><td>If you set this value to <em>true</em>, SkyDocs will parse and handle <a href="http://lesscss.org/">LESS files</a>. This can significantly slow the build time !</td></tr>
 <tr><td>default_order_alphabetical</td><td>boolean</td><td>no</td><td><code>false</code></td><td>If you set this value to <em>true</em>, the software will order your page alphabetically (according to their file name). <code>page.getPreviousPage()</code> and <code>page.getNextPage()</code> will return values according to this order (if the corresponding header keys are not set).</td></tr>
 </tbody>
 </table>
@@ -202,7 +203,7 @@ SkyDocs will try to build the project contained in the current directory). The d
 <p><img src="../files/gui.png" alt="GUI"/></p>
 <p>As of v0.5, SkyDocs comes with a <em>GUI</em> ! As you can see, it is pretty self-explanatory : you can open your projects, build them, serve them, etc...</p>
 <section>
-<small class="date text-muted"><i class="fa fa-calendar" aria-hidden="true"></i> May 17, 2018 5:55:07 PM</small>
+<small class="date text-muted"><i class="fa fa-calendar" aria-hidden="true"></i> Jul 4, 2018 12:01:36 AM</small>
 <div class="pagination clearfix no-print">
 <a href="index.html" class="text-muted previous"><i class="fa fa-caret-left" aria-hidden="true"></i> Previous</a>
 <a href="creating-theme.html" class="text-muted next">Next <i class="fa fa-caret-right" aria-hidden="true"></i></a>
