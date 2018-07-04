@@ -1,4 +1,4 @@
-version: 2 # use CircleCI 2.0
+version: 2
 jobs:
   build:
     working_directory: ~/skydocs
@@ -8,6 +8,7 @@ jobs:
       - checkout
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}
+      - run: chmod +x ./gradlew
       - run: ./gradlew dependencies
       - save_cache:
           paths:
