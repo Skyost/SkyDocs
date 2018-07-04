@@ -113,7 +113,7 @@
 <p>Then you can download the latest version of SkyDocs <a href="https://github.com/Skyost/SkyDocs/releases/latest">here</a>. Unzip the file where you want and that's it !</p>
 <h3 id="development-builds">Development builds</h3>
 <p>Development builds of this project can be acquired at the provided continuous integration server.
-You can download the latest dev build <a href="https://circleci.com/api/v1.1/project/github/Skyost/SkyDocs/latest/artifacts/0/$CIRCLE_ARTIFACTS/SkyDocs-SNAPSHOT.jar">here</a>.</p>
+You can download the latest dev build <a id="circle-link" href="https://circleci.com/gh/Skyost/SkyDocs">here</a>.</p>
 <p><a href="https://circleci.com/gh/Skyost/SkyDocs"><img src="https://img.shields.io/circleci/project/github/Skyost/SkyDocs.svg?style=flat-square" alt="CircleCI"/></a></p>
 <h3 id="creating-a-new-project">Creating a new project</h3>
 <p>To <strong>create a new project</strong>, go to the SkyDocs directory and run the command <code>java -jar SkyDocs.jar new [directory]</code>.
@@ -202,8 +202,18 @@ SkyDocs will try to build the project contained in the current directory). The d
 <h2 id="gui">GUI</h2>
 <p><img src="../files/gui.png" alt="GUI"/></p>
 <p>As of v0.5, SkyDocs comes with a <em>GUI</em> ! As you can see, it is pretty self-explanatory : you can open your projects, build them, serve them, etc...</p>
+<script type="text/javascript">
+	var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() { 
+        if(xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+			document.getElementById('circle-link').href = JSON.parse(xmlHttp.responseText)[0].url;
+		}
+    }
+    xmlHttp.open('GET', 'https://circleci.com/api/v1.1/project/github/Skyost/SkyDocs/latest/artifacts', true);
+    xmlHttp.send(null);
+</script>
 <section>
-<small class="date text-muted"><i class="fa fa-calendar" aria-hidden="true"></i> Jul 4, 2018 1:07:13 AM</small>
+<small class="date text-muted"><i class="fa fa-calendar" aria-hidden="true"></i> Jul 4, 2018 2:41:17 AM</small>
 <div class="pagination clearfix no-print">
 <a href="index.html" class="text-muted previous"><i class="fa fa-caret-left" aria-hidden="true"></i> Previous</a>
 <a href="creating-theme.html" class="text-muted next">Next <i class="fa fa-caret-right" aria-hidden="true"></i></a>

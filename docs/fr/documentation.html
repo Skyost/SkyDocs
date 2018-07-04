@@ -113,7 +113,7 @@
 <p>Maintenant vous pouvez télécharger la dernière version de SkyDocs <a href="https://github.com/Skyost/SkyDocs/releases/latest">ici</a>. Décompressez le fichier où vous le souhaitez et c'est bon !</p>
 <h3 id="builds-de-développement">Builds de développement</h3>
 <p>Les builds de développement de ce projet peuvent être trouvés sur le serveur d'intégration continue fourni sur cette page.
-Vous pouvez télécharger la dernière build de développement <a href="https://circleci.com/api/v1.1/project/github/Skyost/SkyDocs/latest/artifacts/0/$CIRCLE_ARTIFACTS/SkyDocs-SNAPSHOT.jar">ici</a>.</p>
+Vous pouvez télécharger la dernière build de développement <a id="circle-link" href="https://circleci.com/gh/Skyost/SkyDocs">ici</a>.</p>
 <p><a href="https://circleci.com/gh/Skyost/SkyDocs"><img src="https://img.shields.io/circleci/project/github/Skyost/SkyDocs.svg?style=flat-square" alt="CircleCI"/></a></p>
 <h3 id="créer-un-nouveau-projet">Créer un nouveau projet</h3>
 <p>Pour <strong>créer un nouveau projet</strong>, allez dans le dossier de SkyDocs et exécutez la commande <code>java -jar SkyDocs.jar new [directory]</code>.
@@ -203,8 +203,18 @@ SkyDocs va essayer de générer le projet contenu dans le dossier courant). Le p
 <p><img src="../files/gui.png" alt="IHM"/></p>
 <p>À partir de la version v0.5, SkyDocs possède un <em>IHM</em> ! Comme vous pouvez le voir c'est plutôt explicite : vous pouvez ouvrir vos projets, les compiler, les servir sur le réseau, etc...</p>
 <p><strong>Attention !</strong> Tout est en anglais cependant.</p>
+<script type="text/javascript">
+	var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() { 
+        if(xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+			document.getElementById('circle-link').href = JSON.parse(xmlHttp.responseText)[0].url;
+		}
+    }
+    xmlHttp.open('GET', 'https://circleci.com/api/v1.1/project/github/Skyost/SkyDocs/latest/artifacts', true);
+    xmlHttp.send(null);
+</script>
 <section>
-<small class="date text-muted"><i class="fa fa-calendar" aria-hidden="true"></i> 4 juil. 2018 01:08:02</small>
+<small class="date text-muted"><i class="fa fa-calendar" aria-hidden="true"></i> 4 juil. 2018 02:40:48</small>
 <div class="pagination clearfix no-print">
 <a href="index.html" class="text-muted previous"><i class="fa fa-caret-left" aria-hidden="true"></i> Previous</a>
 <a href="creer-theme.html" class="text-muted next">Next <i class="fa fa-caret-right" aria-hidden="true"></i></a>
