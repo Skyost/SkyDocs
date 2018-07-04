@@ -22,7 +22,7 @@ public class Constants {
 	 * App's version.
 	 */
 	
-	public static final String APP_VERSION = "v0.6 Beta";
+	public static final String APP_VERSION = "v0.6.1 Beta";
 	
 	/**
 	 * App's authors.
@@ -100,7 +100,7 @@ public class Constants {
 	 * The help command syntax.
 	 */
 	
-	public static final String COMMAND_HELP_SYNTAX = COMMAND_HELP + " -command [command] - Shows the available commands with their description.";
+	public static final String COMMAND_HELP_SYNTAX = COMMAND_HELP + " -command [command] - Shows the available command with their description.";
 	
 	/**
 	 * The GUI command.

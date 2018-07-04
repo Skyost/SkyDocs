@@ -1,19 +1,11 @@
-<!-- You can add/edit/remove everything you want here ;) -->
-<footer>
-	<p class="text-muted">
-		<i class="fa fa-file-text" aria-hidden="true"></i> Documentation theme created with <i class="fa fa-heart pulse" aria-hidden="true"></i> by <a href="https://www.skyost.eu">Skyost</a>.
-		Powered by <a href="{{ generator_website }}">{{ generator_name }}</a> {{ generator_version }}.
-	</p>
-</footer>
-
- 
 <!-- Javascript -->
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jQuery.print/1.5.1/jQuery.print.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/is-in-viewport/3.0.3/isInViewport.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.3.2/tocbot.min.js"></script>
-<script type="text/javascript" src="{{ page.getRootRelativeURL() }}assets/js/page.js"></script>
-<script type="text/javascript" src="{{ page.getRootRelativeURL() }}assets/localization/{{ page.getLanguage() }}.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery.print/1.5.1/jQuery.print.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.1/anchor.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.3.2/tocbot.min.js"></script>
+<script src="{{ page.getRootRelativeURL() }}assets/js/page.js"></script>
+{% if page.getLanguage() != 'en' %}
+	<script src="{{ page.getRootRelativeURL() }}assets/localization/{{ page.getLanguage() }}.js"></script>
+{% endif %}

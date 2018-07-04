@@ -1,9 +1,9 @@
 package fr.skyost.skydocs;
 
 import fr.skyost.skydocs.DocsMenu.DocsMenuEntry;
-import fr.skyost.skydocs.exceptions.InvalidProjectDataException;
-import fr.skyost.skydocs.exceptions.InvalidTemplateException;
-import fr.skyost.skydocs.exceptions.LoadException;
+import fr.skyost.skydocs.exception.InvalidProjectDataException;
+import fr.skyost.skydocs.exception.InvalidTemplateException;
+import fr.skyost.skydocs.exception.LoadException;
 import fr.skyost.skydocs.utils.Utils;
 import fr.skyost.skydocs.utils.Utils.Pair;
 import org.apache.commons.io.FilenameUtils;

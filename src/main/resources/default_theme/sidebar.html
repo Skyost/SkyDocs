@@ -1,0 +1,22 @@
+<header>
+	<h1><span class="logo"></span><a href="{{ page.getRootRelativeURL() }}{{ page.getLanguage() }}/">{{ project.getName() }}</a></h1>
+	{% if project.hasLunrSearch() %}
+		<form action="{{ page.getRootRelativeURL() }}search.html" method="get">
+			<input name="keywords" type="text" class="form-control" placeholder="Search...">
+		</form>
+	{% endif %}
+</header>
+
+<div id="mobile-bar" class="d-md-none clearfix">
+	<i class="fa fa-bars" aria-hidden="true"></i>
+</div>
+
+<div id="navigation" class="d-none d-md-block">
+	<nav>
+		{{ page.getMenu() }}
+	</nav>
+
+	<footer class="col-md-4 col-lg-3">
+		Powered by <a href="{{ generator_website }}">{{ generator_name }}</a> {{ generator_version }}.
+	</footer>
+</div>

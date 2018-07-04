@@ -1,7 +1,7 @@
 package fr.skyost.skydocs;
 
 import com.googlecode.htmlcompressor.compressor.HtmlCompressor;
-import fr.skyost.skydocs.exceptions.InvalidTemplateException;
+import fr.skyost.skydocs.exception.InvalidTemplateException;
 import fr.skyost.skydocs.utils.IncludeFileFunction;
 import fr.skyost.skydocs.utils.RangeFunction;
 import org.apache.commons.io.FilenameUtils;

@@ -1,7 +1,10 @@
 $(document).ready(function() {
 	localize({
 		'header form input&placeholder': 'Rechercher...',
-		'.paginator a:nth-of-type(1)&html': '<i class="fa fa-arrow-left" aria-hidden="true"></i> Page précédente',
-		'.paginator a:nth-of-type(2)&html': '<i class="fa fa-arrow-right" aria-hidden="true"></i> Page suivante'
+		'#pagination .previous span&html': 'Précédent',
+		'#pagination .next span&html': 'Suivant',
+		'.links > :eq(0) a&html': 'Faire un fork sur Github',
+		'.links > :eq(1) a&html': 'Mettre une étoile sur Github',
+		'#navbar footer&html': 'Propulsé par <a href="https://skydocs.skyost.eu">SkyDocs</a> v0.6 Bêta.'
 	});
 });

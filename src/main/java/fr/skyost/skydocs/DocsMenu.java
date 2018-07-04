@@ -1,7 +1,7 @@
 package fr.skyost.skydocs;
 
-import fr.skyost.skydocs.exceptions.InvalidMenuDataException;
-import fr.skyost.skydocs.exceptions.InvalidMenuEntryException;
+import fr.skyost.skydocs.exception.InvalidMenuDataException;
+import fr.skyost.skydocs.exception.InvalidMenuEntryException;
 import fr.skyost.skydocs.utils.IncludeFileFunction;
 import fr.skyost.skydocs.utils.Utils;
 import fr.skyost.skydocs.utils.Utils.AutoLineBreakStringBuilder;
