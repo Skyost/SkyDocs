@@ -89,7 +89,7 @@ public class BuildCommand extends Command {
 			output("Copying and converting files...");
 			firstTime();
 			
-			final HashSet<File> copied = new HashSet<File>();
+			final HashSet<File> copied = new HashSet<>();
 			
 			final DocsTemplate template = project.getTemplate();
 			final boolean lunr = project.hasLunrSearch();

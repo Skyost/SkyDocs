@@ -456,7 +456,7 @@ public class DocsMenu {
 		 */
 		
 		@SuppressWarnings("unchecked")
-		public static final DocsMenuEntry fromYAML(final Map<String, Object> yamlObject) throws InvalidMenuEntryException {
+		public static DocsMenuEntry fromYAML(final Map<String, Object> yamlObject) throws InvalidMenuEntryException {
 			final DocsMenuEntry page = new DocsMenuEntry(null, "#", 0, false);
 			
 			if(!yamlObject.containsKey(Constants.KEY_MENU_TITLE)) {

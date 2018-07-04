@@ -515,7 +515,7 @@ public class DocsProject {
 	 */
 	
 	private HashSet<String> loadPages(final File directory) throws LoadException {
-		return loadPages(directory, new HashSet<String>());
+		return loadPages(directory, new HashSet<>());
 	}
 	
 	/**
@@ -533,7 +533,7 @@ public class DocsProject {
 		if(!directory.isDirectory()) {
 			throw new LoadException("The file \"" + directory + "\" is not a directory.");
 		}
-		final HashSet<String> alreadyExist = new HashSet<String>();
+		final HashSet<String> alreadyExist = new HashSet<>();
 		for(final File child : directory.listFiles()) {
 			if(child.isDirectory()) {
 				loadPages(child, destinations);
@@ -625,7 +625,7 @@ public class DocsProject {
 			
 			Utils.createFileIfNotExist(project.getContentDirectory());
 			
-			return new Pair<DocsProject, Set<String>>(project, alreadyExist);
+			return new Pair<>(project, alreadyExist);
 		}
 		catch(final Exception ex) {
 			throw new LoadException(ex);

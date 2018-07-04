@@ -114,109 +114,84 @@ public class ProjectsFrame extends JFrame implements CommandListener, GithubUpda
 		final JLabel lblGlobalMenu = new JLabel("What do you want to do ?");
 		lblGlobalMenu.setFont(lblGlobalMenu.getFont().deriveFont(Font.ITALIC));
 		
-		createProjectButton.addActionListener(new ActionListener() {
-
-			@Override
-			public final void actionPerformed(final ActionEvent event) {
-				final JFileChooser chooser = new JFileChooser();
-				chooser.changeToParentDirectory();
-				chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-				if(chooser.showOpenDialog(ProjectsFrame.this) == JFileChooser.APPROVE_OPTION) {
-					File file = chooser.getSelectedFile();
-					if(!file.isDirectory()) {
-						file = file.getParentFile();
-					}
-					final String path = file.getPath();
-					if(projectsModel.contains(path)) {
-						projectsList.setSelectedValue(path, true);
-						return;
-					}
-					newCommand = new NewCommand(path);
-					newCommand.setOut(guiPrintStream);
-					newCommand.addListener(ProjectsFrame.this);
-					new Thread(newCommand).start();
+		createProjectButton.addActionListener(event -> {
+			final JFileChooser chooser = new JFileChooser();
+			chooser.changeToParentDirectory();
+			chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+			if(chooser.showOpenDialog(ProjectsFrame.this) == JFileChooser.APPROVE_OPTION) {
+				File file = chooser.getSelectedFile();
+				if(!file.isDirectory()) {
+					file = file.getParentFile();
 				}
-			}
-			
-		});
-		openProjectButton.addActionListener(new ActionListener() {
-
-			@Override
-			public final void actionPerformed(final ActionEvent event) {
-				final JFileChooser chooser = new JFileChooser();
-				chooser.changeToParentDirectory();
-				chooser.setFileFilter(new FileFilter() {
-
-					@Override
-					public final boolean accept(final File file) {
-						return file.isDirectory() || file.getName().equalsIgnoreCase(Constants.FILE_PROJECT_DATA);
-					}
-
-					@Override
-					public final String getDescription() {
-						return Constants.GUI_CHOOSER_DESCRIPTION;
-					}
-					
-				});
-				if(chooser.showOpenDialog(ProjectsFrame.this) == JFileChooser.APPROVE_OPTION) {
-					final String path = chooser.getSelectedFile().getParentFile().getPath();
-					if(projectsModel.contains(path)) {
-						projectsList.setSelectedValue(path, true);
-						return;
-					}
-					projectsModel.addElement(path);
-				}
-			}
-			
-		});
-		removeProjectButton.setEnabled(false);
-		removeProjectButton.addActionListener(new ActionListener() {
-
-			@Override
-			public final void actionPerformed(final ActionEvent event) {
-				int index = projectsList.getSelectedIndex();
-				projectsModel.removeElementAt(index);
-				projectsList.getListSelectionListeners()[0].valueChanged(new ListSelectionEvent(projectsList, --index, index, false));
-			}
-			
-		});
-		buildProjectButton.setEnabled(false);
-		buildProjectButton.addActionListener(new ActionListener() {
-
-			@Override
-			public final void actionPerformed(final ActionEvent event) {
-				try {
-					if(buildCommand == null) {
-						buildCommand = new BuildCommand(true, guiPrintStream, projectsModel.getElementAt(projectsList.getSelectedIndex()));
-						buildCommand.addListener(ProjectsFrame.this);
-						new Thread(buildCommand).start();
-						return;
-					}
-					buildCommand.interrupt();
-				}
-				catch(final Exception ex) {
-					ex.printStackTrace(guiPrintStream);
-					ex.printStackTrace();
-					JOptionPane.showMessageDialog(ProjectsFrame.this, String.format(Constants.GUI_DIALOG_ERROR_MESSAGE, ex.getMessage()), ex.getClass().getName(), JOptionPane.ERROR_MESSAGE);
-				}
-			}
-			
-		});
-		serveProjectButton.setEnabled(false);
-		serveProjectButton.addActionListener(new ActionListener() {
-
-			@Override
-			public final void actionPerformed(final ActionEvent event) {
-				if(serveCommand == null) {
-					serveCommand = new ServeCommand("-directory", projectsModel.getElementAt(projectsList.getSelectedIndex()), "-manualRebuild", "false");
-					serveCommand.setOut(guiPrintStream);
-					serveCommand.addListener(ProjectsFrame.this);
-					new Thread(serveCommand).start();
+				final String path = file.getPath();
+				if(projectsModel.contains(path)) {
+					projectsList.setSelectedValue(path, true);
 					return;
 				}
-				serveCommand.interrupt();
+				newCommand = new NewCommand(path);
+				newCommand.setOut(guiPrintStream);
+				newCommand.addListener(ProjectsFrame.this);
+				new Thread(newCommand).start();
 			}
-			
+		});
+		openProjectButton.addActionListener(event -> {
+			final JFileChooser chooser = new JFileChooser();
+			chooser.changeToParentDirectory();
+			chooser.setFileFilter(new FileFilter() {
+
+				@Override
+				public final boolean accept(final File file) {
+					return file.isDirectory() || file.getName().equalsIgnoreCase(Constants.FILE_PROJECT_DATA);
+				}
+
+				@Override
+				public final String getDescription() {
+					return Constants.GUI_CHOOSER_DESCRIPTION;
+				}
+
+			});
+			if(chooser.showOpenDialog(ProjectsFrame.this) == JFileChooser.APPROVE_OPTION) {
+				final String path = chooser.getSelectedFile().getParentFile().getPath();
+				if(projectsModel.contains(path)) {
+					projectsList.setSelectedValue(path, true);
+					return;
+				}
+				projectsModel.addElement(path);
+			}
+		});
+		removeProjectButton.setEnabled(false);
+		removeProjectButton.addActionListener(event -> {
+			int index = projectsList.getSelectedIndex();
+			projectsModel.removeElementAt(index);
+			projectsList.getListSelectionListeners()[0].valueChanged(new ListSelectionEvent(projectsList, --index, index, false));
+		});
+		buildProjectButton.setEnabled(false);
+		buildProjectButton.addActionListener(event -> {
+			try {
+				if(buildCommand == null) {
+					buildCommand = new BuildCommand(true, guiPrintStream, projectsModel.getElementAt(projectsList.getSelectedIndex()));
+					buildCommand.addListener(ProjectsFrame.this);
+					new Thread(buildCommand).start();
+					return;
+				}
+				buildCommand.interrupt();
+			}
+			catch(final Exception ex) {
+				ex.printStackTrace(guiPrintStream);
+				ex.printStackTrace();
+				JOptionPane.showMessageDialog(ProjectsFrame.this, String.format(Constants.GUI_DIALOG_ERROR_MESSAGE, ex.getMessage()), ex.getClass().getName(), JOptionPane.ERROR_MESSAGE);
+			}
+		});
+		serveProjectButton.setEnabled(false);
+		serveProjectButton.addActionListener(event -> {
+			if(serveCommand == null) {
+				serveCommand = new ServeCommand("-directory", projectsModel.getElementAt(projectsList.getSelectedIndex()), "-manualRebuild", "false");
+				serveCommand.setOut(guiPrintStream);
+				serveCommand.addListener(ProjectsFrame.this);
+				new Thread(serveCommand).start();
+				return;
+			}
+			serveCommand.interrupt();
 		});
 		
 		final JPanel menuPanel = new JPanel();
@@ -262,23 +237,18 @@ public class ProjectsFrame extends JFrame implements CommandListener, GithubUpda
 		);
 		menuPanel.setLayout(menuPanelLayout);
 		
-		projectsList.addListSelectionListener(new ListSelectionListener() {
+		projectsList.addListSelectionListener(event -> {
+			final int index = event.getFirstIndex();
+			final boolean enabled = 0 <= index && index < projectsModel.size();
 
-			@Override
-			public final void valueChanged(final ListSelectionEvent event) {
-				final int index = event.getFirstIndex();
-				final boolean enabled = 0 <= index && index < projectsModel.size();
-				
-				for(final JButton button : new JButton[]{removeProjectButton, buildProjectButton, serveProjectButton}) {
-					if(button.getText().equals(Constants.GUI_BUTTON_STOP)) {
-						return;
-					}
+			for(final JButton button : new JButton[]{removeProjectButton, buildProjectButton, serveProjectButton}) {
+				if(button.getText().equals(Constants.GUI_BUTTON_STOP)) {
+					return;
 				}
-				removeProjectButton.setEnabled(enabled);
-				buildProjectButton.setEnabled(enabled);
-				serveProjectButton.setEnabled(enabled);
 			}
-			
+			removeProjectButton.setEnabled(enabled);
+			buildProjectButton.setEnabled(enabled);
+			serveProjectButton.setEnabled(enabled);
 		});
 		
 		this.pack();
@@ -446,14 +416,7 @@ public class ProjectsFrame extends JFrame implements CommandListener, GithubUpda
 		@Override
 		public final void write(final byte[] buffer, final int offset, final int length) {
 			final String text = new String(buffer, offset, length);
-			SwingUtilities.invokeLater(new Runnable() {
-				
-				@Override
-				public final void run() {
-					logTextArea.append(text);
-				}
-				
-			});
+			SwingUtilities.invokeLater(() -> logTextArea.append(text));
 		}
 		
 		@Override

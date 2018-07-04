@@ -297,7 +297,7 @@ public class Utils {
 	 */
 	
 	public static String stripHTML(final String string) {
-		return string.replaceAll("\\<.*?\\>", "").replace("\n", "").replace("\r", "");
+		return string.replaceAll("<.*?>", "").replace("\n", "").replace("\r", "");
 	}
 	
 	/**

@@ -1,3 +1,0 @@
-test:
-  post:
-     - sudo mv /home/ubuntu/SkyDocs/target/SkyDocs*.jar $CIRCLE_ARTIFACTS/SkyDocs-SNAPSHOT.jar

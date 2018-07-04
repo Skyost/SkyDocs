@@ -1,0 +1,53 @@
+plugins {
+    id 'com.github.johnrengelman.shadow' version '2.0.4'
+    id 'java'
+}
+
+group = 'fr.skyost'
+version = '0.6.1'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+dependencies {
+    compile group: 'com.atlassian.commonmark', name: 'commonmark', version:'0.11.0'
+    compile group: 'com.atlassian.commonmark', name: 'commonmark-ext-autolink', version:'0.11.0'
+    compile group: 'com.atlassian.commonmark', name: 'commonmark-ext-gfm-strikethrough', version:'0.11.0'
+    compile group: 'com.atlassian.commonmark', name: 'commonmark-ext-gfm-tables', version:'0.11.0'
+    compile group: 'com.atlassian.commonmark', name: 'commonmark-ext-heading-anchor', version:'0.11.0'
+    compile group: 'org.yaml', name: 'snakeyaml', version:'1.21'
+    compile group: 'org.slf4j', name: 'slf4j-simple', version:'1.7.25'
+    compile group: 'org.jtwig', name: 'jtwig-core', version:'5.87.0.RELEASE'
+    compile group: 'org.nanohttpd', name: 'nanohttpd', version:'2.3.1'
+    compile group: 'com.eclipsesource.minimal-json', name: 'minimal-json', version:'0.9.5'
+    compile group: 'commons-io', name: 'commons-io', version:'2.6'
+    compile group: 'com.yahoo.platform.yui', name: 'yuicompressor', version:'2.4.8'
+    compile group: 'com.github.hazendaz', name: 'htmlcompressor', version:'1.6.4'
+    compile group: 'de.inetsoftware', name: 'jlessc', version:'1.5'
+    compile group: 'com.beust', name: 'jcommander', version:'1.72'
+}
+
+shadowJar {
+    destinationDir = new File(rootProject.projectDir, 'build/release/')
+    version = project.version
+    manifest {
+        attributes 'Main-Class': 'fr.skyost.skydocs.SkyDocs'
+    }
+    configurations = [project.configurations.compile]
+    mergeServiceFiles()
+    from('src/main/resources') {
+        into('main/resources')
+    }
+}
+
+task circleSnapshot (dependsOn: shadowJar) {
+    project.shadowJar.archiveName = "SkyDocs-SNAPSHOT.jar"
+}
+
+processResources {
+    exclude '**/*'
+}

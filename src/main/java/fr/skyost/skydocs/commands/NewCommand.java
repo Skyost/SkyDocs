@@ -42,7 +42,12 @@ public class NewCommand extends Command {
 			output("Creating a new project in the directory \"" + directory + "\"...");
 			Utils.extract(Constants.RESOURCE_NEW_PROJECT_PATH, Constants.RESOURCE_NEW_PROJECT_DIRECTORY, directory);
 
-			final String jarPath = Utils.getJARFile().getPath();
+			final File jar = Utils.getJARFile();
+			if(jar == null) {
+				throw new NullPointerException("Failed to locate JAR !");
+			}
+
+			final String jarPath = jar.getPath();
 			final String prefix = FilenameUtils.getExtension(jarPath).equalsIgnoreCase("jar") ? "java -jar " : "";
 			
 			for(final String extension : new String[]{"bat", "sh", "command"}) {

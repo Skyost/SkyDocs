@@ -1,0 +1,18 @@
+version: 2 # use CircleCI 2.0
+jobs:
+  build:
+    working_directory: ~/skydocs
+    docker:
+      - image: circleci/openjdk:8-jdk-browsers
+    steps:
+      - checkout
+      - restore_cache:
+          key: jars-{{ checksum "build.gradle" }}
+      - run: ./gradlew dependencies
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: jars-{{ checksum "build.gradle" }}
+      - run: ./gradlew circleSnapshot
+      - store_artifacts:
+          path: build/release

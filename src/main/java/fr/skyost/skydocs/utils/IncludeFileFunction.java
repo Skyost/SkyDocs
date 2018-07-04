@@ -27,7 +27,7 @@ public class IncludeFileFunction extends SimpleJtwigFunction {
 	 * The pattern that will be rendered when <i>render</i> is set to false.
 	 */
 	
-	private static final Pattern PARTIAL_RENDER_PATTERN = Pattern.compile("\\{\\{[ ]{0,}" + Constants.FUNCTION_INCLUDE_FILE + "\\(\"([^\"]|\\\\\")*\"\\)[ ]{0,}\\}\\}");
+	private static final Pattern PARTIAL_RENDER_PATTERN = Pattern.compile("\\{\\{[ ]*" + Constants.FUNCTION_INCLUDE_FILE + "\\(\"([^\"]|\\\\\")*\"\\)[ ]{0,}}}");
 	
 	/**
 	 * The directory (where you look up for files).

@@ -4,7 +4,6 @@ import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
 
 import java.io.PrintStream;
-import java.util.Arrays;
 import java.util.HashSet;
 
 /**
@@ -47,7 +46,7 @@ public abstract class Command implements Runnable {
 	 * The command listeners.
 	 */
 	
-	private final HashSet<CommandListener> listeners = new HashSet<CommandListener>();
+	private final HashSet<CommandListener> listeners = new HashSet<>();
 	
 	/**
 	 * The current PrintStream.

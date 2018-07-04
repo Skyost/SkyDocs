@@ -113,7 +113,7 @@ public class GithubUpdater extends Thread {
 		 * When the updater starts.
 		 */
 		
-		public void updaterStarted();
+		void updaterStarted();
 		
 		/**
 		 * When an Exception occurs.
@@ -121,7 +121,7 @@ public class GithubUpdater extends Thread {
 		 * @param ex The Exception.
 		 */
 		
-		public void updaterException(final Exception ex);
+		void updaterException(final Exception ex);
 		
 		/**
 		 * The response of the request.
@@ -129,7 +129,7 @@ public class GithubUpdater extends Thread {
 		 * @param response The response.
 		 */
 		
-		public void updaterResponse(final String response);
+		void updaterResponse(final String response);
 		
 		/**
 		 * If an update is available.
@@ -138,7 +138,7 @@ public class GithubUpdater extends Thread {
 		 * @param remoteVersion The remote version.
 		 */
 		
-		public void updaterUpdateAvailable(final String localVersion, final String remoteVersion);
+		void updaterUpdateAvailable(final String localVersion, final String remoteVersion);
 		
 		/**
 		 * If there is no update.
@@ -147,7 +147,7 @@ public class GithubUpdater extends Thread {
 		 * @param remoteVersion The remote version.
 		 */
 		
-		public void updaterNoUpdate(final String localVersion, final String remoteVersion);
+		void updaterNoUpdate(final String localVersion, final String remoteVersion);
 		
 	}
 
