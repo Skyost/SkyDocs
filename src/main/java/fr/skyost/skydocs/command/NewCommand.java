@@ -8,6 +8,9 @@ import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintStream;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
@@ -15,70 +18,57 @@ import java.nio.file.Files;
  * "new" command.
  */
 
-public class NewCommand extends Command {
+public class NewCommand extends Command<NewCommand.Arguments> {
 
 	/**
-	 * The command arguments.
+	 * Creates a new Command instance.
+	 *
+	 * @param args User arguments.
 	 */
 
-	private Arguments arguments;
-	
 	public NewCommand(final String... args) {
-		super(args);
+		this(System.out, System.in, args);
+	}
+
+	/**
+	 * Creates a new Command instance.
+	 *
+	 * @param out The output stream.
+	 * @param in The input stream.
+	 * @param args User arguments.
+	 */
+
+	public NewCommand(final PrintStream out, final InputStream in, final String... args) {
+		super(out, in, args, new Arguments());
 	}
 	
 	@Override
-	public final void run() {
-		super.run();
-		try {
-			final File directory = new File(arguments.directory);
-			
-			if(new File(directory, Constants.FILE_PROJECT_DATA).exists()) {
-				throw new ProjectAlreadyExistsException("A project already exists in that location !");
-			}
-			
-			firstTime();
-			
-			output("Creating a new project in the directory \"" + directory + "\"...");
-			Utils.extract(Constants.RESOURCE_NEW_PROJECT_PATH, Constants.RESOURCE_NEW_PROJECT_DIRECTORY, directory);
+	public final Boolean execute() throws ProjectAlreadyExistsException, InterruptionException, IOException, URISyntaxException {
+		final File directory = new File(this.getArguments().directory);
 
-			final File jar = Utils.getJARFile();
-			if(jar == null) {
-				throw new NullPointerException("Failed to locate JAR !");
-			}
+		if(new File(directory, Constants.FILE_PROJECT_DATA).exists()) {
+			throw new ProjectAlreadyExistsException("A project already exists in that location !");
+		}
 
-			final String jarPath = jar.getPath();
-			final String prefix = FilenameUtils.getExtension(jarPath).equalsIgnoreCase("jar") ? "java -jar " : "";
-			
-			for(final String extension : new String[]{"bat", "sh", "command"}) {
-				exitIfInterrupted();
-				
-				createFile(jarPath, new File(directory, "build." + extension), prefix + "\"%s\" build");
-				createFile(jarPath, new File(directory, "serve." + extension), prefix + "\"%s\" serve");
-			}
-			
-			secondTime();
-			printTimeElapsed();
+		output("Creating a new project in the directory \"" + directory + "\"...");
+		Utils.extract(Constants.RESOURCE_NEW_PROJECT_PATH, Constants.RESOURCE_NEW_PROJECT_DIRECTORY, directory);
+
+		final File jar = Utils.getJARFile();
+		if(jar == null) {
+			throw new NullPointerException("Failed to locate JAR !");
 		}
-		catch(final Exception ex) {
-			printStackTrace(ex);
-			broadcastCommandError(ex);
+
+		final String jarPath = jar.getPath();
+		final String prefix = FilenameUtils.getExtension(jarPath).equalsIgnoreCase("jar") ? "java -jar " : "";
+
+		for(final String extension : new String[]{"bat", "sh", "command"}) {
+			exitIfInterrupted();
+
+			createFile(jarPath, new File(directory, "build." + extension), prefix + "\"%s\" build");
+			createFile(jarPath, new File(directory, "serve." + extension), prefix + "\"%s\" serve");
 		}
-		exitIfNeeded();
-	}
-	
-	@Override
-	public final boolean isInterruptible() {
+
 		return true;
-	}
-
-	@Override
-	public final Arguments getArguments() {
-		if(arguments == null) {
-			arguments = new Arguments();
-		}
-
-		return arguments;
 	}
 	
 	/**
@@ -99,7 +89,7 @@ public class NewCommand extends Command {
 	 * Command arguments.
 	 */
 
-	public class Arguments {
+	public static class Arguments {
 
 		@Parameter(names = {"-directory", "-d"}, description = "Sets the new project directory.")
 		public String directory = System.getProperty("user.dir");

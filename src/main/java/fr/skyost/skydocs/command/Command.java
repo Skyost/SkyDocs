@@ -2,70 +2,43 @@ package fr.skyost.skydocs.command;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
+import fr.skyost.skydocs.DocsRunnable;
 
+import java.io.InputStream;
 import java.io.PrintStream;
-import java.util.HashSet;
 
 /**
+ *
  * Represents a command.
+ *
+ * @param <T> JCommander class arguments.
  */
 
-public abstract class Command implements Runnable {
-	
+public abstract class Command<T> extends DocsRunnable<Boolean> {
+
 	/**
-	 * If the JVM should exit when the command has been ran.
-	 */
-	
-	private boolean exitOnFinish = false;
-	
-	/**
-	 * If this command should output informations.
+	 * JCommander class instance.
 	 */
 
-	private boolean output = true;
-	
-	/**
-	 * First time point.
-	 */
-	
-	private long firstTime = 0L;
-	
-	/**
-	 * Second time point.
-	 */
-	
-	private long secondTime = 0L;
-	
-	/**
-	 * Whether this command has been interrupted.
-	 */
-	
-	private boolean isInterrupted = false;
-	
-	/**
-	 * The command listeners.
-	 */
-	
-	private final HashSet<CommandListener> listeners = new HashSet<>();
-	
-	/**
-	 * The current PrintStream.
-	 */
-	
-	private PrintStream out = System.out;
-	
+	private T arguments;
+
 	/**
 	 * Creates a new Command instance.
-	 * 
-	 * @param args The arguments.
+	 *
+	 * @param out The output stream.
+	 * @param in The input stream.
+	 * @param userArgs The user arguments.
+	 * @param objectArgs The JCommander class instance.
+	 * @param subTasks Command's sub tasks.
 	 */
-	
-	Command(final String... args) {
-		getArguments(); // Commands usually lazily create arguments. This will allow arguments to almost never be null.
 
-		if(args != null && args.length > 0) {
+	Command(final PrintStream out, final InputStream in, final String[] userArgs, final T objectArgs, final DocsRunnable... subTasks) {
+		super(out, in, subTasks);
+
+		this.arguments = objectArgs;
+		if(userArgs != null && userArgs.length > 0) {
 			try {
-				JCommander.newBuilder().addObject(getArguments()).build().parse(args);
+				JCommander.newBuilder().addObject(objectArgs).build().parse(userArgs);
 			}
 			catch(final ParameterException ex) {
 				ex.usage();
@@ -77,330 +50,23 @@ public abstract class Command implements Runnable {
 	}
 
 	/**
-	 * Runs the command.
-	 */
-
-	@Override
-	public void run() {
-		isInterrupted = false;
-		broadcastCommandStarted();
-	}
-
-	/**
-	 * Gets the JCommander class.
+	 * Gets the JCommander class instance.
 	 *
-	 * @return The JCommander class.
+	 * @return The JCommander class instance.
 	 */
 
-	abstract Object getArguments();
-	
-	/**
-	 * Checks if this command is interruptible.
-	 * 
-	 * @return Whether this command is interruptible.
-	 */
-	
-	public abstract boolean isInterruptible();
-	
-	/**
-	 * Checks if the JVM should exit on finish.
-	 * 
-	 * @return Whether the JVM should exit or not.
-	 */
-	
-	public final boolean getExitOnFinish() {
-		return exitOnFinish;
-	}
-	
-	/**
-	 * Sets whether the JVM should exit or not.
-	 * 
-	 * @param exitOnFinish If the JVM should exit on finish.
-	 */
-	
-	public final void setExitOnFinish(final boolean exitOnFinish) {
-		this.exitOnFinish = exitOnFinish;
-	}
-	
-	/**
-	 * Gets if this command should use System.out.print(...).
-	 * 
-	 * @return Whether this command should output data.
-	 */
-	
-	public final boolean isOutputing() {
-		return output;
-	}
-	
-	/**
-	 * Sets whether this command should use System.out.print(...).
-	 * 
-	 * @param output Whether this command should output data.
-	 */
-	
-	public final void setOutputing(final boolean output) {
-		this.output  = output;
-	}
-	
-	/**
-	 * Registers the first time point.
-	 */
-	
-	final void firstTime() {
-		firstTime = System.currentTimeMillis();
-	}
-	
-	/**
-	 * Registers the second time point.
-	 */
-	
-	final void secondTime() {
-		secondTime = System.currentTimeMillis();
-	}
-	
-	/**
-	 * Prints "Done in x seconds !" with x being the time between the first and the second point.
-	 */
-	
-	final void printTimeElapsed() {
-		outputLine("Done in " + ((float)((secondTime - firstTime) / 1000f)) + " seconds !");
-	}
-	
-	/**
-	 * Exits if interrupted.
-	 * 
-	 * @throws InterruptionException The interruption signal.
-	 */
-	
-	void exitIfInterrupted() throws InterruptionException {
-		if(!isInterrupted()) {
-			return;
-		}
-		exitIfNeeded();
-		throw new InterruptionException();
-	}
-	
-	/**
-	 * Exits if needed.
-	 */
-	
-	final void exitIfNeeded() {
-		interrupt();
-		if(exitOnFinish) {
-			System.exit(0);
-		}
-	}
-	
-	/**
-	 * Interrupts the execution of the current command. Please note that the implementation of this method may change depending on the command.
-	 */
-	
-	public void interrupt() {
-		isInterrupted = true;
-		broadcastCommandFinished();
-	}
-	
-	/**
-	 * Checks if this command is interrupted (or is currently not running).
-	 * 
-	 * @return Whether this command is interrupted (or is currently not running).
-	 */
-	
-	public final boolean isInterrupted() {
-		return isInterrupted;
-	}
-	
-	/**
-	 * Gets the current PrintStream.
-	 * 
-	 * @return The current PrintStream.
-	 */
-	
-	public final PrintStream getOut() {
-		return out;
-	}
-	
-	/**
-	 * Sets the current PrintStream.
-	 * 
-	 * @param out The new PrintStream.
-	 */
-	
-	public final void setOut(final PrintStream out) {
-		this.out = out;
-	}
-	
-	/**
-	 * Adds a listener.
-	 * 
-	 * @param listener The listener.
-	 */
-	
-	public final void addListener(final CommandListener listener) {
-		listeners.add(listener);
-	}
-	
-	/**
-	 * Removes a listener.
-	 * 
-	 * @param listener The listener.
-	 */
-	
-	public final void removeListener(final CommandListener listener) {
-		listeners.remove(listener);
-	}
-	
-	/**
-	 * Clears all listeners.
-	 */
-	
-	public final void clearListeners() {
-		listeners.clear();
-	}
-	
-	/**
-	 * Outputs a message without line break.
-	 * 
-	 * @param message The message.
-	 */
-	
-	public void output(final String message) {
-		output(message, output);
-	}
-	
-	/**
-	 * Outputs a message without line break.
-	 * 
-	 * @param message The message.
-	 * @param output Whether the message should be printed.
-	 */
-	
-	void output(final String message, final boolean output) {
-		if(!output) {
-			return;
-		}
-		out.print(message + " ");
-		if(out != System.out) {
-			System.out.print(message + " ");
-		}
-	}
-	
-	/**
-	 * Outputs a message with a line break.
-	 * 
-	 * @param message The message.
-	 */
-	
-	public final void outputLine(final String message) {
-		outputLine(message, output);
-	}
-	
-	/**
-	 * Outputs a message with a line break.
-	 * 
-	 * @param message The message.
-	 * @param output Whether the message should be printed.
-	 */
-	
-	final void outputLine(final String message, final boolean output) {
-		if(!output) {
-			return;
-		}
-		out.println(message);
-		if(out != System.out) {
-			System.out.println(message);
-		}
-	}
-	
-	/**
-	 * Prints a blank line.
-	 */
-	
-	public final void blankLine() {
-		if(!output) {
-			return;
-		}
-		out.println();
-		if(out != System.out) {
-			System.out.println();
-		}
-	}
-	
-	/**
-	 * Prints the StackTrace of a specified throwable.
-	 * 
-	 * @param throwable The throwable.
-	 */
-	
-	public final void printStackTrace(final Throwable throwable) {
-		out.println();
-		if(out != System.out) {
-			System.out.println();
-		}
-		if(throwable instanceof InterruptionException) {
-			outputLine(throwable.getMessage());
-			return;
-		}
-		throwable.printStackTrace(out);
-		if(out != System.out) {
-			throwable.printStackTrace();
-		}
-	}
-	
-	/**
-	 * Broadcasts a command started event.
-	 */
-	
-	final void broadcastCommandStarted() {
-		for(final CommandListener listener : listeners) {
-			listener.onCommandStarted(this);
-		}
-	}
-	
-	/**
-	 * Broadcasts a command finished event.
-	 */
-	
-	final void broadcastCommandFinished() {
-		for(final CommandListener listener : listeners) {
-			listener.onCommandFinished(this);
-		}
-	}
-	
-	/**
-	 * Broadcasts a command error event.
-	 */
-	
-	final void broadcastCommandError(final Throwable throwable) {
-		for(final CommandListener listener : listeners) {
-			listener.onCommandError(this, throwable);
-		}
+	public T getArguments() {
+		return arguments;
 	}
 
 	/**
-	 * The command listener interface.
+	 * Sets the JCommander class instance.
+	 *
+	 * @param arguments The JCommander class instance.
 	 */
-	
-	public interface CommandListener {
-		
-		void onCommandStarted(final Command command);
-		void onCommandFinished(final Command command);
-		void onCommandError(final Command command, final Throwable error);
 
+	public void setArguments(final T arguments) {
+		this.arguments = arguments;
 	}
-	
-	/**
-	 * The interruption signal.
-	 */
-	
-	public static class InterruptionException extends Exception {
-		
-		private static final long serialVersionUID = 1L;
 
-		public InterruptionException() {
-			super("Interrupted !");
-		}
-		
-	}
-	
 }

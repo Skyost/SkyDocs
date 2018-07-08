@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'fr.skyost'
-version = '0.6.1'
+version = '0.7'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -44,8 +44,10 @@ shadowJar {
     }
 }
 
-task circleSnapshot (dependsOn: shadowJar) {
-    project.shadowJar.archiveName = "SkyDocs-SNAPSHOT.jar"
+task circleSnapshot(dependsOn: shadowJar) {
+    doLast {
+        shadowJar.archivePath.renameTo(new File(shadowJar.destinationDir, 'SkyDocs-SNAPSHOT.jar'))
+    }
 }
 
 processResources {

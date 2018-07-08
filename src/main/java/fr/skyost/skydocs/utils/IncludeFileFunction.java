@@ -130,13 +130,13 @@ public class IncludeFileFunction extends SimpleJtwigFunction {
 	}
 	
 	/**
-	 * Render a String but processing only include file functions.
+	 * Renders a String but process only include file functions.
 	 * 
 	 * @param file File to render.
 	 * 
 	 * @return Rendered String.
 	 * 
-	 * @throws IOException If an exception occurs while reading the file.
+	 * @throws IOException If any exception occurs while reading the file.
 	 */
 	
 	public final String renderIncludeFile(final File file) throws IOException {
@@ -144,11 +144,11 @@ public class IncludeFileFunction extends SimpleJtwigFunction {
 	}
 	
 	/**
-	 * Render a String but processing only include file functions.
+	 * Renders a String but process only include file functions.
 	 * 
 	 * @param toRender String to render.
 	 * 
-	 * @return Rendered String.
+	 * @return The rendered String.
 	 */
 	
 	public final String renderIncludeFile(String toRender) {

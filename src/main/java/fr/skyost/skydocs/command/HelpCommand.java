@@ -3,26 +3,40 @@ package fr.skyost.skydocs.command;
 import com.beust.jcommander.Parameter;
 import fr.skyost.skydocs.Constants;
 
+import java.io.InputStream;
+import java.io.PrintStream;
+
 /**
  * "help" command.
  */
 
-public class HelpCommand extends Command {
+public class HelpCommand extends Command<HelpCommand.Arguments> {
 
 	/**
-	 * The command arguments.
+	 * Creates a new Command instance.
+	 *
+	 * @param args User arguments.
 	 */
 
-	private Arguments arguments;
-	
 	public HelpCommand(final String... args) {
-		super(args);
+		this(System.out, System.in, args);
 	}
-	
+
+	/**
+	 * Creates a new Command instance.
+	 *
+	 * @param out The output stream.
+	 * @param in The input stream.
+	 * @param args User arguments.
+	 */
+
+	public HelpCommand(final PrintStream out, final InputStream in, final String... args) {
+		super(out, in, args, new Arguments());
+	}
+
 	@Override
-	public final void run() {
-		super.run();
-		switch(arguments.command == null ? "" : arguments.command) {
+	protected Boolean execute() {
+		switch(this.getArguments().command) {
 		case Constants.COMMAND_NEW:
 			outputLine(Constants.COMMAND_NEW_SYNTAX);
 			break;
@@ -49,31 +63,18 @@ public class HelpCommand extends Command {
 			}
 			break;
 		}
-		exitIfNeeded();
-	}
 
-	@Override
-	public final boolean isInterruptible() {
-		return false;
-	}
-
-	@Override
-	public final Arguments getArguments() {
-		if(arguments == null) {
-			arguments = new Arguments();
-		}
-
-		return arguments;
+		return true;
 	}
 
 	/**
 	 * Command arguments.
 	 */
 
-	public class Arguments {
+	public static class Arguments {
 
 		@Parameter(names = {"command", "c"}, description = "Shows the help of a specific command.")
-		public String command;
+		public String command = "";
 
 	}
 	

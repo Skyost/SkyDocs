@@ -481,7 +481,7 @@ public class DocsProject {
 	 */
 	
 	public final File getBuildDirectory() {
-		return new File(directoryPath + File.separator + Constants.FILE_BUILD_DIRECTORY);
+		return new File(directoryPath, Constants.FILE_BUILD_DIRECTORY);
 	}
 	
 	/**
@@ -491,7 +491,7 @@ public class DocsProject {
 	 */
 	
 	public final File getContentDirectory() {
-		return new File(directoryPath + File.separator + Constants.FILE_CONTENT_DIRECTORY);
+		return new File(directoryPath, Constants.FILE_CONTENT_DIRECTORY);
 	}
 	
 	/**
@@ -501,7 +501,7 @@ public class DocsProject {
 	 */
 	
 	public final File getThemeDirectory() {
-		return new File(directoryPath + File.separator + Constants.FILE_THEME_DIRECTORY);
+		return new File(directoryPath, Constants.FILE_THEME_DIRECTORY);
 	}
 	
 	/**

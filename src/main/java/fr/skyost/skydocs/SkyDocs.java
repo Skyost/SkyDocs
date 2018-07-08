@@ -1,9 +1,6 @@
 package fr.skyost.skydocs;
 
 import fr.skyost.skydocs.command.CommandManager;
-import fr.skyost.skydocs.command.HelpCommand;
-
-import java.util.Arrays;
 
 /**
  * Executable class of SkyDocs.
@@ -18,7 +15,7 @@ public class SkyDocs {
 	 */
 	
 	public static void main(String[] args) {
-		new CommandManager(arguments -> new HelpCommand(Arrays.copyOfRange(arguments, 1, arguments.length)).run()).execute(args);
+		new CommandManager().execute(args);
 	}
 	
 }

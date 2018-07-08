@@ -4,22 +4,38 @@ import fr.skyost.skydocs.Constants;
 import fr.skyost.skydocs.utils.GithubUpdater;
 import fr.skyost.skydocs.utils.GithubUpdater.GithubUpdaterResultListener;
 
+import java.io.InputStream;
+import java.io.PrintStream;
+
 /**
  * "update" command.
  */
 
-public class UpdateCommand extends Command implements GithubUpdaterResultListener {
-	
-	@Override
-	public final void run() {
-		super.run();
-		new GithubUpdater(Constants.APP_VERSION.split(" ")[0].substring(1), this).start();
-		exitIfNeeded();
+public class UpdateCommand extends Command<Void> implements GithubUpdaterResultListener {
+
+	/**
+	 * Creates a new Command instance.
+	 **/
+
+	public UpdateCommand() {
+		this(System.out, System.in);
 	}
-	
+
+	/**
+	 * Creates a new Command instance.
+	 *
+	 * @param out The output stream.
+	 * @param in The input stream.
+	 */
+
+	public UpdateCommand(final PrintStream out, final InputStream in) {
+		super(out, in, null, null);
+	}
+
 	@Override
-	public final boolean isInterruptible() {
-		return false;
+	protected Boolean execute() {
+		new GithubUpdater(Constants.APP_VERSION.split(" ")[0].substring(1), this).start();
+		return true;
 	}
 
 	@Override
@@ -30,8 +46,7 @@ public class UpdateCommand extends Command implements GithubUpdaterResultListene
 	@Override
 	public final void updaterException(final Exception ex) {
 		outputLine("Error while checking for updates :");
-		printStackTrace(ex);
-		broadcastCommandError(ex);
+		ex.printStackTrace(this.getOutputStream());
 	}
 
 	@Override
@@ -46,11 +61,6 @@ public class UpdateCommand extends Command implements GithubUpdaterResultListene
 	@Override
 	public final void updaterNoUpdate(final String localVersion, final String remoteVersion) {
 		outputLine("No update available.");
-	}
-
-	@Override
-	public final Object getArguments() {
-		return null;
 	}
 	
 }

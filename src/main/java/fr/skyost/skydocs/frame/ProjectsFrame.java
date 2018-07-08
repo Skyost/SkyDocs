@@ -2,9 +2,8 @@ package fr.skyost.skydocs.frame;
 
 import com.google.common.io.Files;
 import fr.skyost.skydocs.Constants;
+import fr.skyost.skydocs.DocsRunnable;
 import fr.skyost.skydocs.command.BuildCommand;
-import fr.skyost.skydocs.command.Command;
-import fr.skyost.skydocs.command.Command.CommandListener;
 import fr.skyost.skydocs.command.NewCommand;
 import fr.skyost.skydocs.command.ServeCommand;
 import fr.skyost.skydocs.utils.GithubUpdater;
@@ -34,7 +33,7 @@ import java.util.List;
  * SkyDocs' GUI.
  */
 
-public class ProjectsFrame extends JFrame implements CommandListener, GithubUpdaterResultListener {
+public class ProjectsFrame extends JFrame implements DocsRunnable.RunnableListener, GithubUpdaterResultListener {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -125,10 +124,9 @@ public class ProjectsFrame extends JFrame implements CommandListener, GithubUpda
 					projectsList.setSelectedValue(path, true);
 					return;
 				}
-				newCommand = new NewCommand(path);
-				newCommand.setOut(guiPrintStream);
-				newCommand.addListener(ProjectsFrame.this);
-				new Thread(newCommand).start();
+				newCommand = new NewCommand(guiPrintStream, null, path);
+				newCommand.addListeners(ProjectsFrame.this);
+				new Thread(() -> newCommand.run()).start();
 			}
 		});
 		openProjectButton.addActionListener(event -> {
@@ -167,8 +165,8 @@ public class ProjectsFrame extends JFrame implements CommandListener, GithubUpda
 			try {
 				if(buildCommand == null) {
 					buildCommand = new BuildCommand(true, guiPrintStream, projectsModel.getElementAt(projectsList.getSelectedIndex()));
-					buildCommand.addListener(ProjectsFrame.this);
-					new Thread(buildCommand).start();
+					buildCommand.addListeners(ProjectsFrame.this);
+					new Thread(() -> buildCommand.run()).start();
 					return;
 				}
 				buildCommand.interrupt();
@@ -182,10 +180,9 @@ public class ProjectsFrame extends JFrame implements CommandListener, GithubUpda
 		serveProjectButton.setEnabled(false);
 		serveProjectButton.addActionListener(event -> {
 			if(serveCommand == null) {
-				serveCommand = new ServeCommand("-directory", projectsModel.getElementAt(projectsList.getSelectedIndex()), "-manualRebuild", "false");
-				serveCommand.setOut(guiPrintStream);
-				serveCommand.addListener(ProjectsFrame.this);
-				new Thread(serveCommand).start();
+				serveCommand = new ServeCommand(guiPrintStream, null, "-directory", projectsModel.getElementAt(projectsList.getSelectedIndex()), "-manualRebuild", "false");
+				serveCommand.addListeners(ProjectsFrame.this);
+				new Thread(() -> serveCommand.run(false)).start();
 				return;
 			}
 			serveCommand.interrupt();
@@ -253,13 +250,13 @@ public class ProjectsFrame extends JFrame implements CommandListener, GithubUpda
 	}
 
 	@Override
-	public final void onCommandStarted(final Command command) {
-		if(command instanceof NewCommand) {
+	public final void onRunnableStarted(final DocsRunnable runnable) {
+		if(runnable instanceof NewCommand) {
 			createProjectButton.setEnabled(false);
 			buildProjectButton.setEnabled(false);
 			serveProjectButton.setEnabled(false);
 		}
-		else if(command instanceof BuildCommand) {
+		else if(runnable instanceof BuildCommand) {
 			createProjectButton.setEnabled(false);
 			buildProjectButton.setText(Constants.GUI_BUTTON_STOP);
 			serveProjectButton.setEnabled(false);
@@ -273,17 +270,17 @@ public class ProjectsFrame extends JFrame implements CommandListener, GithubUpda
 	}
 
 	@Override
-	public final void onCommandFinished(final Command command) {
+	public final void onRunnableFinished(final DocsRunnable runnable) {
 		final int index = projectsList.getSelectedIndex();
 		final boolean enabled = 0 <= index && index < projectsModel.size();
-		if(command instanceof NewCommand) {
+		if(runnable instanceof NewCommand) {
 			newCommand = null;
-			projectsModel.addElement(((NewCommand)command).getArguments().directory);
+			projectsModel.addElement(((NewCommand)runnable).getArguments().directory);
 			createProjectButton.setEnabled(true);
 			buildProjectButton.setEnabled(enabled);
 			serveProjectButton.setEnabled(enabled);
 		}
-		else if(command instanceof BuildCommand) {
+		else if(runnable instanceof BuildCommand) {
 			buildCommand = null;
 			createProjectButton.setEnabled(true);
 			buildProjectButton.setText(Constants.GUI_BUTTON_BUILD);
@@ -296,12 +293,12 @@ public class ProjectsFrame extends JFrame implements CommandListener, GithubUpda
 			serveProjectButton.setText(Constants.GUI_BUTTON_SERVE);
 		}
 		removeProjectButton.setEnabled(true);
-		command.blankLine();
+		runnable.blankLine();
 		logTextArea.setCaretPosition(logTextArea.getText().length());
 	}
 	
 	@Override
-	public final void onCommandError(final Command command, final Throwable error) {
+	public final void onRunnableError(final DocsRunnable runnable, final Throwable error) {
 		JOptionPane.showMessageDialog(this, String.format(Constants.GUI_DIALOG_ERROR_MESSAGE, error.getMessage()), error.getClass().getName(), JOptionPane.ERROR_MESSAGE);
 	}
 	

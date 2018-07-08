@@ -38,4 +38,4 @@ You can also read the software's review on [Softpedia](http://www.softpedia.com/
 
 There are some options if you would like to contribute to this project. You can [follow its advancement](https://github.com/Skyost/SkyDocs/subscription), star it (it helps having better visibility) or [fork it](https://github.com/Skyost/SkyDocs/fork) on Github.
 
-Oh and if you really like this project, please consider [buying me a coffee](https://ko-fi.com/Skyost). I would really appreciate it.
+Oh and if you really like this project, please consider [making a donation](https://www.paypal.com/cgi-bin/webscr?hosted_button_id=XLEBVBMQNTXMY&item_name=Skyost+Projects&cmd=_s-xclick). I would really appreciate it.
