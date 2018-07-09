@@ -513,7 +513,16 @@ public class DocsProject {
 	 */
 
 	public final boolean shouldReloadProject(final File modifiedFile) {
-		if(!modifiedFile.exists() || !modifiedFile.isFile() || !modifiedFile.getParentFile().getPath().equals(directoryPath)) {
+		if(!modifiedFile.exists() || !modifiedFile.isFile()) {
+			return false;
+		}
+
+		final String path = modifiedFile.getParentFile().getPath();
+		if(path.startsWith(directoryPath + (directoryPath.endsWith(File.separator) ? "" : File.separator) + Constants.FILE_THEME_DIRECTORY)) {
+			return true;
+		}
+
+		if(!path.equals(directoryPath)) {
 			return false;
 		}
 
