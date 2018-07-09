@@ -6,7 +6,7 @@
 
 <meta name="description" content="SkyDocs is a lightweight static documentation builder with MarkDown."/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<meta name="generator" content="SkyDocs v0.6 Beta"/>
+<meta name="generator" content="SkyDocs v0.7 Beta"/>
 
 <meta property="og:type" content="website"/>
 <meta property="og:title" content="Créer un thème - SkyDocs"/>
@@ -23,26 +23,32 @@
 <meta name="twitter:description" content="SkyDocs is a lightweight static documentation builder with MarkDown."/>
 <meta name="twitter:image" content="https://skydocs.skyost.eu/assets/img/icon.png"/>
 
-<meta id="theme-color" name="theme-color" content="#292b2c"/>
+<meta name="theme-color" content="#2980b9"/>
 <link rel="icon" type="image/png" href="../assets/img/icon.png"/>
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.min.css"/>
 <link rel="stylesheet" type="text/css" href="../assets/css/page.css"/>
 </head>
 <body>
+<div id="content" class="row">
+<div id="navbar" class="col-md-4 col-lg-3">
 <header>
-<nav class="navbar navbar-expand-lg navbar-dark">
-<a class="navbar-brand" href="../index.html"><img src="../assets/img/icon.png" width="30" height="30" class="d-inline-block align-top" alt="SkyDocs"> SkyDocs</a>
-<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
-<span class="navbar-toggler-icon"></span>
-</button>
-<div class="collapse navbar-collapse" id="navbar">
+<h1><span class="logo"></span><a href="../fr/">SkyDocs</a></h1>
+<form action="../search.html" method="get">
+<input name="keywords" type="text" class="form-control" placeholder="Search...">
+</form>
+</header>
+<div id="mobile-bar" class="d-md-none clearfix">
+<i class="fa fa-bars" aria-hidden="true"></i>
+</div>
+<div id="navigation" class="d-none d-md-block">
+<nav>
 <ul>
 <li>
-<a href="index.html"><i class="fa fa-home" aria-hidden="true"></i> Accueil</a>
+<a href="index.html">Accueil</a>
 </li>
 <li>
-<a href="documentation.html"><i class="fa fa-book" aria-hidden="true"></i> Documentation</a>
+<a href="documentation.html">Documentation</a>
 <ul>
 <li>
 <a href="documentation.html#téléchargement--installation">Téléchargement &amp; installation</a>
@@ -68,10 +74,10 @@
 </ul>
 </li>
 <li>
-<a href="galerie-themes.html"><i class="fa fa-paint-brush" aria-hidden="true"></i> Galerie de thèmes</a>
+<a href="galerie-themes.html">Galerie de thèmes</a>
 </li>
 <li>
-<a href="#"><i class="fa fa-question-circle" aria-hidden="true"></i> Aide</a>
+<a href="#">Aide</a>
 <ul>
 <li>
 <a href="https://github.com/Skyost/SkyDocs/issues/new?title=Bug%20/%20Am%C3%A9lioration&body=Voici%20ma%20requ%C3%AAte%20:%20...%20(Vous%20pouvez%20%C3%A9galement%20me%20contacter%20sur%20https://www.skyost.eu).">Signaler des bugs / Demander des améliorations</a>
@@ -82,7 +88,7 @@
 </ul>
 </li>
 <li>
-<a href="#"><i class="fa fa-language" aria-hidden="true"></i> Langage</a>
+<a href="#">Langage</a>
 <ul>
 <li>
 <a href="../en/">English</a>
@@ -90,20 +96,22 @@
 </ul>
 </li>
 </ul>
-<form class="form-inline my-2 my-lg-0" action="../search.html" method="get">
-<input name="keywords" class="form-control mr-sm-2" type="search" placeholder="...">
-<span class="input-group-btn">
-<button class="btn btn-secondary my-2 my-sm-0" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
-</span>
-</form>
-</div>
 </nav>
-</header>
-<div id="content" class="container-fluid row">
-<div class="col-md-3 d-none d-md-block">
-<nav id="nav-toc"></nav>
+<footer class="col-md-4 col-lg-3">
+Powered by <a href="https://skydocs.skyost.eu">SkyDocs</a> v0.7 Beta.
+</footer>
 </div>
-<article class="col-md-7">
+</div>
+<div id="article" class="col-md-8 col-lg-9">
+<article class="col-md-12 col-lg-9">
+<section id="article-header" class="clearfix">
+<ul class="links">
+<li><small><a href="https://github.com/Skyost/SkyDocs/fork" class="text-muted">Fork it on Github</a></small></li>
+<li><small><a href="https://github.com/Skyost/SkyDocs" class="text-muted">Star it on Github</a></small></li>
+</ul>
+<small class="date text-muted">30 déc. 2017 15:37:00</small>
+</section>
+<section>
 <h1 id="créer-un-thème">Créer un thème</h1>
 <p>Vous souhaitez probablement vous séparer de ce thème tout moche. Voici comment créer votre propre thème.</p>
 <h2 id="fichier-pagehtml">Fichier page.html</h2>
@@ -179,31 +187,22 @@ Une fois créé, ajoutez ce que vous souhaitez dedans : Scripts JS, du CSS et de
 <div class="embed-responsive embed-responsive-16by9">
 <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/C6lzYBmoVxY?showinfo=0" allowfullscreen></iframe>
 </div>
-<section>
-<small class="date text-muted"><i class="fa fa-calendar" aria-hidden="true"></i> 30 déc. 2017 15:37:00</small>
-<div class="pagination clearfix no-print">
-<a href="documentation.html" class="text-muted previous"><i class="fa fa-caret-left" aria-hidden="true"></i> Previous</a>
-<a href="galerie-themes.html" class="text-muted next">Next <i class="fa fa-caret-right" aria-hidden="true"></i></a>
-</div>
+</section>
+<section id="pagination" class="clearfix">
+<a href="documentation.html" class="text-muted previous"><i class="fa fa-caret-left" aria-hidden="true"></i> <span>Previous</span></a>
+<a href="galerie-themes.html" class="text-muted next"><span>Next</span> <i class="fa fa-caret-right" aria-hidden="true"></i></a>
 </section>
 </article>
 </div>
+</div>
 
-<footer>
-<p class="text-muted">
-<i class="fa fa-file-text" aria-hidden="true"></i> Documentation theme created with <i class="fa fa-heart pulse" aria-hidden="true"></i> by <a href="https://www.skyost.eu">Skyost</a>.
-Powered by <a href="https://skydocs.skyost.eu">SkyDocs</a> v0.6 Beta.
-</p>
-</footer>
-
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jQuery.print/1.5.1/jQuery.print.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/is-in-viewport/3.0.3/isInViewport.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.3.2/tocbot.min.js"></script>
-<script type="text/javascript" src="../assets/js/page.js"></script>
-<script type="text/javascript" src="../assets/localization/fr.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery.print/1.5.1/jQuery.print.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.1/anchor.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.3.2/tocbot.min.js"></script>
+<script src="../assets/js/page.js"></script>
+<script src="../assets/localization/fr.js"></script>
 </body>
 </html>
