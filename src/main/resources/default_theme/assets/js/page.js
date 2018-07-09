@@ -4,7 +4,7 @@ $(document).ready(function() {
 	
 	// SYNTAX HIGHLIGHTING :
 	if(("code[class^='language-']").length) {
-		$('head').append('<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/>');
+		$('head').append('<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/solarized-dark.min.css"/>');
 		$.getScript('https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js', function() {
 			$('pre code').each(function(i, block) {
 				hljs.highlightBlock(block);

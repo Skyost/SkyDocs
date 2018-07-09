@@ -125,7 +125,7 @@ public class ProjectsFrame extends JFrame implements DocsRunnable.RunnableListen
 					projectsList.setSelectedValue(path, true);
 					return;
 				}
-				newCommand = new NewCommand(guiPrintStream, null, path);
+				newCommand = new NewCommand(guiPrintStream, null, "-directory", path);
 				newCommand.addListeners(ProjectsFrame.this);
 				new Thread(() -> newCommand.run()).start();
 			}

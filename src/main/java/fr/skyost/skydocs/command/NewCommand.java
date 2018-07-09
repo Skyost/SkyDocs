@@ -49,7 +49,7 @@ public class NewCommand extends Command<NewCommand.Arguments> {
 			throw new ProjectAlreadyExistsException("A project already exists in that location !");
 		}
 
-		output("Creating a new project in the directory \"" + directory + "\"...");
+		output("Creating a new project in the directory \"" + directory + "\"... ");
 		Utils.extract(Constants.RESOURCE_NEW_PROJECT_PATH, Constants.RESOURCE_NEW_PROJECT_DIRECTORY, directory);
 
 		final File jar = Utils.getJARFile();
