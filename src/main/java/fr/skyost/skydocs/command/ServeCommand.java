@@ -5,8 +5,10 @@ import fr.skyost.skydocs.Constants;
 import fr.skyost.skydocs.DocsServer;
 import fr.skyost.skydocs.task.serve.FirstBuildTask;
 import fr.skyost.skydocs.task.serve.NewBuildTask;
-import org.apache.commons.io.monitor.FileAlterationMonitor;
+import io.methvin.watcher.DirectoryWatcher;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 
@@ -23,16 +25,28 @@ public class ServeCommand extends Command<ServeCommand.Arguments> {
 	private DocsServer server;
 
 	/**
+	 * The build command.
+	 */
+
+	private final BuildCommand command;
+
+	/**
 	 * The task that allows to run the first build.
 	 */
 
-	private NewBuildTask newBuildTask;
+	private final NewBuildTask newBuildTask;
 
 	/**
 	 * The task that allows to run a new build.
 	 */
 
-	private FirstBuildTask firstBuildTask;
+	private final FirstBuildTask firstBuildTask;
+
+	/**
+	 * The current directory watcher.
+	 */
+
+	private DirectoryWatcher watcher;
 
 	/**
 	 * Creates a new Command instance.
@@ -56,30 +70,29 @@ public class ServeCommand extends Command<ServeCommand.Arguments> {
 		super(out, in, args, new Arguments());
 
 		final Arguments arguments = this.getArguments();
-		final BuildCommand command = new BuildCommand(false, null, arguments.directory == null ? null : new String[]{"-directory", arguments.directory});
+		command  = new BuildCommand(false, null, arguments.directory == null ? null : new String[]{"-directory", arguments.directory});
 
-		newBuildTask = new NewBuildTask(command, false, out);
-		firstBuildTask = new FirstBuildTask(command, arguments.port, out);
+		newBuildTask = new NewBuildTask(command, true, out);
+		firstBuildTask = new FirstBuildTask(this, arguments.port, out);
 
 		this.setSubTasks(command, newBuildTask, firstBuildTask);
 	}
 	
 	@Override
-	public final Boolean execute() {
+	public final Boolean execute() throws IOException {
 		final Arguments arguments = this.getArguments();
 		blankLine();
 
 		if(!arguments.manualRebuild || this.getScanner() == null) {
 			newBuildTask.run();
 			server = firstBuildTask.run(false);
+			registerFileListener(server);
 			return null;
 		}
 
 		boolean firstBuild = true;
 		String line = "";
 		while(line == null || line.isEmpty()) {
-			newBuildTask.setShouldReloadProject(!firstBuild);
-
 			final Long buildTime = newBuildTask.run();
 			if(buildTime == null) {
 				return null;
@@ -90,11 +103,12 @@ public class ServeCommand extends Command<ServeCommand.Arguments> {
 			}
 
 			if(firstBuild) {
-				server = firstBuildTask.run();
+				server = firstBuildTask.run(false);
+				registerFileListener(server);
 			}
 			firstBuild = false;
 
-			outputLine("Enter nothing to rebuild the website or enter something to stop the server (auto & manual rebuild are enabled) :");
+			outputLine(Constants.SERVE_MANUAL_REBUILD);
 			blankLine();
 
 			if(isInterrupted()) {
@@ -109,18 +123,35 @@ public class ServeCommand extends Command<ServeCommand.Arguments> {
 	
 	@Override
 	public final void interrupt() {
-		try {
-			server.stop();
-
-			final FileAlterationMonitor monitor = firstBuildTask.getMonitor();
-			monitor.removeObserver(monitor.getObservers().iterator().next());
-			monitor.stop();
+		if(server != null) {
+			try {
+				server.stop();
+			}
+			catch(final Exception ex) {
+				ex.printStackTrace(this.getOutputStream() == null ? System.err : this.getOutputStream());
+			}
 		}
-		catch(final Exception ex) {
-			ex.printStackTrace(this.getOutputStream());
+
+		if(watcher != null) {
+			try {
+				watcher.close();
+			}
+			catch(Exception ex) {
+				ex.printStackTrace(this.getOutputStream() == null ? System.err : this.getOutputStream());
+			}
 		}
 
 		super.interrupt();
+	}
+
+	/**
+	 * Returns the build command.
+	 *
+	 * @return The build command.
+	 */
+
+	public final BuildCommand getBuildCommand() {
+		return command;
 	}
 
 	/**
@@ -141,6 +172,57 @@ public class ServeCommand extends Command<ServeCommand.Arguments> {
 
 	public final NewBuildTask getNewBuildTask() {
 		return newBuildTask;
+	}
+
+	/**
+	 * Returns the directory watcher.
+	 *
+	 * @return The directory watcher.
+	 */
+
+	public final DirectoryWatcher getWatcher() {
+		return watcher;
+	}
+
+	/**
+	 * Creates and registers a file listener with the help of the specified build command.
+	 *
+	 * @param server The current docs server.
+	 *
+	 * @throws IOException If any I/O exception occurs.
+	 */
+
+	private void registerFileListener(final DocsServer server) throws IOException {
+		watcher = DirectoryWatcher.create(command.getProject().getDirectory().toPath(), event -> rebuildIfNeeded(server, event.path().toFile()));
+		watcher.watchAsync();
+	}
+
+	/**
+	 * Rebuilds the project if needed.
+	 *
+	 * @param server The docs server.
+	 * @param file The file that has changed.
+	 */
+
+	private synchronized void rebuildIfNeeded(final DocsServer server, final File file) {
+		final String path = file.getPath().replace(command.getProject().getDirectory().getPath(), "").substring(1);
+		boolean reBuild = false;
+		for(final String toRebuild : Constants.SERVE_REBUILD_PREFIX) {
+			if(path.startsWith(toRebuild)) {
+				reBuild = true;
+			}
+		}
+		if(!reBuild) {
+			return;
+		}
+
+		final Long buildTime = new NewBuildTask(command, server.getProject().shouldReloadProject(file), this.getOutputStream()).run();
+		if(buildTime != null) {
+			server.setLastBuild(buildTime);
+		}
+
+		outputLine(this.getArguments().manualRebuild ? Constants.SERVE_MANUAL_REBUILD : Constants.SERVE_AUTO_REBUILD);
+		blankLine();
 	}
 
 	/**

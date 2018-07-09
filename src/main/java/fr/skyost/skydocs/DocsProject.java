@@ -1,12 +1,12 @@
 package fr.skyost.skydocs;
 
+import com.google.common.io.Files;
 import fr.skyost.skydocs.DocsMenu.DocsMenuEntry;
 import fr.skyost.skydocs.exception.InvalidProjectDataException;
 import fr.skyost.skydocs.exception.InvalidTemplateException;
 import fr.skyost.skydocs.exception.LoadException;
 import fr.skyost.skydocs.utils.Utils;
 import fr.skyost.skydocs.utils.Utils.Pair;
-import org.apache.commons.io.FilenameUtils;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
@@ -82,7 +82,7 @@ public class DocsProject {
 	 */
 	
 	private DocsProject(final Map<String, Object> projectVariables, final File directory, final Set<DocsPage> pages, final Set<DocsMenu> menus, final DocsTemplate template) throws InvalidTemplateException, IOException {
-		this.directoryPath = directory == null ? System.getProperty("user.dir") : directory.getPath();
+		this.setDirectory(directory);
 		if(pages != null) {
 			this.pages.addAll(pages);
 		}
@@ -293,7 +293,7 @@ public class DocsProject {
 	 */
 	
 	public final void setDirectory(final File directory) {
-		this.directoryPath = directory.getPath();
+		this.directoryPath = directory == null ? System.getProperty("user.dir") : directory.getPath();
 	}
 	
 	/**
@@ -362,7 +362,7 @@ public class DocsProject {
 	 */
 	
 	public final DocsMenu getMenuByLanguage(final String language) {
-		if(menus.size() == 0) {
+		if(menus.isEmpty()) {
 			return null;
 		}
 		for(final DocsMenu menu : menus) {
@@ -503,6 +503,23 @@ public class DocsProject {
 	public final File getThemeDirectory() {
 		return new File(directoryPath, Constants.FILE_THEME_DIRECTORY);
 	}
+
+	/**
+	 * Returns whether modifying this file should trigger a project reload.
+	 *
+	 * @param modifiedFile The file.
+	 *
+	 * @return Whether modifying this file should trigger a project reload.
+	 */
+
+	public final boolean shouldReloadProject(final File modifiedFile) {
+		if(!modifiedFile.exists() || !modifiedFile.isFile() || !modifiedFile.getParentFile().getPath().equals(directoryPath)) {
+			return false;
+		}
+
+		final String name = modifiedFile.getName();
+		return (name.startsWith(Constants.FILE_MENU_PREFIX) && name.endsWith(Constants.FILE_MENU_SUFFIX)) || (name.equals(Constants.FILE_PROJECT_DATA));
+	}
 	
 	/**
 	 * Loads pages from the specified directory.
@@ -539,7 +556,7 @@ public class DocsProject {
 				loadPages(child, destinations);
 				continue;
 			}
-			if(FilenameUtils.getExtension(child.getName()).equalsIgnoreCase("md")) {
+			if(Files.getFileExtension(child.getName()).equalsIgnoreCase("md")) {
 				final DocsPage page = new DocsPage(this, child);
 				final String path = page.getBuildDestinationPath();
 				if(destinations.contains(path)) {
@@ -569,12 +586,12 @@ public class DocsProject {
 				throw new LoadException("The directory \"" + directory + "\" does not exist.");
 			}
 			if(!directory.isDirectory()) {
-				throw new LoadException("The file \"" + directory + "\" is not a directory.");
+				throw new LoadException("The file \"" + directory.getPath() + "\" is not a directory.");
 			}
 			
 			final File projectData = new File(directory, Constants.FILE_PROJECT_DATA);
 			if(!projectData.exists() || !projectData.isFile()) {
-				throw new LoadException(Constants.FILE_PROJECT_DATA + " not found !");
+				throw new LoadException(directory.getPath() + File.separator + Constants.FILE_PROJECT_DATA + " not found !");
 			}
 			
 			final File themeDirectory = new File(directory, Constants.FILE_THEME_DIRECTORY);
@@ -615,7 +632,7 @@ public class DocsProject {
 				}
 			}
 			
-			if(project.getMenus().size() == 0) {
+			if(project.getMenus().isEmpty()) {
 				project.addMenus(new DocsMenu(project.getDefaultLanguage(), new DocsMenuEntry("No \"" + Constants.FILE_MENU_PREFIX + Constants.FILE_MENU_SUFFIX + "\" found", "#", 0, false)));
 			}
 			if(project.getMenuByLanguage(project.getDefaultLanguage()) == null) {
@@ -624,7 +641,6 @@ public class DocsProject {
 			}
 			
 			Utils.createFileIfNotExist(project.getContentDirectory());
-			
 			return new Pair<>(project, alreadyExist);
 		}
 		catch(final Exception ex) {

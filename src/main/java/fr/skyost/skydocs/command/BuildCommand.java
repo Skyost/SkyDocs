@@ -81,6 +81,10 @@ public class BuildCommand extends Command<BuildCommand.Arguments> {
 	
 	@Override
 	public final Boolean execute() {
+		if(project == null) {
+			return null;
+		}
+
 		outputLine("Running build command...");
 
 		if(createBuildDirectoryTask.run() == null) {
@@ -97,7 +101,7 @@ public class BuildCommand extends Command<BuildCommand.Arguments> {
 			return null;
 		}
 
-		outputLine("Done ! You just have to put the content of \"" + project.getBuildDirectory().getPath() + "\" on your web server.");
+		outputLine("Finished ! You just have to put the content of \"" + project.getBuildDirectory().getPath() + "\" on your web server.");
 		return true;
 	}
 	
@@ -116,7 +120,7 @@ public class BuildCommand extends Command<BuildCommand.Arguments> {
 	 */
 	
 	public final void reloadProject() {
-		new ReloadProjectTask(this, new File(this.getArguments().directory)).run();
+		new ReloadProjectTask(this, new File(this.getArguments().directory), this.getOutputStream()).run();
 	}
 	
 	/**

@@ -4,7 +4,6 @@ import com.googlecode.htmlcompressor.compressor.HtmlCompressor;
 import fr.skyost.skydocs.exception.InvalidTemplateException;
 import fr.skyost.skydocs.utils.IncludeFileFunction;
 import fr.skyost.skydocs.utils.RangeFunction;
-import org.apache.commons.io.FilenameUtils;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 import org.jtwig.environment.EnvironmentConfiguration;
@@ -189,7 +188,7 @@ public class DocsTemplate {
 		}
 		
 		String content = JtwigTemplate.inlineTemplate(template, configuration).render(model);
-		if(compress && FilenameUtils.getExtension(file.getPath()).equalsIgnoreCase("html")) {
+		if(compress && com.google.common.io.Files.getFileExtension(file.getPath()).equalsIgnoreCase("html")) {
 			content = HTML_COMPRESSOR.compress(content);
 		}
 		

@@ -150,7 +150,7 @@ public class Utils {
 	public static String[] separateFileHeader(final File file) {
 		try {
 			final List<String> lines = Files.readAllLines(file.toPath(), StandardCharsets.UTF_8);
-			if(lines.size() == 0) {
+			if(lines.isEmpty()) {
 				return new String[]{null, ""};
 			}
 			if(!lines.get(0).equals(Constants.HEADER_MARK)) {

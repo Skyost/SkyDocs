@@ -3,7 +3,6 @@ package fr.skyost.skydocs.task.build;
 import com.google.common.base.Ascii;
 import fr.skyost.skydocs.*;
 import fr.skyost.skydocs.utils.Utils;
-import org.apache.commons.io.FilenameUtils;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
@@ -170,7 +169,7 @@ public class ConvertFilesTask extends DocsRunnable<HashSet<File>> {
 	 */
 
 	private void copyFile(final HashSet<File> copied, final File file, File destination) throws IOException {
-		if(copied.contains(file) || (file.isFile() && FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("md"))) {
+		if(copied.contains(file) || (file.isFile() && com.google.common.io.Files.getFileExtension(file.getName()).equalsIgnoreCase("md"))) {
 			return;
 		}
 		if(file.isFile()) {

@@ -10,6 +10,7 @@ import fr.skyost.skydocs.utils.GithubUpdater;
 import fr.skyost.skydocs.utils.GithubUpdater.GithubUpdaterResultListener;
 import fr.skyost.skydocs.utils.Utils;
 
+import javax.annotation.Nonnull;
 import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -162,20 +163,13 @@ public class ProjectsFrame extends JFrame implements DocsRunnable.RunnableListen
 		});
 		buildProjectButton.setEnabled(false);
 		buildProjectButton.addActionListener(event -> {
-			try {
-				if(buildCommand == null) {
-					buildCommand = new BuildCommand(true, guiPrintStream, projectsModel.getElementAt(projectsList.getSelectedIndex()));
-					buildCommand.addListeners(ProjectsFrame.this);
-					new Thread(() -> buildCommand.run()).start();
-					return;
-				}
-				buildCommand.interrupt();
+			if(buildCommand == null) {
+				buildCommand = new BuildCommand(true, guiPrintStream, "-directory", projectsModel.getElementAt(projectsList.getSelectedIndex()));
+				buildCommand.addListeners(ProjectsFrame.this);
+				new Thread(() -> buildCommand.run()).start();
+				return;
 			}
-			catch(final Exception ex) {
-				ex.printStackTrace(guiPrintStream);
-				ex.printStackTrace();
-				JOptionPane.showMessageDialog(ProjectsFrame.this, String.format(Constants.GUI_DIALOG_ERROR_MESSAGE, ex.getMessage()), ex.getClass().getName(), JOptionPane.ERROR_MESSAGE);
-			}
+			buildCommand.interrupt();
 		});
 		serveProjectButton.setEnabled(false);
 		serveProjectButton.addActionListener(event -> {
@@ -408,9 +402,13 @@ public class ProjectsFrame extends JFrame implements DocsRunnable.RunnableListen
 	public class GUIPrintStream extends OutputStream {
 
 		@Override
-		public final void write(final byte[] buffer, final int offset, final int length) {
+		public final void write(@Nonnull final byte[] buffer, final int offset, final int length) {
 			final String text = new String(buffer, offset, length);
-			SwingUtilities.invokeLater(() -> logTextArea.append(text));
+			System.out.print(text);
+
+			if(!text.startsWith(Constants.SERVE_AUTO_REBUILD)) {
+				SwingUtilities.invokeLater(() -> logTextArea.append(text));
+			}
 		}
 		
 		@Override

@@ -6,7 +6,6 @@ import com.yahoo.platform.yui.compressor.JavaScriptCompressor;
 import fr.skyost.skydocs.Constants;
 import fr.skyost.skydocs.DocsProject;
 import fr.skyost.skydocs.DocsRunnable;
-import org.apache.commons.io.FilenameUtils;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -151,9 +150,9 @@ public class CopyAssetsTask extends DocsRunnable<Boolean> {
 
 	private void copyAsset(final File directory, File destination) throws IOException {
 		if(directory.isFile()) {
-			final String extension = FilenameUtils.getExtension(directory.getName());
+			final String extension = com.google.common.io.Files.getFileExtension(directory.getName());
 			if(extension.equalsIgnoreCase("less") && project.hasLess()) {
-				destination = new File(FilenameUtils.removeExtension(destination.getPath()) + ".css");
+				destination = new File(destination.getParentFile(), com.google.common.io.Files.getNameWithoutExtension(destination.getName()) + ".css");
 				Files.write(destination.toPath(), Less.compile(directory, minify).getBytes(StandardCharsets.UTF_8));
 				return;
 			}

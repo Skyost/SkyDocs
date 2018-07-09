@@ -24,7 +24,7 @@ dependencies {
     compile group: 'org.jtwig', name: 'jtwig-core', version:'5.87.0.RELEASE'
     compile group: 'org.nanohttpd', name: 'nanohttpd', version:'2.3.1'
     compile group: 'com.eclipsesource.minimal-json', name: 'minimal-json', version:'0.9.5'
-    compile group: 'commons-io', name: 'commons-io', version:'2.6'
+    compile group: 'io.methvin', name: 'directory-watcher', version: '0.5.1'
     compile group: 'com.yahoo.platform.yui', name: 'yuicompressor', version:'2.4.8'
     compile group: 'com.github.hazendaz', name: 'htmlcompressor', version:'1.6.4'
     compile group: 'de.inetsoftware', name: 'jlessc', version:'1.5'

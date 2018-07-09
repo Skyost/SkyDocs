@@ -1,8 +1,8 @@
 package fr.skyost.skydocs;
 
+import com.google.common.io.Files;
 import fr.skyost.skydocs.utils.IncludeFileFunction;
 import fr.skyost.skydocs.utils.Utils;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.LocaleUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.commonmark.Extension;
@@ -118,7 +118,7 @@ public class DocsPage implements Comparable<DocsPage> {
 		final Map<String, Object> header = Utils.decodeFileHeader(Utils.separateFileHeader(file)[0]);
 		
 		this.project = project;
-		this.title = header != null && header.containsKey(Constants.KEY_HEADER_TITLE) ? header.get(Constants.KEY_HEADER_TITLE).toString() : StringUtils.capitalize(FilenameUtils.removeExtension(file.getName()));
+		this.title = header != null && header.containsKey(Constants.KEY_HEADER_TITLE) ? header.get(Constants.KEY_HEADER_TITLE).toString() : StringUtils.capitalize(Files.getNameWithoutExtension(file.getName()));
 		this.language = header != null && header.containsKey(Constants.KEY_HEADER_LANGUAGE) ? header.get(Constants.KEY_HEADER_LANGUAGE).toString() : project.getDefaultLanguage();
 		this.absolutePath = file.getPath();
 		this.path = absolutePath.replace(project.getContentDirectory().getPath(), "").replace(project.getBuildDirectory().getPath(), "");

@@ -2,7 +2,6 @@ package fr.skyost.skydocs;
 
 import fi.iki.elonen.NanoHTTPD;
 import fr.skyost.skydocs.utils.Utils;
-import org.apache.commons.io.FilenameUtils;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -76,7 +75,7 @@ public class DocsServer extends NanoHTTPD {
 					return newFixedLengthResponse(Response.Status.UNAUTHORIZED, NanoHTTPD.MIME_HTML, builder.toString());
 				}
 			}
-			if(FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("html")) {
+			if(com.google.common.io.Files.getFileExtension(file.getName()).equalsIgnoreCase("html")) {
 				String content = new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
 				if(content.contains("<body>") && content.contains("</body>")) {
 					content = content.replace("</body>", Utils.AUTO_REFRESH_SCRIPT + "</body>");

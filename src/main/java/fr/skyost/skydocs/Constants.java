@@ -112,7 +112,7 @@ public class Constants {
 	 * The GUI command syntax.
 	 */
 	
-	public static final String COMMAND_GUI_SYNTAX = COMMAND_GUI + " - Open up a GUI.";
+	public static final String COMMAND_GUI_SYNTAX = COMMAND_GUI + " - Opens up a GUI.";
 	
 	/**
 	 * ================
@@ -431,7 +431,7 @@ public class Constants {
 	 * This will be the interval between two files check.
 	 */
 	
-	public static final long SERVE_FILE_POLLING_INTERVAL = 2 * 1000l;
+	public static final long SERVE_FILE_POLLING_INTERVAL = 2 * 1000L;
 	
 	/**
 	 * Modifying one of this file or folder will results in a re-build.
@@ -522,5 +522,17 @@ public class Constants {
 	 */
 	
 	public static final int DEFAULT_PORT = 4444;
-	
+
+	/**
+	 * Auto rebuild message.
+	 */
+
+	public static final String SERVE_AUTO_REBUILD = "Press CTRL+C to quit (auto rebuild is enabled) :";
+
+	/**
+	 * Manual & auto rebuild message.
+	 */
+
+	public static final String SERVE_MANUAL_REBUILD = "Enter nothing to rebuild the website or enter something to stop the server (auto & manual rebuild are enabled). You can also press CTRL+C to quit :";
+
 }

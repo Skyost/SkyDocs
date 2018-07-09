@@ -44,7 +44,7 @@ public abstract class Command<T> extends DocsRunnable<Boolean> {
 				ex.usage();
 			}
 			catch(final Exception ex) {
-				ex.printStackTrace();
+				ex.printStackTrace(out == null ? System.err : out);
 			}
 		}
 	}

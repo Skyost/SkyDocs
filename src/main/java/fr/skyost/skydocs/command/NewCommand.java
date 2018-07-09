@@ -4,7 +4,6 @@ import com.beust.jcommander.Parameter;
 import fr.skyost.skydocs.Constants;
 import fr.skyost.skydocs.exception.ProjectAlreadyExistsException;
 import fr.skyost.skydocs.utils.Utils;
-import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -59,7 +58,7 @@ public class NewCommand extends Command<NewCommand.Arguments> {
 		}
 
 		final String jarPath = jar.getPath();
-		final String prefix = FilenameUtils.getExtension(jarPath).equalsIgnoreCase("jar") ? "java -jar " : "";
+		final String prefix = com.google.common.io.Files.getFileExtension(jarPath).equalsIgnoreCase("jar") ? "java -jar " : "";
 
 		for(final String extension : new String[]{"bat", "sh", "command"}) {
 			exitIfInterrupted();
