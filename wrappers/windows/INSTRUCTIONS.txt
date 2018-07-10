@@ -2,7 +2,7 @@
 HOW TO GET A WINDOWS EXE ? 
 ========================== 
  
-1. Get a JAR (either you compile it or you download it), name it "skydocs-0.7.1-all.jar" and place it in this folder. 
+1. Get a JAR (either you compile it or you download it), name it "skydocs-0.7.2-all.jar" and place it in this folder. 
 2. Open "profile.xml" with launch4j (http://launch4j.sourceforge.net/) and compile it. 
 3. Alternatively, you can use the following command : 
    java -jar "<Location of launch4j>\launch4j.jar" "profile.xml" 

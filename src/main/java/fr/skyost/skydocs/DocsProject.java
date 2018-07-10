@@ -517,17 +517,8 @@ public class DocsProject {
 			return false;
 		}
 
-		final String path = modifiedFile.getParentFile().getPath();
-		if(path.startsWith(directoryPath + (directoryPath.endsWith(File.separator) ? "" : File.separator) + Constants.FILE_THEME_DIRECTORY)) {
-			return true;
-		}
-
-		if(!path.equals(directoryPath)) {
-			return false;
-		}
-
 		final String name = modifiedFile.getName();
-		return (name.startsWith(Constants.FILE_MENU_PREFIX) && name.endsWith(Constants.FILE_MENU_SUFFIX)) || (name.equals(Constants.FILE_PROJECT_DATA));
+		return name.endsWith(".yml") || name.endsWith(".html");
 	}
 	
 	/**

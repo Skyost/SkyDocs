@@ -5,6 +5,7 @@ import fr.skyost.skydocs.Constants;
 import fr.skyost.skydocs.DocsServer;
 import fr.skyost.skydocs.task.serve.FirstBuildTask;
 import fr.skyost.skydocs.task.serve.NewBuildTask;
+import io.methvin.watcher.DirectoryChangeEvent;
 import io.methvin.watcher.DirectoryWatcher;
 
 import java.io.File;
@@ -193,7 +194,10 @@ public class ServeCommand extends Command<ServeCommand.Arguments> {
 	 */
 
 	private void registerFileListener(final DocsServer server) throws IOException {
-		watcher = DirectoryWatcher.create(command.getProject().getDirectory().toPath(), event -> rebuildIfNeeded(server, event.path().toFile()));
+		watcher = DirectoryWatcher.create(command.getProject().getDirectory().toPath(), event -> {
+			final File file = event.path().toFile();
+			rebuildIfNeeded(server, event.eventType() != DirectoryChangeEvent.EventType.MODIFY || server.getProject().shouldReloadProject(file), file);
+		});
 		watcher.watchAsync();
 	}
 
@@ -201,10 +205,11 @@ public class ServeCommand extends Command<ServeCommand.Arguments> {
 	 * Rebuilds the project if needed.
 	 *
 	 * @param server The docs server.
+	 * @param reloadProject Whether the project should be reloaded.
 	 * @param file The file that has changed.
 	 */
 
-	private synchronized void rebuildIfNeeded(final DocsServer server, final File file) {
+	private synchronized void rebuildIfNeeded(final DocsServer server, final boolean reloadProject, final File file) {
 		final String path = file.getPath().replace(command.getProject().getDirectory().getPath(), "").substring(1);
 		boolean reBuild = false;
 		for(final String toRebuild : Constants.SERVE_REBUILD_PREFIX) {
@@ -216,7 +221,7 @@ public class ServeCommand extends Command<ServeCommand.Arguments> {
 			return;
 		}
 
-		final Long buildTime = new NewBuildTask(command, server.getProject().shouldReloadProject(file), this.getOutputStream()).run();
+		final Long buildTime = new NewBuildTask(command, reloadProject, this.getOutputStream()).run();
 		if(buildTime != null) {
 			server.setLastBuild(buildTime);
 		}
