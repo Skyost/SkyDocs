@@ -12,7 +12,7 @@ $(document).ready(function() {
 		});
 	}
 	
-	// OTHERS :
+	// OTHERS :	
 	$('table').each(function() {
 		$(this).replaceWith('<div class="table-responsive"><table class="table table-bordered">' + this.innerHTML + '</table></div>');
 	});
