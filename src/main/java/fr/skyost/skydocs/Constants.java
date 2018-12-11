@@ -1,5 +1,7 @@
 package fr.skyost.skydocs;
 
+import fr.skyost.BuildConfig;
+
 /**
  * Contains all app constants.
  */
@@ -17,12 +19,18 @@ public class Constants {
 	 */
 	
 	public static final String APP_NAME = "SkyDocs";
+
+	/**
+	 * App's state.
+	 */
+
+	public static final String APP_STATE = "Beta";
 	
 	/**
 	 * App's version.
 	 */
 	
-	public static final String APP_VERSION = "v0.7.3 Beta";
+	public static final String APP_VERSION = "v" + BuildConfig.VERSION + " " + APP_STATE;
 	
 	/**
 	 * App's authors.

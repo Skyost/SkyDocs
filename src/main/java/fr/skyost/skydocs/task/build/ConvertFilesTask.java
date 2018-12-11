@@ -3,7 +3,6 @@ package fr.skyost.skydocs.task.build;
 import com.google.common.base.Ascii;
 import fr.skyost.skydocs.*;
 import fr.skyost.skydocs.utils.Utils;
-import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
 import java.io.File;
@@ -113,7 +112,7 @@ public class ConvertFilesTask extends DocsRunnable<HashSet<File>> {
 		}
 		Utils.extract(Constants.RESOURCE_REDIRECT_LANGUAGE_PATH, Constants.RESOURCE_REDIRECT_LANGUAGE_FILE, buildDirectory);
 
-		Files.write(new File(buildDirectory, Constants.RESOURCE_REDIRECT_LANGUAGE_FILE).toPath(), JtwigTemplate.fileTemplate(new File(buildDirectory, Constants.RESOURCE_REDIRECT_LANGUAGE_FILE)).render(JtwigModel.newModel().with(Constants.VARIABLE_REDIRECTION_URL, project.getDefaultLanguage() + "/")).getBytes(StandardCharsets.UTF_8));
+		Files.write(new File(buildDirectory, Constants.RESOURCE_REDIRECT_LANGUAGE_FILE).toPath(), JtwigTemplate.fileTemplate(new File(buildDirectory, Constants.RESOURCE_REDIRECT_LANGUAGE_FILE)).render(template.createModel().with(Constants.VARIABLE_REDIRECTION_URL, project.getDefaultLanguage() + "/")).getBytes(StandardCharsets.UTF_8));
 
 		return copied;
 	}

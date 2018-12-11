@@ -1,10 +1,12 @@
 plugins {
+    id 'idea'
+    id 'de.fuerstenau.buildconfig' version '1.1.8'
     id 'com.github.johnrengelman.shadow' version '2.0.4'
     id 'java'
 }
 
 group = 'fr.skyost'
-version = '0.7.3'
+version = '0.7.4'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -14,33 +16,31 @@ repositories {
     jcenter()
 }
 dependencies {
-    compile group: 'com.atlassian.commonmark', name: 'commonmark', version:'0.11.0'
-    compile group: 'com.atlassian.commonmark', name: 'commonmark-ext-autolink', version:'0.11.0'
-    compile group: 'com.atlassian.commonmark', name: 'commonmark-ext-gfm-strikethrough', version:'0.11.0'
-    compile group: 'com.atlassian.commonmark', name: 'commonmark-ext-gfm-tables', version:'0.11.0'
-    compile group: 'com.atlassian.commonmark', name: 'commonmark-ext-heading-anchor', version:'0.11.0'
-    compile group: 'org.yaml', name: 'snakeyaml', version:'1.21'
-    compile group: 'org.slf4j', name: 'slf4j-simple', version:'1.7.25'
-    compile group: 'org.jtwig', name: 'jtwig-core', version:'5.87.0.RELEASE'
-    compile group: 'org.nanohttpd', name: 'nanohttpd', version:'2.3.1'
-    compile group: 'com.eclipsesource.minimal-json', name: 'minimal-json', version:'0.9.5'
-    compile group: 'io.methvin', name: 'directory-watcher', version: '0.5.1'
-    compile group: 'com.yahoo.platform.yui', name: 'yuicompressor', version:'2.4.8'
-    compile group: 'com.github.hazendaz', name: 'htmlcompressor', version:'1.6.4'
-    compile group: 'de.inetsoftware', name: 'jlessc', version:'1.5'
-    compile group: 'com.beust', name: 'jcommander', version:'1.72'
+    implementation group: 'com.atlassian.commonmark', name: 'commonmark', version:'0.11.0'
+    implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-autolink', version:'0.11.0'
+    implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-gfm-strikethrough', version:'0.11.0'
+    implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-gfm-tables', version:'0.11.0'
+    implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-heading-anchor', version:'0.11.0'
+    implementation group: 'org.yaml', name: 'snakeyaml', version:'1.21'
+    implementation group: 'org.slf4j', name: 'slf4j-simple', version:'1.7.25'
+    implementation group: 'org.jtwig', name: 'jtwig-core', version:'5.87.0.RELEASE'
+    implementation group: 'org.nanohttpd', name: 'nanohttpd', version:'2.3.1'
+    implementation group: 'com.eclipsesource.minimal-json', name: 'minimal-json', version:'0.9.5'
+    implementation group: 'io.methvin', name: 'directory-watcher', version: '0.5.1'
+    implementation group: 'com.yahoo.platform.yui', name: 'yuicompressor', version:'2.4.8'
+    implementation group: 'com.github.hazendaz', name: 'htmlcompressor', version:'1.6.4'
+    implementation group: 'de.inetsoftware', name: 'jlessc', version:'1.5'
+    implementation group: 'com.beust', name: 'jcommander', version:'1.72'
 }
 
 shadowJar {
     destinationDir = new File(rootProject.projectDir, 'build/release/')
-    version = project.version
-    manifest {
-        attributes 'Main-Class': 'fr.skyost.skydocs.SkyDocs'
-    }
-    configurations = [project.configurations.compile]
     mergeServiceFiles()
     from('src/main/resources') {
         into('main/resources')
+    }
+    manifest {
+        attributes 'Main-Class': 'fr.skyost.skydocs.SkyDocs'
     }
 }
 
@@ -52,4 +52,8 @@ task circleSnapshot(dependsOn: shadowJar) {
 
 processResources {
     exclude '**/*'
+}
+
+buildConfig {
+    packageName = project.group
 }
