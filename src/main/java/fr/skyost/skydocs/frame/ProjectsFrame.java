@@ -10,7 +10,6 @@ import fr.skyost.skydocs.utils.GithubUpdater;
 import fr.skyost.skydocs.utils.GithubUpdater.GithubUpdaterResultListener;
 import fr.skyost.skydocs.utils.Utils;
 
-import javax.annotation.Nonnull;
 import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -402,7 +401,7 @@ public class ProjectsFrame extends JFrame implements DocsRunnable.RunnableListen
 	public class GUIPrintStream extends OutputStream {
 
 		@Override
-		public final void write(@Nonnull final byte[] buffer, final int offset, final int length) {
+		public final void write(final byte[] buffer, final int offset, final int length) {
 			final String text = new String(buffer, offset, length);
 			System.out.print(text);
 

@@ -2,8 +2,8 @@
 <launch4jConfig> 
   <dontWrapJar>false</dontWrapJar> 
   <headerType>console</headerType> 
-  <jar>skydocs-0.7.3-all.jar</jar> 
-  <outfile>skydocs-0.7.3-all.exe</outfile> 
+  <jar>skydocs-0.7.4-all.jar</jar> 
+  <outfile>skydocs-0.7.4-all.exe</outfile> 
   <errTitle></errTitle> 
   <cmdLine></cmdLine> 
   <chdir>.</chdir> 
@@ -24,16 +24,16 @@
     <runtimeBits>64/32</runtimeBits> 
   </jre> 
   <versionInfo> 
-    <fileVersion>0.7.3.0</fileVersion> 
-    <txtFileVersion>v0.7.3</txtFileVersion> 
-    <fileDescription>SkyDocs v0.7.3 Beta</fileDescription> 
-    <copyright>This product is licensed under GNU GPL v3. Please check https://skydocs.skyost.eu for more informations.</copyright> 
-    <productVersion>0.7.3.0</productVersion> 
-    <txtProductVersion>v0.7.3</txtProductVersion> 
-    <productName>SkyDocs v0.7.3 Beta</productName> 
+    <fileVersion>0.7.4.0</fileVersion> 
+    <txtFileVersion>v0.7.4</txtFileVersion> 
+    <fileDescription>SkyDocs v0.7.4 Beta</fileDescription> 
+    <copyright>This product is licensed under GNU GPL v3. Please check https://skydocs.skyost.eu for more information.</copyright> 
+    <productVersion>0.7.4.0</productVersion> 
+    <txtProductVersion>v0.7.4</txtProductVersion> 
+    <productName>SkyDocs v0.7.4 Beta</productName> 
     <companyName>Skyost</companyName> 
     <internalName>SkyDocs</internalName> 
-    <originalFilename>SkyDocs-v0.7.3.exe</originalFilename> 
+    <originalFilename>SkyDocs-v0.7.4.exe</originalFilename> 
     <trademarks></trademarks> 
     <language>ENGLISH_US</language> 
   </versionInfo> 

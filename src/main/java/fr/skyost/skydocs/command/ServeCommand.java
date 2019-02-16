@@ -194,10 +194,14 @@ public class ServeCommand extends Command<ServeCommand.Arguments> {
 	 */
 
 	private void registerFileListener(final DocsServer server) throws IOException {
-		watcher = DirectoryWatcher.create(command.getProject().getDirectory().toPath(), event -> {
-			final File file = event.path().toFile();
-			rebuildIfNeeded(server, event.eventType() != DirectoryChangeEvent.EventType.MODIFY || server.getProject().shouldReloadProject(file), file);
-		});
+		watcher = DirectoryWatcher
+				.builder()
+				.path(command.getProject().getDirectory().toPath())
+				.listener(event -> {
+					final File file = event.path().toFile();
+					rebuildIfNeeded(server, event.eventType() != DirectoryChangeEvent.EventType.MODIFY || server.getProject().shouldReloadProject(file), file);
+				})
+				.build();
 		watcher.watchAsync();
 	}
 
