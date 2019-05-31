@@ -22,7 +22,7 @@ dependencies {
     implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-gfm-tables', version:'0.12.1'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-heading-anchor', version:'0.12.1'
     implementation group: 'org.slf4j', name: 'slf4j-nop', version: '1.8.0-beta2'
-    implementation group: 'org.yaml', name: 'snakeyaml', version:'1.23'
+    implementation group: 'org.yaml', name: 'snakeyaml', version:'1.24'
     implementation group: 'org.jtwig', name: 'jtwig-core', version:'5.87.0.RELEASE'
     implementation group: 'org.nanohttpd', name: 'nanohttpd', version:'2.3.1'
     implementation group: 'com.eclipsesource.minimal-json', name: 'minimal-json', version:'0.9.5'
