@@ -26,7 +26,7 @@ dependencies {
     implementation group: 'org.jtwig', name: 'jtwig-core', version:'5.87.0.RELEASE'
     implementation group: 'org.nanohttpd', name: 'nanohttpd', version:'2.3.1'
     implementation group: 'com.eclipsesource.minimal-json', name: 'minimal-json', version:'0.9.5'
-    implementation group: 'io.methvin', name: 'directory-watcher', version: '0.9.5'
+    implementation group: 'io.methvin', name: 'directory-watcher', version: '0.9.6'
     implementation group: 'com.yahoo.platform.yui', name: 'yuicompressor', version:'2.4.8'
     implementation group: 'com.github.hazendaz', name: 'htmlcompressor', version:'1.6.5'
     implementation group: 'de.inetsoftware', name: 'jlessc', version:'1.7'
