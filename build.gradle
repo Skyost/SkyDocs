@@ -1,7 +1,7 @@
 plugins {
     id 'idea'
     id 'de.fuerstenau.buildconfig' version '1.1.8'
-    id 'com.github.johnrengelman.shadow' version '2.0.4'
+    id 'com.github.johnrengelman.shadow' version '5.1.0'
     id 'java'
 }
 
