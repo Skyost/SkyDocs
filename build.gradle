@@ -29,7 +29,7 @@ dependencies {
     implementation group: 'io.methvin', name: 'directory-watcher', version: '0.9.6'
     implementation group: 'com.yahoo.platform.yui', name: 'yuicompressor', version:'2.4.8'
     implementation group: 'com.github.hazendaz', name: 'htmlcompressor', version:'1.6.5'
-    implementation group: 'de.inetsoftware', name: 'jlessc', version:'1.7'
+    implementation group: 'de.inetsoftware', name: 'jlessc', version:'1.8'
     implementation group: 'com.beust', name: 'jcommander', version:'1.75'
 }
 
