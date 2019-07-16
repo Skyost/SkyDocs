@@ -18,7 +18,7 @@ repositories {
 dependencies {
     implementation group: 'com.atlassian.commonmark', name: 'commonmark', version:'0.12.1'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-autolink', version:'0.12.1'
-    implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-gfm-strikethrough', version:'0.12.1'
+    implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-gfm-strikethrough', version:'0.13.0'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-gfm-tables', version:'0.12.1'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-heading-anchor', version:'0.12.1'
     implementation group: 'org.slf4j', name: 'slf4j-nop', version: '1.8.0-beta2'
