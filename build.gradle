@@ -16,11 +16,11 @@ repositories {
     jcenter()
 }
 dependencies {
-    implementation group: 'com.atlassian.commonmark', name: 'commonmark', version:'0.13.0'
+    implementation group: 'com.atlassian.commonmark', name: 'commonmark', version:'0.13.1'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-autolink', version:'0.13.1'
-    implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-gfm-strikethrough', version:'0.13.0'
-    implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-gfm-tables', version:'0.13.0'
-    implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-heading-anchor', version:'0.13.0'
+    implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-gfm-strikethrough', version:'0.13.1'
+    implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-gfm-tables', version:'0.13.1'
+    implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-heading-anchor', version:'0.13.1'
     implementation group: 'org.slf4j', name: 'slf4j-nop', version: '2.0.0-alpha1'
     implementation group: 'org.yaml', name: 'snakeyaml', version:'1.25'
     implementation group: 'org.jtwig', name: 'jtwig-core', version:'5.87.0.RELEASE'
